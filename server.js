@@ -84,6 +84,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// API Routes
+app.use('/api', require('./routes'));
+
 // Default Server Route
 app.get('*', (req, res) => {
   res.render('index');
