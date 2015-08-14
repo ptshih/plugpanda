@@ -10,6 +10,13 @@ import React from 'react';
 export default React.createClass({
   displayName: 'Status',
 
+  statics: {
+    willTransitionTo(transition, params, query, callback) {
+      transition.redirect('root');
+      callback();
+    },
+  },
+
   // Render
 
   render() {
