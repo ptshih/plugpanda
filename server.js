@@ -84,15 +84,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// API Routes
-app.use('/api', require('./routes'));
+// API database
+const db = require('./api/config/db');
+db.connect().then(() => {
+  // API Routes
+  app.use('/api', require('./api/routes'));
 
-// Default Server Route
-app.get('*', (req, res) => {
-  res.render('index');
-});
+  // Default Server Route
+  app.get('*', (req, res) => {
+    res.render('index');
+  });
 
-// Start the HTTP server
-app.listen(app.get('props').port, () => {
-  console.log('App with pid: %d listening on port: %d with env: %s', app.get('props').pid, app.get('props').port, app.get('props').env);
+  // Start the HTTP server
+  app.listen(app.get('props').port, () => {
+    console.log('App with pid: %d listening on port: %d with env: %s', app.get('props').pid, app.get('props').port, app.get('props').env);
+  });
+}).catch((err) => {
+  console.error('App failed to start with error: %s', err.message);
+  process.exit(1);
 });

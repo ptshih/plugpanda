@@ -15,8 +15,6 @@ Promise.promisifyAll(request);
 
 
 const api = {
-  _baseUrl: 'http://dev.trycelery.com:3000/v2',
-
   _request: Promise.method((url) => {
     return request({
       url: url,

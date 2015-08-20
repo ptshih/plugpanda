@@ -1,9 +1,3 @@
-/**
- * This file is used by Browserify to create `bundle.js`
- */
-
-// Support IE8
-import 'es5-shim';
 import Promise from 'bluebird';
 
 // Router

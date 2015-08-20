@@ -1,8 +1,16 @@
 const Muni = require('muni');
+const db = require('../config/db');
 
+// Controllers
+const ChargepointController = require('../controllers/chargepoint');
+
+// Create the router
 const router = new Muni.Router({
-  version: 'v2',
+  version: 'api',
   controllers: {
+    chargepoint: new ChargepointController({
+      db: db,
+    }),
   },
 });
 
