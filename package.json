@@ -27,7 +27,7 @@
     "less-plugin-clean-css": "1.5.1",
     "lodash": "3.10.1",
     "morgan": "1.6.1",
-    "muni": "1.2.2",
+    "muni": "1.2.3",
     "nconf": "0.7.2",
     "nodemon": "1.4.1",
     "react": "0.13.3",

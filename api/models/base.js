@@ -3,14 +3,12 @@ const Muni = require('muni');
 
 module.exports = Muni.Model.extend({
   defaults() {
-    const nowDate = new Date();
-    const nowTime = nowDate.getTime();
     return {
       _id: null,
-      created: nowTime, // ms
-      updated: nowTime, // ms
-      created_date: nowDate, // iso
-      updated_date: nowDate, // iso
+      created: new Date().getTime(), // ms
+      updated: new Date().getTime(), // ms
+      created_date: new Date(), // iso
+      updated_date: new Date(), // iso
     };
   },
 
