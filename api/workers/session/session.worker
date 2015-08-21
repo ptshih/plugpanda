@@ -1,0 +1,6 @@
+runtime "node"
+stack "node-0.10"
+exec "session_worker.js"
+file "package.json"
+build "npm config set strict-ssl false; npm install --production"
+remote

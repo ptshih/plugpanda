@@ -1,0 +1,12 @@
+{
+  "name": "session_worker",
+  "version": "0.0.3",
+  "description": "session worker",
+  "main": "session_worker.js",
+  "author": "Peter Shih <ptshih@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "3.10.1",
+    "request": "2.61.0"
+  }
+}
