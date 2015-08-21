@@ -21,7 +21,14 @@ module.exports = BaseController.extend({
       middleware: [carMiddleware],
       requiredParams: ['street', 'city', 'country'],
     };
+
+    this.routes.post['/car/service'] = {
+      action: this.service,
+      middleware: [carMiddleware],
+      requiredParams: ['type'],
+    };
   },
+
 
   status(req, res, next) {
     const car = new CarModel();
@@ -52,7 +59,32 @@ module.exports = BaseController.extend({
     }).catch(next);
   },
 
+  service(req, res, next) {
+    return this._sendExecuteService(req.bmw, req.body.type).tap((body) => {
+      const executionStatus = body.executionStatus;
 
+      if (!executionStatus) {
+        res.sendStatus(500);
+        return;
+      }
+
+      if (executionStatus.status !== 'INITIATED') {
+        res.sendStatus(400);
+        return;
+      }
+
+      res.json({
+        type: executionStatus.serviceType,
+        status: executionStatus.status,
+        event_id: executionStatus.eventId,
+      });
+    }).catch(next);
+  },
+
+
+  /**
+   * Check the status of the car
+   */
   _sendStatusRequest: Muni.Promise.method((bmw) => {
     return request.send({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${bmw.vin}/status`,
@@ -99,4 +131,27 @@ module.exports = BaseController.extend({
     });
   }),
 
+  /**
+   * Execute a remote service on the car
+   *
+   * type:
+   * - DOOR_LOCK
+   * - ???
+   */
+  _sendExecuteService: Muni.Promise.method((bmw, type) => {
+    if (!type) {
+      throw new Error('Missing `type`.');
+    }
+
+    return request.send({
+      method: 'POST',
+      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${bmw.vin}/executeService`,
+      headers: {
+        Authorization: `Bearer ${bmw.access_token}`,
+      },
+      form: {
+        serviceType: type,
+      },
+    });
+  }),
 });

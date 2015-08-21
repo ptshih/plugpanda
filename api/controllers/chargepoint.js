@@ -61,16 +61,6 @@ module.exports = BaseController.extend({
     }).catch(next);
   },
 
-  /**
-   * Get most recent charging session from Chargepoint
-   *
-   * Steps
-   * 1. Fetch most recent session from Chargepoint API
-   * 2. Fetch Session from db based on `session_id`
-   * 3. Modify `status` based on defined logic
-   * 4. Save the Session to db
-   *
-   */
   status(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
@@ -187,9 +177,6 @@ module.exports = BaseController.extend({
     }).catch(next);
   },
 
-  /**
-   * Get history of all charging sessions
-   */
   history(req, res, next) {
     const qo = this.parseQueryString(req, {
       queryParams: {
@@ -210,9 +197,6 @@ module.exports = BaseController.extend({
     }).catch(next);
   },
 
-  /**
-   * Send a STOP request for a station/port to Chargepoint
-   */
   stop(req, res, next) {
     return this._sendStopRequest(
       req.body.device_id,
@@ -222,9 +206,6 @@ module.exports = BaseController.extend({
     }).catch(next);
   },
 
-  /**
-   * Check on the status of a STOP request
-   */
   stopAck(req, res, next) {
     return this._sendStopAckRequest(
       req.body.ack_id
@@ -234,7 +215,16 @@ module.exports = BaseController.extend({
   },
 
 
-  // Get latest charging session from Chargepoint
+  /**
+   * Get most recent charging session from Chargepoint
+   *
+   * Steps
+   * 1. Fetch most recent session from Chargepoint API
+   * 2. Fetch Session from db based on `session_id`
+   * 3. Modify `status` based on defined logic
+   * 4. Save the Session to db
+   *
+   */
   _sendStatusRequest: Muni.Promise.method(() => {
     return request.send({
       url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_status":{},"user_id":419469}',
@@ -244,8 +234,9 @@ module.exports = BaseController.extend({
     });
   }),
 
-  // UNUSED
-  // Get all charging sessions from Chargepoint
+  /**
+   * Get history of all charging sessions stored in database
+   */
   _sendActivityRequest: Muni.Promise.method(() => {
     return request.send({
       url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_activity":{"page_size":100},"user_id":419469}',
@@ -255,7 +246,9 @@ module.exports = BaseController.extend({
     });
   }),
 
-  // Send a STOP request to a Chargepoint Station/Port
+  /**
+   * Send a STOP request for a station/port to Chargepoint
+   */
   _sendStopRequest: Muni.Promise.method((deviceId, portNumber) => {
     if (!deviceId || !portNumber) {
       throw new Error('Missing `device_id` or `port_number`.');
@@ -277,7 +270,9 @@ module.exports = BaseController.extend({
     });
   }),
 
-  // Send an ACK request for a previous STOP request
+  /**
+   * Check on the status of a STOP request
+   */
   _sendStopAckRequest: Muni.Promise.method((ackId) => {
     if (!ackId) {
       throw new Error('Missing `ack_id`.');
@@ -299,7 +294,9 @@ module.exports = BaseController.extend({
     });
   }),
 
-  // Send SMS via Twilio
+  /**
+   * Send SMS via Twilio
+   */
   _sendNotification: Muni.Promise.method((options) => {
     options.to = options.to || '+18085183808';
     options.from = options.from || '+14158861337';
