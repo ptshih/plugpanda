@@ -1,5 +1,5 @@
 /**
- * This Store contains data for Auth.
+ * This Store contains data for Session.
  */
 
 import _ from 'lodash';
@@ -51,7 +51,7 @@ class Store extends EventEmitter {
 
   // Dispatch Action Handler
   dispatchHandler(action) {
-    if (action.store !== 'auth') {
+    if (action.store !== 'session') {
       return;
     }
 
@@ -64,11 +64,6 @@ class Store extends EventEmitter {
         break;
       case 'SYNC':
         this.setState(data.state);
-        break;
-      case 'CHANGE_TYPE':
-        this.setState({
-          type: data.type,
-        });
         break;
       default:
         return;

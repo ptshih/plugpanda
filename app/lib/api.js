@@ -7,7 +7,7 @@
  * - Parse response envelope
  */
 
-// import _ from 'lodash';
+import _ from 'lodash';
 import Promise from 'bluebird';
 import requestOrig from 'request';
 const request = Promise.promisify(requestOrig);
@@ -15,12 +15,13 @@ Promise.promisifyAll(request);
 
 
 const api = {
-  _request: Promise.method((url) => {
-    return request({
-      url: url,
+  _request: Promise.method((options = {}) => {
+    _.defaults(options, {
       withCredentials: false,
       json: true,
-    }).then((contents) => {
+    });
+
+    return request(options).then((contents) => {
       const response = contents[0];
       const statusMessage = response.statusMessage || 'Client Error';
       const statusCode = response.statusCode || 500;
@@ -38,6 +39,12 @@ const api = {
   _fetch: Promise.method((url) => {
     return this._request(url).then((body) => {
       return body.data;
+    });
+  }),
+
+  fetchSession: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/session/status',
     });
   }),
 
