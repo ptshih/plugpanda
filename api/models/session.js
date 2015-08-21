@@ -87,7 +87,7 @@ module.exports = BaseModel.extend({
    */
   sendStatusRequest: Muni.Promise.method(function() {
     return request.send({
-      url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_status":{},"user_id":419469}',
+      url: `https://mc.chargepoint.com/map-prod/v2?{"charging_status":{},"user_id":${this.user_id}}`,
       headers: {
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
       },
@@ -109,7 +109,7 @@ module.exports = BaseModel.extend({
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
       },
       json: {
-        user_id: 419469,
+        user_id: this.user_id,
         stop_session: {
           device_id: this.get('device_id'),
           port_number: this.get('outlet_number'),
@@ -131,7 +131,7 @@ module.exports = BaseModel.extend({
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
       },
       json: {
-        user_id: 419469,
+        user_id: this.user_id,
         session_ack: {
           ack_id: this.get('ack_id'),
           session_action: 'stop_session',

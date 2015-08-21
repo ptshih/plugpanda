@@ -3,6 +3,7 @@ const _ = require('lodash');
 const POWER_KW_MIN = 5;
 const CHARGING_TIME_MIN = 300000;
 
+const authenticateUserMiddleware = require('../middleware/authenticate_user');
 const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
 
 const BaseController = require('./base');
@@ -15,7 +16,7 @@ module.exports = BaseController.extend({
 
     this.routes.get['/session/status'] = {
       action: this.status,
-      middleware: [],
+      middleware: [authenticateUserMiddleware],
     };
 
     this.routes.get['/session/worker'] = {
@@ -25,17 +26,17 @@ module.exports = BaseController.extend({
 
     this.routes.get['/session/history'] = {
       action: this.history,
-      middleware: [],
+      middleware: [authenticateUserMiddleware],
     };
 
     this.routes.post['/session/:session_id/stop'] = {
       action: this.stop,
-      middleware: [],
+      middleware: [authenticateUserMiddleware],
     };
 
     this.routes.post['/session/:session_id/stop_ack'] = {
       action: this.stopAck,
-      middleware: [],
+      middleware: [authenticateUserMiddleware],
     };
   },
 
@@ -43,6 +44,7 @@ module.exports = BaseController.extend({
   status(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
+    session.user_id = req.user_id;
 
     return session.sendStatusRequest().tap((chargingStatus) => {
       // Fetch from DB
@@ -165,6 +167,7 @@ module.exports = BaseController.extend({
 
     const sessions = new SessionCollection();
     sessions.db = this.get('db');
+    sessions.user_id = req.user_id;
 
     return sessions.fetch(qo).tap(() => {
       res.json(sessions.render());
@@ -174,6 +177,7 @@ module.exports = BaseController.extend({
   stop(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
+    session.user_id = req.user_id;
 
     return session.fetch({
       query: {
@@ -189,6 +193,7 @@ module.exports = BaseController.extend({
   stopAck(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
+    session.user_id = req.user_id;
 
     return session.fetch({
       query: {

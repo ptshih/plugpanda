@@ -1,7 +1,8 @@
 const BaseController = require('./base');
 const CarModel = require('../models/car');
 // const CarCollection = require('../collections/car');
-const carMiddleware = require('../middleware/car');
+
+const bmwMiddleware = require('../middleware/bmw');
 
 module.exports = BaseController.extend({
   setupRoutes() {
@@ -9,18 +10,18 @@ module.exports = BaseController.extend({
 
     this.routes.get['/car/status'] = {
       action: this.status,
-      middleware: [carMiddleware],
+      middleware: [bmwMiddleware],
     };
 
     this.routes.post['/car/poi'] = {
       action: this.poi,
-      middleware: [carMiddleware],
+      middleware: [bmwMiddleware],
       requiredParams: ['street', 'city', 'country'],
     };
 
     this.routes.post['/car/service'] = {
       action: this.service,
-      middleware: [carMiddleware],
+      middleware: [bmwMiddleware],
       requiredParams: ['type'],
     };
   },
