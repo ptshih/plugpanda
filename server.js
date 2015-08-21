@@ -10,7 +10,6 @@ nconf.env().defaults({
   VERSION: require('./package.json').version,
   PORT: 9001,
   HOST: 'http://localhost:9001',
-  PANDA_WORKER_TOKEN: '',
 });
 global.db = require('./api/config/db');
 
@@ -22,6 +21,11 @@ if (!nconf.get('TWILIO_ACCOUNT_SID') || !nconf.get('TWILIO_AUTH_TOKEN')) {
 
 if (!nconf.get('COULOMB_SESS')) {
   console.error('Missing ENV for COULOMB_SESS.');
+  process.exit(1);
+}
+
+if (!nconf.get('PANDA_WORKER_TOKEN')) {
+  console.error('Missing ENV for PANDA_WORKER_TOKEN.');
   process.exit(1);
 }
 
