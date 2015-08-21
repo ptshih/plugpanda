@@ -108,6 +108,12 @@ module.exports = BaseController.extend({
         return session;
       }
 
+      // This session is being started
+      if (status === 'starting' && currentCharging === 'not_charging') {
+        console.log(`-----> Session: ${sessionId} is being started.`);
+        return session;
+      }
+
       // This session is done, regardless of status
       if (currentCharging === 'done') {
         // Turn off the session
