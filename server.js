@@ -32,6 +32,7 @@ const morgan = require('morgan');
 const compress = require('compression');
 const responseTime = require('response-time');
 const favicon = require('serve-favicon');
+const bodyParser = require('body-parser');
 
 // Time units in ms
 const oneDay = 86400000;
@@ -52,6 +53,17 @@ app.set('view engine', 'hbs');
 app.set('view options', {
   layout: false,
 });
+
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
+
+// Parse application/json
+// Set entity limit to 10mb
+app.use(bodyParser.json({
+  limit: '10mb',
+}));
 
 // Gzip compression (needs to be before static to compress assets)
 app.use(compress());
