@@ -55,7 +55,7 @@ module.exports = BaseController.extend({
     const outletNumber = 1;
 
     return this._sendNotification({
-      body: `Stopped session: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
+      body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
     }).then((data) => {
       res.json(data);
     }).catch(next);
@@ -131,12 +131,11 @@ module.exports = BaseController.extend({
         powerKw > 0 &&
         powerKw < POWER_KW_MIN &&
         chargingTime > CHARGING_TIME_MIN) {
-        console.log('-----> Stopping... Device: %d, Port: %d', deviceId, outletNumber);
+        console.log('-----> Stopping... Device: %d, Port: %d.', deviceId, outletNumber);
         // Conditions met, stop session
         return this._sendStopRequest(deviceId, outletNumber).tap((body) => {
-          console.log('-----> Stop Result:', body);
           if (!body.stop_session || !body.stop_session.status) {
-            throw new Error('Failed to stop session.');
+            throw new Error(`Failed to stop session -> ${sessionId}.`);
           }
 
           // Stop the session
@@ -149,13 +148,13 @@ module.exports = BaseController.extend({
         }).tap(() => {
           // Send SMS notification via Twilio
           return this._sendNotification({
-            body: `Stopped session: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
+            body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
           }).tap((body) => {
-            console.log('-----> Stop Notification Sent -> %s', body.sid);
+            console.log('-----> Stop notification sent: %s.', body.sid);
           });
         }).catch((err) => {
           // Ignore errors
-          console.error('----->', err);
+          console.error('-----> Failed to stop session: %s with error: %s.', sessionId, err.message);
           return session;
         }).return(session);
       }
@@ -293,6 +292,7 @@ module.exports = BaseController.extend({
     });
   }),
 
+  // Send SMS via Twilio
   _sendNotification: Muni.Promise.method(function _sendNotification(options) {
     options.to = options.to || '+18085183808';
     options.from = options.from || '+14158861337';
