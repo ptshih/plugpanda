@@ -191,12 +191,21 @@ module.exports = BaseController.extend({
    * Get history of all charging sessions
    */
   history(req, res, next) {
+    const qo = this.parseQueryString(req, {
+      queryParams: {
+        status: 'string',
+        current_charging: 'string',
+        payment_type: 'string',
+        device_id: 'integer',
+      },
+      sortParam: 'updated',
+      sortOrder: 'desc',
+    });
+
     const sessions = new SessionCollection();
     sessions.db = this.get('db');
 
-    return sessions.fetch({
-      sort: [['updated', 'desc']],
-    }).tap(() => {
+    return sessions.fetch(qo).tap(() => {
       res.json(sessions.render());
     }).catch(next);
   },
