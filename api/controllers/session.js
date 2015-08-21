@@ -20,28 +20,28 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
-    this.routes.get['/chargepoint/test_notification'] = {
+    this.routes.get['/session/test_notification'] = {
       action: this.testNotification,
       middleware: [],
     };
 
-    this.routes.get['/chargepoint/status'] = {
+    this.routes.get['/session/status'] = {
       action: this.status,
       middleware: [],
     };
 
-    this.routes.get['/chargepoint/history'] = {
+    this.routes.get['/session/history'] = {
       action: this.history,
       middleware: [],
     };
 
-    this.routes.post['/chargepoint/stop'] = {
+    this.routes.post['/session/stop'] = {
       action: this.stop,
       middleware: [],
       requiredParams: ['device_id', 'port_number'],
     };
 
-    this.routes.post['/chargepoint/stop_ack'] = {
+    this.routes.post['/session/stop_ack'] = {
       action: this.stopAck,
       middleware: [],
       requiredParams: ['ack_id'],

@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 // Controllers
 const CarController = require('../controllers/car');
-const ChargepointController = require('../controllers/chargepoint');
+const SessionController = require('../controllers/session');
 const TwilioController = require('../controllers/twilio');
 
 // Create the router
@@ -13,7 +13,7 @@ const router = new Muni.Router({
     car: new CarController({
       db: db,
     }),
-    chargepoint: new ChargepointController({
+    session: new SessionController({
       db: db,
     }),
     twilio: new TwilioController({
