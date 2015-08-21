@@ -74,9 +74,9 @@ module.exports = BaseController.extend({
       }
 
       res.json({
-        type: executionStatus.serviceType,
+        serviceType: executionStatus.serviceType,
         status: executionStatus.status,
-        event_id: executionStatus.eventId,
+        eventId: executionStatus.eventId,
       });
     }).catch(next);
   },

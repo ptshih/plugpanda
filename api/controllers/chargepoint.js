@@ -5,11 +5,11 @@ const _ = require('lodash');
 const Muni = require('muni');
 
 // Twilio
-const twilio = require('twilio')(
+const twilioClient = require('twilio')(
   nconf.get('TWILIO_ACCOUNT_SID'),
   nconf.get('TWILIO_AUTH_TOKEN')
 );
-Muni.Promise.promisifyAll(twilio);
+Muni.Promise.promisifyAll(twilioClient);
 
 const BaseController = require('./base');
 const SessionModel = require('../models/session');
@@ -305,6 +305,6 @@ module.exports = BaseController.extend({
       throw new Error('Missing Notification Text.');
     }
 
-    return twilio.sendMessage(options);
+    return twilioClient.sendMessage(options);
   }),
 });
