@@ -24,8 +24,9 @@ module.exports = BaseController.extend({
     const cmd = (req.body.Body || '').toLowerCase().trim();
 
     return Muni.Promise.bind(this).then(() => {
+      console.log(`${nconf.get('HOST')}/api/car/status`)
       return request.send({
-        url: 'http://localhost:9001/api/car/status',
+        url: `${nconf.get('HOST')}/api/car/status`,
       }).then((data) => {
         switch (cmd) {
           case 'charge':

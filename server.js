@@ -9,6 +9,7 @@ nconf.env().defaults({
   NODE_ENV: 'development',
   VERSION: require('./package.json').version,
   PORT: 9001,
+  HOST: 'http://localhost:9001',
 });
 global.db = require('./api/config/db');
 
