@@ -10,6 +10,7 @@ nconf.env().defaults({
   VERSION: require('./package.json').version,
   PORT: 9001,
   HOST: 'http://localhost:9001',
+  PANDA_WORKER_TOKEN: '',
 });
 global.db = require('./api/config/db');
 

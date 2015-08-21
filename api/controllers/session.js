@@ -3,6 +3,8 @@ const _ = require('lodash');
 const POWER_KW_MIN = 5;
 const CHARGING_TIME_MIN = 300000;
 
+const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
+
 const BaseController = require('./base');
 const SessionModel = require('../models/session');
 const SessionCollection = require('../collections/session');
@@ -14,6 +16,11 @@ module.exports = BaseController.extend({
     this.routes.get['/session/status'] = {
       action: this.status,
       middleware: [],
+    };
+
+    this.routes.get['/session/worker'] = {
+      action: this.status,
+      middleware: [authenticateWorkerMiddleware],
     };
 
     this.routes.get['/session/history'] = {

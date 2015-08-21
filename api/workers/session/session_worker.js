@@ -16,7 +16,9 @@ if (!url) {
 var requestOptions = {
   method: method,
   url: url,
-  headers: {},
+  headers: {
+    'X-Panda-Worker-Token': 'e9675ef156283857328531f226f3d7f94f6485c9de0f0f7b2c1958a39be60b24',
+  },
 };
 
 // Send the HTTP request

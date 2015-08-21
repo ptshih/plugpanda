@@ -1,6 +1,6 @@
 {
   "name": "session_worker",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "session worker",
   "main": "session_worker.js",
   "author": "Peter Shih <ptshih@gmail.com>",
