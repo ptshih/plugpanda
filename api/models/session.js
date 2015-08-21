@@ -14,8 +14,8 @@ module.exports = BaseModel.extend({
         ack_id: 0,
         outlet_number: 0,
         port_level: 0,
-        payment_type: null, // paid, free
-        current_charging: null, // done
+        payment_type: null,
+        current_charging: null,
         charging_time: 0,
         session_time: 0,
         start_time: 0,
@@ -24,9 +24,10 @@ module.exports = BaseModel.extend({
         power_kw: 0.0,
         miles_added: 0.0,
         total_amount: 0.0,
+        update_data: [],
 
         // Session Status
-        status: 'off',
+        status: 'starting',
       }
     );
   },
@@ -42,7 +43,7 @@ module.exports = BaseModel.extend({
         outlet_number: 'uinteger',
         port_level: 'uinteger',
         payment_type: 'string', // paid, free
-        current_charging: 'string', // done
+        current_charging: 'string', // in_use, done
         charging_time: 'uinteger',
         session_time: 'uinteger',
         start_time: 'timestamp',
@@ -51,9 +52,10 @@ module.exports = BaseModel.extend({
         power_kw: 'ufloat',
         miles_added: 'ufloat',
         total_amount: 'ufloat',
+        update_data: [],
 
         // Session Status
-        status: 'string', // on, off, stopping
+        status: 'string', // starting, on, stopping, off
 
       }
     );
@@ -81,6 +83,12 @@ module.exports = BaseModel.extend({
       miles_added: obj.miles_added,
       total_amount: obj.total_amount,
     };
+
+    // Only when charging is active
+    if (obj.update_data) {
+      attrs.update_data = obj.update_data;
+    }
+
     return attrs;
   },
 });

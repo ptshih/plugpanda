@@ -3,6 +3,11 @@ const _ = require('lodash');
 const Muni = require('muni');
 const request = Muni.Promise.promisify(require('request'));
 Muni.Promise.promisifyAll(request);
+const twilio = require('twilio')(
+  nconf.get('TWILIO_ACCOUNT_SID'),
+  nconf.get('TWILIO_AUTH_TOKEN')
+);
+Muni.Promise.promisifyAll(twilio);
 
 const BaseController = require('./base');
 const SessionModel = require('../models/session');
@@ -11,6 +16,11 @@ const SessionCollection = require('../collections/session');
 module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
+
+    this.routes.get['/chargepoint/test_notification'] = {
+      action: this.testNotification,
+      middleware: [],
+    };
 
     this.routes.get['/chargepoint/status'] = {
       action: this.status,
@@ -35,6 +45,18 @@ module.exports = BaseController.extend({
     };
   },
 
+
+  testNotification(req, res, next) {
+    const sessionId = 12345;
+    const deviceId = 67890;
+    const outletNumber = 1;
+
+    return this._sendNotification({
+      body: `Stopped session: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
+    }).then((data) => {
+      res.json(data);
+    }).catch(next);
+  },
 
   /**
    * Get most recent charging session from Chargepoint
@@ -68,43 +90,66 @@ module.exports = BaseController.extend({
       });
     }).tap(() => {
       // Session Status
+      const sessionId = session.get('session_id');
+      const deviceId = session.get('deviceId');
+      const outletNumber = session.get('outlet_number');
       const status = session.get('status');
       const currentCharging = session.get('current_charging');
+      const powerKw = session.get('power_kw');
+      const chargingTime = session.get('charging_time');
+      const paymentType = session.get('payment_type');
 
-      // When session is stopping, don't do anything
-      // After unplugging, `current_charging` will become `done`
-      if (status === 'stopping' && currentCharging !== 'done') {
-        // Waiting to be unplugged...
-        return;
-      }
-
-      // This session was active/stopping but is NOT anymore
-      if ((status === 'on' || status === 'stopping') && currentCharging === 'done') {
+      // This session is done, regardless of status
+      if (currentCharging === 'done') {
         // Turn off the session
         session.set('status', 'off');
-        return;
+        return session;
+      }
+
+      // When session is stopping but still `in_use`, don't do anything
+      // After unplugging, `current_charging` will become `done`
+      if (status === 'stopping' && currentCharging === 'in_use') {
+        // Waiting to be unplugged...
+        return session;
       }
 
       // This is a new active session
-      if (status === 'off' && currentCharging !== 'done') {
+      if (status === 'starting' && currentCharging === 'in_use') {
         // Turn on the session
         session.set('status', 'on');
-        return;
+        return session;
       }
 
       // This is a currently active session
-      // Check `power_kw` and `session_time` (5min)
-      if (status === 'on' && currentCharging !== 'done' && session.get('power_kw') < 5 && session.get('session_time') >= 300000) {
+      // Check `power_kw` and `charging_time` (5min)
+      if (status === 'on' &&
+        currentCharging === 'in_use' &&
+        paymentType === 'paid' &&
+        powerKw < 5 &&
+        chargingTime >= 300000) {
         // Send API to STOP
-        return this._sendStopRequest(
-          session.get('device_id'),
-          session.get('outlet_number')
-        ).tap((body) => {
-          session.set('status', 'stopping');
-          // TODO: Set `ack_id` from response
-          session.set('ack_id', 3170929);
-        });
+        return this._sendStopRequest(deviceId, outletNumber).tap((body) => {
+          if (body.stop_session) {
+            if (body.stop_session.status) {
+              session.set('status', 'stopping');
+            }
+            if (body.stop_session.ack_id) {
+              session.set('ack_id', body.stop_session.ack_id);
+            }
+          }
+        }).tap(() => {
+          // Send SMS notification via Twilio
+          return this._sendNotification({
+            body: `Stopped session: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
+          });
+        }).catch(() => {
+          // Ignore errors
+          return session;
+        }).return(session);
       }
+
+      // Currently active session, should not be stopped
+      return session;
     }).tap(() => {
       // Save Session
       return session.save();
@@ -232,5 +277,16 @@ module.exports = BaseController.extend({
         },
       },
     });
+  }),
+
+  _sendNotification: Muni.Promise.method(function _sendNotification(options) {
+    options.to = options.to || '+18085183808';
+    options.from = options.from || '+14158861337';
+
+    if (!_.isString(options.body)) {
+      throw new Error('Missing Notification Text.');
+    }
+
+    return twilio.sendMessage(options);
   }),
 });
