@@ -94,7 +94,7 @@ module.exports = BaseController.extend({
     }).tap(() => {
       // Session Status
       const sessionId = session.get('session_id');
-      const deviceId = session.get('deviceId');
+      const deviceId = session.get('device_id');
       const outletNumber = session.get('outlet_number');
       const status = session.get('status');
       const currentCharging = session.get('current_charging');
@@ -130,24 +130,32 @@ module.exports = BaseController.extend({
         paymentType === 'paid' &&
         powerKw > 0 &&
         powerKw < POWER_KW_MIN &&
-        chargingTime >= CHARGING_TIME_MIN) {
-        // Send API to STOP
+        chargingTime > CHARGING_TIME_MIN) {
+        console.log('-----> Stopping... Device: %d, Port: %d', deviceId, outletNumber);
+        // Conditions met, stop session
         return this._sendStopRequest(deviceId, outletNumber).tap((body) => {
-          if (body.stop_session) {
-            if (body.stop_session.status) {
-              session.set('status', 'stopping');
-            }
-            if (body.stop_session.ack_id) {
-              session.set('ack_id', body.stop_session.ack_id);
-            }
+          console.log('-----> Stop Result:', body);
+          if (!body.stop_session || !body.stop_session.status) {
+            throw new Error('Failed to stop session.');
+          }
+
+          // Stop the session
+          session.set('status', 'stopping');
+
+          // Save `ack_id`
+          if (body.stop_session.ack_id) {
+            session.set('ack_id', body.stop_session.ack_id);
           }
         }).tap(() => {
           // Send SMS notification via Twilio
           return this._sendNotification({
             body: `Stopped session: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
+          }).tap((body) => {
+            console.log('-----> Stop Notification Sent -> %s', body.sid);
           });
-        }).catch(() => {
+        }).catch((err) => {
           // Ignore errors
+          console.error('----->', err);
           return session;
         }).return(session);
       }
@@ -254,6 +262,7 @@ module.exports = BaseController.extend({
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
       },
       json: {
+        user_id: 419469,
         stop_session: {
           device_id: deviceId,
           port_number: portNumber,
@@ -275,6 +284,7 @@ module.exports = BaseController.extend({
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
       },
       json: {
+        user_id: 419469,
         session_ack: {
           ack_id: ackId,
           session_action: 'stop_session',
