@@ -21,7 +21,7 @@ module.exports = BaseController.extend({
 
     this.routes.get['/session/worker'] = {
       action: this.status,
-      middleware: [authenticateWorkerMiddleware],
+      middleware: [authenticateWorkerMiddleware, authenticateUserMiddleware],
     };
 
     this.routes.get['/session/history'] = {
