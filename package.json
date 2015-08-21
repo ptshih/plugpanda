@@ -58,7 +58,7 @@
     "bump": "git checkout master && git pull origin master && npm version patch && git push --follow-tags",
     "lint": "eslint --ext .js --ext .jsx --ignore-path .gitignore app",
     "live-reload": "live-reload assets/ --port 9091",
-    "deploy": "npm run bump && git push canary",
+    "deploy": "npm run bump && git push heroku",
     "build": "npm run build:js && npm run build:css",
     "build:js": "mkdir -p assets/js && browserify --extension=.jsx app.js | uglifyjs -m -o assets/js/main.min.js",
     "build:css": "mkdir -p assets/css && lessc --clean-css='--s1 --advanced --compatibility=ie8' less/main.less assets/css/main.min.css",
