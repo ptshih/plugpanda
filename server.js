@@ -11,6 +11,17 @@ nconf.env().defaults({
   PORT: 9001,
 });
 
+// Required ENV
+if (!nconf.get('TWILIO_ACCOUNT_SID') || !nconf.get('TWILIO_AUTH_TOKEN')) {
+  console.error('Missing ENV for TWILIO.');
+  process.exit(1);
+}
+
+if (!nconf.get('COULOMB_SESS')) {
+  console.error('Missing ENV for COULOMB_SESS.');
+  process.exit(1);
+}
+
 // Transparently support JSX
 require('babel/register');
 
