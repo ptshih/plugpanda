@@ -1,29 +1,15 @@
+const _ = require('lodash');
+
 const POWER_KW_MIN = 5;
 const CHARGING_TIME_MIN = 300000;
-
-const _ = require('lodash');
-const Muni = require('muni');
-
-// Twilio
-const twilioClient = require('twilio')(
-  nconf.get('TWILIO_ACCOUNT_SID'),
-  nconf.get('TWILIO_AUTH_TOKEN')
-);
-Muni.Promise.promisifyAll(twilioClient);
 
 const BaseController = require('./base');
 const SessionModel = require('../models/session');
 const SessionCollection = require('../collections/session');
-const request = require('../lib/request');
 
 module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
-
-    this.routes.get['/session/test_notification'] = {
-      action: this.testNotification,
-      middleware: [],
-    };
 
     this.routes.get['/session/status'] = {
       action: this.status,
@@ -35,40 +21,23 @@ module.exports = BaseController.extend({
       middleware: [],
     };
 
-    this.routes.post['/session/stop'] = {
+    this.routes.post['/session/:session_id/stop'] = {
       action: this.stop,
       middleware: [],
-      requiredParams: ['device_id', 'port_number'],
     };
 
-    this.routes.post['/session/stop_ack'] = {
+    this.routes.post['/session/:session_id/stop_ack'] = {
       action: this.stopAck,
       middleware: [],
-      requiredParams: ['ack_id'],
     };
   },
 
-
-  testNotification(req, res, next) {
-    const sessionId = 12345;
-    const deviceId = 67890;
-    const outletNumber = 1;
-
-    return this._sendNotification({
-      body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
-    }).then((data) => {
-      res.json(data);
-    }).catch(next);
-  },
 
   status(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
 
-    return this._sendStatusRequest().tap((body) => {
-      // Response from Chargepoint
-      const chargingStatus = body.charging_status;
-
+    return session.sendStatusRequest().tap((chargingStatus) => {
       // Fetch from DB
       return session.fetch({
         query: {
@@ -77,9 +46,6 @@ module.exports = BaseController.extend({
       }).tap(() => {
         // Update from Chargepoint
         session.setFromChargepoint(chargingStatus);
-
-        // TODO: test
-        // session.set('current_charging', 'active');
       });
     }).then(() => {
       // Session Status
@@ -137,9 +103,8 @@ module.exports = BaseController.extend({
         powerKw < POWER_KW_MIN &&
         chargingTime > CHARGING_TIME_MIN) {
         console.log(`-----> Session: ${sessionId} is being stopped.`);
-        console.log(`-----> Device: ${deviceId}, Port: ${outletNumber}.`);
         // Conditions met, stop session
-        return this._sendStopRequest(deviceId, outletNumber).tap((body) => {
+        return session.sendStopRequest().tap((body) => {
           if (!body.stop_session || !body.stop_session.status) {
             throw new Error(`Failed to stop session -> ${sessionId}.`);
           }
@@ -153,7 +118,7 @@ module.exports = BaseController.extend({
           }
         }).tap(() => {
           // Send SMS notification via Twilio
-          return this._sendNotification({
+          return session.sendNotification({
             body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
           }).tap((body) => {
             console.log(`-----> Stop notification sent: ${body.sid}.`);
@@ -200,113 +165,32 @@ module.exports = BaseController.extend({
   },
 
   stop(req, res, next) {
-    return this._sendStopRequest(
-      req.body.device_id,
-      req.body.port_number
-    ).then((body) => {
+    const session = new SessionModel();
+    session.db = this.get('db');
+
+    return session.fetch({
+      query: {
+        session_id: _.parseInt(req.params.session_id),
+      },
+    }).then(() => {
+      return session.sendStopRequest();
+    }).then((body) => {
       res.json(body);
     }).catch(next);
   },
 
   stopAck(req, res, next) {
-    return this._sendStopAckRequest(
-      req.body.ack_id
-    ).then((body) => {
+    const session = new SessionModel();
+    session.db = this.get('db');
+
+    return session.fetch({
+      query: {
+        session_id: _.parseInt(req.params.session_id),
+      },
+    }).then(() => {
+      return session.sendStopAckRequest();
+    }).then((body) => {
       res.json(body);
     }).catch(next);
   },
-
-
-  /**
-   * Get most recent charging session from Chargepoint
-   *
-   * Steps
-   * 1. Fetch most recent session from Chargepoint API
-   * 2. Fetch Session from db based on `session_id`
-   * 3. Modify `status` based on defined logic
-   * 4. Save the Session to db
-   *
-   */
-  _sendStatusRequest: Muni.Promise.method(() => {
-    return request.send({
-      url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_status":{},"user_id":419469}',
-      headers: {
-        Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
-      },
-    });
-  }),
-
-  /**
-   * Get history of all charging sessions stored in database
-   */
-  _sendActivityRequest: Muni.Promise.method(() => {
-    return request.send({
-      url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_activity":{"page_size":100},"user_id":419469}',
-      headers: {
-        Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
-      },
-    });
-  }),
-
-  /**
-   * Send a STOP request for a station/port to Chargepoint
-   */
-  _sendStopRequest: Muni.Promise.method((deviceId, portNumber) => {
-    if (!deviceId || !portNumber) {
-      throw new Error('Missing `device_id` or `port_number`.');
-    }
-
-    return request.send({
-      method: 'POST',
-      url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
-      headers: {
-        Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
-      },
-      json: {
-        user_id: 419469,
-        stop_session: {
-          device_id: deviceId,
-          port_number: portNumber,
-        },
-      },
-    });
-  }),
-
-  /**
-   * Check on the status of a STOP request
-   */
-  _sendStopAckRequest: Muni.Promise.method((ackId) => {
-    if (!ackId) {
-      throw new Error('Missing `ack_id`.');
-    }
-
-    return request.send({
-      method: 'POST',
-      url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
-      headers: {
-        Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
-      },
-      json: {
-        user_id: 419469,
-        session_ack: {
-          ack_id: ackId,
-          session_action: 'stop_session',
-        },
-      },
-    });
-  }),
-
-  /**
-   * Send SMS via Twilio
-   */
-  _sendNotification: Muni.Promise.method((options) => {
-    options.to = options.to || '+18085183808';
-    options.from = options.from || '+14158861337';
-
-    if (!_.isString(options.body)) {
-      throw new Error('Missing Notification Text.');
-    }
-
-    return twilioClient.sendMessage(options);
-  }),
 });

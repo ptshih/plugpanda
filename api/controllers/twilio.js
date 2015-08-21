@@ -1,4 +1,3 @@
-// const _ = require('lodash');
 const BMW = require('../lib/bmw');
 
 // Twilio

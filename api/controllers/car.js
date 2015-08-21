@@ -1,6 +1,3 @@
-const _ = require('lodash');
-const Muni = require('muni');
-
 const BaseController = require('./base');
 const CarModel = require('../models/car');
 // const CarCollection = require('../collections/car');
