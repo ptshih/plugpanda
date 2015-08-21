@@ -4,12 +4,13 @@ const express = require('express');
 const path = require('path');
 
 // Configuration
-const nconf = require('nconf');
+global.nconf = require('nconf');
 nconf.env().defaults({
   NODE_ENV: 'development',
   VERSION: require('./package.json').version,
   PORT: 9001,
 });
+global.db = require('./api/config/db');
 
 // Required ENV
 if (!nconf.get('TWILIO_ACCOUNT_SID') || !nconf.get('TWILIO_AUTH_TOKEN')) {
@@ -96,7 +97,6 @@ app.use((req, res, next) => {
 });
 
 // API database
-const db = require('./api/config/db');
 db.connect().then(() => {
   // API Routes
   app.use('/api', require('./api/routes'));

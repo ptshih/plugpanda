@@ -1,11 +1,10 @@
 const POWER_KW_MIN = 5;
 const CHARGING_TIME_MIN = 300000;
 
-const nconf = require('nconf');
 const _ = require('lodash');
 const Muni = require('muni');
-const request = Muni.Promise.promisify(require('request'));
-Muni.Promise.promisifyAll(request);
+
+// Twilio
 const twilio = require('twilio')(
   nconf.get('TWILIO_ACCOUNT_SID'),
   nconf.get('TWILIO_AUTH_TOKEN')
@@ -15,6 +14,7 @@ Muni.Promise.promisifyAll(twilio);
 const BaseController = require('./base');
 const SessionModel = require('../models/session');
 const SessionCollection = require('../collections/session');
+const request = require('../lib/request');
 
 module.exports = BaseController.extend({
   setupRoutes() {
@@ -223,30 +223,9 @@ module.exports = BaseController.extend({
   },
 
 
-  _request: Muni.Promise.method((options = {}) => {
-    _.defaults(options, {
-      withCredentials: false,
-      json: true,
-    });
-
-    return request(options).then((contents) => {
-      const response = contents[0];
-      const statusMessage = response.statusMessage || 'Client Error';
-      const statusCode = response.statusCode || 500;
-      if (statusCode >= 400 && statusCode < 500) {
-        const clientErr = new Error(statusMessage);
-        clientErr.code = statusCode;
-        throw clientErr;
-      }
-
-      const body = contents[1];
-      return body;
-    });
-  }),
-
   // Get latest charging session from Chargepoint
-  _sendStatusRequest: Muni.Promise.method(function _sendStatusRequest() {
-    return this._request({
+  _sendStatusRequest: Muni.Promise.method(() => {
+    return request.send({
       url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_status":{},"user_id":419469}',
       headers: {
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
@@ -256,8 +235,8 @@ module.exports = BaseController.extend({
 
   // UNUSED
   // Get all charging sessions from Chargepoint
-  _sendActivityRequest: Muni.Promise.method(function _sendActivityRequest() {
-    return this._request({
+  _sendActivityRequest: Muni.Promise.method(() => {
+    return request.send({
       url: 'https://mc.chargepoint.com/map-prod/v2?{"charging_activity":{"page_size":100},"user_id":419469}',
       headers: {
         Cookie: 'coulomb_sess=' + nconf.get('COULOMB_SESS'),
@@ -266,12 +245,12 @@ module.exports = BaseController.extend({
   }),
 
   // Send a STOP request to a Chargepoint Station/Port
-  _sendStopRequest: Muni.Promise.method(function _sendStopRequest(deviceId, portNumber) {
+  _sendStopRequest: Muni.Promise.method((deviceId, portNumber) => {
     if (!deviceId || !portNumber) {
       throw new Error('Missing `device_id` or `port_number`.');
     }
 
-    return this._request({
+    return request.send({
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       headers: {
@@ -288,12 +267,12 @@ module.exports = BaseController.extend({
   }),
 
   // Send an ACK request for a previous STOP request
-  _sendStopAckRequest: Muni.Promise.method(function _sendStopAckRequest(ackId) {
+  _sendStopAckRequest: Muni.Promise.method((ackId) => {
     if (!ackId) {
       throw new Error('Missing `ack_id`.');
     }
 
-    return this._request({
+    return request.send({
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       headers: {
@@ -310,7 +289,7 @@ module.exports = BaseController.extend({
   }),
 
   // Send SMS via Twilio
-  _sendNotification: Muni.Promise.method(function _sendNotification(options) {
+  _sendNotification: Muni.Promise.method((options) => {
     options.to = options.to || '+18085183808';
     options.from = options.from || '+14158861337';
 

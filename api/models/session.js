@@ -56,7 +56,6 @@ module.exports = BaseModel.extend({
 
         // Session Status
         status: 'string', // starting, on, stopping, off
-
       }
     );
   },
