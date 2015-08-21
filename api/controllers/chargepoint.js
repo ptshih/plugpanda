@@ -194,7 +194,9 @@ module.exports = BaseController.extend({
     const sessions = new SessionCollection();
     sessions.db = this.get('db');
 
-    return sessions.fetch().tap(() => {
+    return sessions.fetch({
+      sort: [['updated', 'desc']],
+    }).tap(() => {
       res.json(sessions.render());
     }).catch(next);
   },
