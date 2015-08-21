@@ -1,3 +1,6 @@
+const POWER_KW_MIN = 5;
+const CHARGING_TIME_MIN = 300000;
+
 const nconf = require('nconf');
 const _ = require('lodash');
 const Muni = require('muni');
@@ -121,12 +124,13 @@ module.exports = BaseController.extend({
       }
 
       // This is a currently active session
-      // Check `power_kw` and `charging_time` (5min)
+      // Check `power_kw` and `charging_time`
       if (status === 'on' &&
         currentCharging === 'in_use' &&
         paymentType === 'paid' &&
-        powerKw < 5 &&
-        chargingTime >= 300000) {
+        powerKw > 0 &&
+        powerKw < POWER_KW_MIN &&
+        chargingTime >= CHARGING_TIME_MIN) {
         // Send API to STOP
         return this._sendStopRequest(deviceId, outletNumber).tap((body) => {
           if (body.stop_session) {
