@@ -59,6 +59,7 @@ export default React.createClass({
   render() {
     const chartStyle = {
       width: '100%',
+      height: '400px',
     };
 
     return (
