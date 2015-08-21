@@ -33,17 +33,14 @@ module.exports = BaseController.extend({
   status(req, res, next) {
     const car = new CarModel();
     car.db = this.get('db');
-
-    console.log('-->', req.bmw);
+    car.bmw = req.bmw;
 
     return car.fetch({
       query: {
-        vin: req.bmw.vin,
+        vin: car.bmw.vin,
       },
     }).tap(() => {
-      return this._sendStatusRequest(req.bmw).tap((data) => {
-        car.setFromBMW(data.vehicleStatus);
-      });
+      return car.sync();
     }).tap(() => {
       return car.save();
     }).then(() => {
@@ -52,7 +49,11 @@ module.exports = BaseController.extend({
   },
 
   poi(req, res, next) {
-    return this._sendPOIRequest(req.bmw, {
+    const car = new CarModel();
+    car.db = this.get('db');
+    car.bmw = req.bmw;
+
+    return car.sendPOI({
       street: req.body.street,
       city: req.body.city,
       country: req.body.country,
@@ -62,98 +63,12 @@ module.exports = BaseController.extend({
   },
 
   service(req, res, next) {
-    return this._sendExecuteService(req.bmw, req.body.type).tap((body) => {
-      const executionStatus = body.executionStatus;
+    const car = new CarModel();
+    car.db = this.get('db');
+    car.bmw = req.bmw;
 
-      if (!executionStatus) {
-        res.sendStatus(500);
-        return;
-      }
-
-      if (executionStatus.status !== 'INITIATED') {
-        res.sendStatus(400);
-        return;
-      }
-
-      res.json({
-        serviceType: executionStatus.serviceType,
-        status: executionStatus.status,
-        eventId: executionStatus.eventId,
-      });
+    return car.executeService(req.body.type).tap((result) => {
+      res.json(result.executionStatus);
     }).catch(next);
   },
-
-
-  /**
-   * Check the status of the car
-   */
-  _sendStatusRequest: Muni.Promise.method((bmw) => {
-    return request.send({
-      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${bmw.vin}/status`,
-      headers: {
-        Authorization: `Bearer ${bmw.access_token}`,
-      },
-    });
-  }),
-
-  /**
-   * Send POI to car
-   *
-   * Properties:
-   * - street
-   * - city
-   * - country
-   * - lon (optional)
-   * - lat (optional)
-   * - name (optional)
-   * - subject (optional)
-   */
-  _sendPOIRequest: Muni.Promise.method((bmw, poi) => {
-    if (!poi.street || !poi.city || !poi.country) {
-      throw new Error('Missing `street`, `city`, or `country`.');
-    }
-
-    const data = {
-      poi: _.defaults(poi, {
-        // subject: 'SID_MYBMW_MAP_DROPPED_PIN_TITLE',
-        useAsDestination: true,
-        name: poi.street,
-      }),
-    };
-
-    return request.send({
-      method: 'POST',
-      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${bmw.vin}/sendpoi`,
-      headers: {
-        Authorization: `Bearer ${bmw.access_token}`,
-      },
-      form: {
-        data: JSON.stringify(data),
-      },
-    });
-  }),
-
-  /**
-   * Execute a remote service on the car
-   *
-   * type:
-   * - DOOR_LOCK
-   * - ???
-   */
-  _sendExecuteService: Muni.Promise.method((bmw, type) => {
-    if (!type) {
-      throw new Error('Missing `type`.');
-    }
-
-    return request.send({
-      method: 'POST',
-      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${bmw.vin}/executeService`,
-      headers: {
-        Authorization: `Bearer ${bmw.access_token}`,
-      },
-      form: {
-        serviceType: type,
-      },
-    });
-  }),
 });

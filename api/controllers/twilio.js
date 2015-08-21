@@ -1,10 +1,12 @@
 // const _ = require('lodash');
 const Muni = require('muni');
 const request = require('../lib/request');
+const BMW = require('../lib/bmw');
 
 // Twilio
 const twilio = require('twilio');
 
+const CarModel = require('../models/car');
 const BaseController = require('./base');
 
 module.exports = BaseController.extend({
@@ -46,45 +48,97 @@ module.exports = BaseController.extend({
   _car(req, res, next) {
     const cmd = req.cmd;
 
-    return Muni.Promise.bind(this).then(() => {
-      return request.send({
-        url: `${nconf.get('HOST')}/api/car/status`,
-      }).then((data) => {
-        switch (cmd) {
-          case 'charge':
-          case 'soc':
-          case 'batt':
-            return `SOC: ${data.chargingLevelHv}%`;
-          case 'fuel':
-          case 'gas':
-            const fuelPercent = ((data.maxFuel / data.remainingFuel) * 100).toFixed(0);
-            return `Fuel: ${fuelPercent}%`;
-          case 'door':
-          case 'alarm':
-            return `Door: ${data.doorLockState}`;
-          case 'plug':
-            return `Plug: ${data.connectionStatus} / ${data.chargingStatus}`;
-          case 'miles':
-          case 'mileage':
-          case 'mi':
-            return `Miles: ${data.miles}`;
-          case 'kilometers':
-          case 'km':
-            return `Kilometers: ${data.kilometers}`;
-          case 'map':
-          case 'gps':
-            // https://developers.google.com/maps/documentation/ios/urlscheme?hl=en
-            return `comgooglemapsurl://maps.google.com/?q=${data.position.lat},${data.position.lon}`;
-            // return `comgooglemaps://?center=${data.position.lat},${data.position.lon}`;
-            // return `https://maps.google.com/maps?q=${data.position.lat},${data.position.lon}`;
-          default:
-            return `Commands: soc, fuel, door, plug, miles, kilometers, map`;
-        }
+    const car = new CarModel();
+    car.db = this.get('db');
+
+    return BMW.auth().then((bmw) => {
+      car.bmw = bmw;
+      return car.fetch({
+        query: {
+          vin: car.bmw.vin,
+        },
       });
+    }).tap(() => {
+      return car.sync();
+    }).tap(() => {
+      return car.save();
+    }).then(() => {
+      switch (cmd) {
+        case 'status':
+          return `Status: ${car.get('updateReason')}`;
+        case 'charge':
+        case 'soc':
+        case 'batt':
+          return `SOC: ${car.get('chargingLevelHv')}%`;
+        case 'fuel':
+        case 'gas':
+          const fuelPercent = ((car.get('maxFuel') / car.get('remainingFuel')) * 100).toFixed(0);
+          return `Fuel: ${fuelPercent}%`;
+        case 'door':
+        case 'alarm':
+          return `Door: ${car.get('doorLockState')}`;
+        case 'plug':
+          return `Plug: ${car.get('connectionStatus')} / ${car.get('chargingStatus')}`;
+        case 'miles':
+        case 'mileage':
+        case 'mi':
+          return `Miles: ${car.get('miles')}`;
+        case 'kilometers':
+        case 'km':
+          return `Kilometers: ${car.get('kilometers')}`;
+        case 'map':
+        case 'gps':
+          // https://developers.google.com/maps/documentation/ios/urlscheme?hl=en
+          return `comgooglemapsurl://maps.google.com/?q=${car.get('position.lat')},${car.get('position.lon')}`;
+          // return `comgooglemaps://?center=${data.position.lat},${data.position.lon}`;
+          // return `https://maps.google.com/maps?q=${data.position.lat},${data.position.lon}`;
+        default:
+          return `Commands: status, soc, fuel, door, plug, miles, kilometers, map`;
+      }
     }).then((message) => {
       res.message = message;
       this._twimlResponse(req, res, next);
     }).catch(next);
+    //
+    // return Muni.Promise.bind(this).then(() => {
+    //   return request.send({
+    //     url: `${nconf.get('HOST')}/api/car/status`,
+    //   }).then((data) => {
+    //     switch (cmd) {
+    //       case 'charge':
+    //       case 'soc':
+    //       case 'batt':
+    //         return `SOC: ${data.chargingLevelHv}%`;
+    //       case 'fuel':
+    //       case 'gas':
+    //         const fuelPercent = ((data.maxFuel / data.remainingFuel) * 100).toFixed(0);
+    //         return `Fuel: ${fuelPercent}%`;
+    //       case 'door':
+    //       case 'alarm':
+    //         return `Door: ${data.doorLockState}`;
+    //       case 'plug':
+    //         return `Plug: ${data.connectionStatus} / ${data.chargingStatus}`;
+    //       case 'miles':
+    //       case 'mileage':
+    //       case 'mi':
+    //         return `Miles: ${data.miles}`;
+    //       case 'kilometers':
+    //       case 'km':
+    //         return `Kilometers: ${data.kilometers}`;
+    //       case 'map':
+    //       case 'gps':
+    //         // https://developers.google.com/maps/documentation/ios/urlscheme?hl=en
+    //         return `comgooglemapsurl://maps.google.com/?q=${data.position.lat},${data.position.lon}`;
+    //         // return `comgooglemaps://?center=${data.position.lat},${data.position.lon}`;
+    //         // return `https://maps.google.com/maps?q=${data.position.lat},${data.position.lon}`;
+    //       default:
+    //         return `Commands: soc, fuel, door, plug, miles, kilometers, map`;
+    //     }
+    //   });
+    // }).then((message) => {
+    //   res.message = message;
+    //   this._twimlResponse(req, res, next);
+    // }).catch(next);
   },
 
   _charge(req, res, next) {
