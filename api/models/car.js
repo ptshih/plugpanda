@@ -86,14 +86,14 @@ module.exports = BaseModel.extend({
     );
   },
 
-  sync: Muni.Promise.method(function() {
+  updateStatus: Muni.Promise.method(function() {
     return this._sendStatusRequest().bind(this).tap((data) => {
       this._setFromBMW(data.vehicleStatus);
     }).return(this);
   }),
 
-  sendPOI: Muni.Promise.method(function() {
-    return this._sendPOIRequest().return(this);
+  sendPOI: Muni.Promise.method(function(poi) {
+    return this._sendPOIRequest(poi).return(this);
   }),
 
   executeService: Muni.Promise.method(function(type) {

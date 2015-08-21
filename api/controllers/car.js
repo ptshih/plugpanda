@@ -4,7 +4,6 @@ const Muni = require('muni');
 const BaseController = require('./base');
 const CarModel = require('../models/car');
 // const CarCollection = require('../collections/car');
-const request = require('../lib/request');
 const carMiddleware = require('../middleware/car');
 
 module.exports = BaseController.extend({
@@ -40,7 +39,7 @@ module.exports = BaseController.extend({
         vin: car.bmw.vin,
       },
     }).tap(() => {
-      return car.sync();
+      return car.updateStatus();
     }).tap(() => {
       return car.save();
     }).then(() => {
