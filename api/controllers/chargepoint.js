@@ -102,23 +102,32 @@ module.exports = BaseController.extend({
       const chargingTime = session.get('charging_time');
       const paymentType = session.get('payment_type');
 
+      // This session is terminated, do nothing
+      if (status === 'off') {
+        console.log(`-----> Session: ${sessionId} is terminated.`);
+        return session;
+      }
+
       // This session is done, regardless of status
       if (currentCharging === 'done') {
         // Turn off the session
+        console.log(`-----> Session: ${sessionId} is being terminated.`);
         session.set('status', 'off');
         return session;
       }
 
-      // When session is stopping but still `in_use`, don't do anything
+      // When session is stopping but still `in_use`, do nothing
       // After unplugging, `current_charging` will become `done`
       if (status === 'stopping' && currentCharging === 'in_use') {
         // Waiting to be unplugged...
+        console.log(`-----> Session: ${sessionId} is stopped.`);
         return session;
       }
 
       // This is a new active session
       if (status === 'starting' && currentCharging === 'in_use') {
         // Turn on the session
+        console.log(`-----> Session: ${sessionId} is being activated.`);
         session.set('status', 'on');
         return session;
       }
@@ -131,7 +140,8 @@ module.exports = BaseController.extend({
         powerKw > 0 &&
         powerKw < POWER_KW_MIN &&
         chargingTime > CHARGING_TIME_MIN) {
-        console.log('-----> Stopping... Device: %d, Port: %d.', deviceId, outletNumber);
+        console.log(`-----> Session: ${sessionId} is being stopped.`);
+        console.log(`-----> Device: ${deviceId}, Port: ${outletNumber}.`);
         // Conditions met, stop session
         return this._sendStopRequest(deviceId, outletNumber).tap((body) => {
           if (!body.stop_session || !body.stop_session.status) {
@@ -150,16 +160,17 @@ module.exports = BaseController.extend({
           return this._sendNotification({
             body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
           }).tap((body) => {
-            console.log('-----> Stop notification sent: %s.', body.sid);
+            console.log(`-----> Stop notification sent: ${body.sid}.`);
           });
         }).catch((err) => {
           // Ignore errors
-          console.error('-----> Failed to stop session: %s with error: %s.', sessionId, err.message);
+          console.error(`-----> Failed to stop session: ${sessionId} with error: ${err.message}.`);
           return session;
         }).return(session);
       }
 
       // Currently active session, should not be stopped
+      console.log(`-----> Session: ${sessionId} is activated.`);
       return session;
     }).tap(() => {
       // Save Session
