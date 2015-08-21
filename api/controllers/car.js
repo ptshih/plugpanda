@@ -34,6 +34,8 @@ module.exports = BaseController.extend({
     const car = new CarModel();
     car.db = this.get('db');
 
+    console.log('-->', req.bmw);
+
     return car.fetch({
       query: {
         vin: req.bmw.vin,

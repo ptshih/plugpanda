@@ -81,7 +81,7 @@ module.exports = BaseController.extend({
         // TODO: test
         // session.set('current_charging', 'active');
       });
-    }).tap(() => {
+    }).then(() => {
       // Session Status
       const sessionId = session.get('session_id');
       const deviceId = session.get('device_id');
@@ -95,13 +95,13 @@ module.exports = BaseController.extend({
       // This session is terminated, do nothing
       if (status === 'off') {
         console.log(`-----> Session: ${sessionId} is terminated.`);
-        return session;
+        return false;
       }
 
       // This session is being started
       if (status === 'starting' && currentCharging === 'not_charging') {
         console.log(`-----> Session: ${sessionId} is being started.`);
-        return session;
+        return true;
       }
 
       // This session is done, regardless of status
@@ -109,7 +109,7 @@ module.exports = BaseController.extend({
         // Turn off the session
         console.log(`-----> Session: ${sessionId} is being terminated.`);
         session.set('status', 'off');
-        return session;
+        return true;
       }
 
       // When session is stopping but still `in_use`, do nothing
@@ -117,7 +117,7 @@ module.exports = BaseController.extend({
       if (status === 'stopping' && currentCharging === 'in_use') {
         // Waiting to be unplugged...
         console.log(`-----> Session: ${sessionId} is stopped.`);
-        return session;
+        return false;
       }
 
       // This is a new active session
@@ -125,7 +125,7 @@ module.exports = BaseController.extend({
         // Turn on the session
         console.log(`-----> Session: ${sessionId} is being activated.`);
         session.set('status', 'on');
-        return session;
+        return true;
       }
 
       // This is a currently active session
@@ -161,16 +161,18 @@ module.exports = BaseController.extend({
         }).catch((err) => {
           // Ignore errors
           console.error(`-----> Failed to stop session: ${sessionId} with error: ${err.message}.`);
-          return session;
-        }).return(session);
+        }).return(true);
       }
 
       // Currently active session, should not be stopped
       console.log(`-----> Session: ${sessionId} is activated.`);
-      return session;
-    }).tap(() => {
+      return true;
+    }).tap((shouldUpdate) => {
       // Save Session
-      return session.save();
+      if (shouldUpdate) {
+        console.log(`-----> Saving Session: ${sessionId}.`);
+        return session.save();
+      }
     }).then(() => {
       // Respond with Session
       res.json(session.render());

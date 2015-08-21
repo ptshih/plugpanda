@@ -28,7 +28,9 @@ module.exports = function(req, res, next) {
       data.expires_at = nowTime + (data.expires_in * 1000);
       return db.findAndModify('bmws', {
         _id: '55d6ce9d3f6ba1006100005d',
-      }, data);
+      }, {
+        '$set': data,
+      });
     });
   }).then((bmw) => {
     req.bmw = bmw;
