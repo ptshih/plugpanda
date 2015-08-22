@@ -81,9 +81,6 @@ module.exports = BaseController.extend({
         case 'mileage':
         case 'mi':
           return `Miles: ${car.get('miles')}`;
-        case 'kilometers':
-        case 'km':
-          return `Kilometers: ${car.get('kilometers')}`;
         case 'map':
         case 'gps':
           // https://developers.google.com/maps/documentation/ios/urlscheme?hl=en
@@ -91,7 +88,7 @@ module.exports = BaseController.extend({
           // return `comgooglemaps://?center=${data.position.lat},${data.position.lon}`;
           // return `https://maps.google.com/maps?q=${data.position.lat},${data.position.lon}`;
         default:
-          return `Commands: status, soc, fuel, door, plug, miles, kilometers, map`;
+          return `Commands: status, soc, fuel, door, plug, miles, map`;
       }
     }).then((message) => {
       res.message = message;

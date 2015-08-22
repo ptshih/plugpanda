@@ -13,16 +13,20 @@ module.exports = BaseModel.extend({
         // From BMW
         vin: null,
         miles: 0,
-        kilometers: 0,
-        chargingLevelHv: 0,
-        remainingFuel: 0,
-        maxFuel: 9, // CODED
         updateReason: null,
         updateTime: new Date(),
 
         // Charging Status
         connectionStatus: null,
         chargingStatus: null,
+        chargingTimeRemaining: 0,
+
+        // Range
+        chargingLevelHv: 0,
+        remainingFuel: 0,
+        maxFuel: 9, // CODED
+        remainingRangeElectricMls: 0,
+        remainingRangeFuelMls: 0,
 
         // Physical Status
         doorLockState: null,
@@ -50,16 +54,20 @@ module.exports = BaseModel.extend({
         // From BMW
         vin: 'string',
         miles: 'uinteger',
-        kilometers: 'uinteger',
-        chargingLevelHv: 'uinteger',
-        remainingFuel: 'uinteger',
-        maxFuel: 'uinteger', // CODED
         updateReason: 'string',
         updateTime: 'date',
 
         // Charging Status
         connectionStatus: 'string',
         chargingStatus: 'string',
+        chargingTimeRemaining: 'uinteger',
+
+        // Range
+        chargingLevelHv: 'uinteger',
+        remainingFuel: 'uinteger',
+        maxFuel: 'uinteger', // CODED
+        remainingRangeElectricMls: 'uinteger',
+        remainingRangeFuelMls: 'uinteger',
 
         // Physical Status
         doorLockState: 'string',
@@ -109,11 +117,13 @@ module.exports = BaseModel.extend({
     const attrs = {
       vin: car.vin,
       miles: car.mileage * 0.621371,
-      kilometers: car.mileage,
       chargingLevelHv: car.chargingLevelHv,
       remainingFuel: car.remainingFuel,
       connectionStatus: car.connectionStatus,
       chargingStatus: car.chargingStatus,
+      chargingTimeRemaining: car.chargingTimeRemaining,
+      remainingRangeElectricMls: car.remainingRangeElectricMls,
+      remainingRangeFuelMls: car.remainingRangeFuelMls,
       updateReason: car.updateReason,
       updateTime: new Date(car.updateTime),
 

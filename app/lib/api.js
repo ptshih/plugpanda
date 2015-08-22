@@ -48,6 +48,12 @@ const api = {
     });
   }),
 
+  fetchCar: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/car/status',
+    });
+  }),
+
   // BMW
 
   // POST

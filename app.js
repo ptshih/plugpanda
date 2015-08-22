@@ -7,7 +7,8 @@ import {Route, RouteHandler, DefaultRoute} from 'react-router';
 
 // Components (containers)
 import Root from './app/components/root';
-import Status from './app/components/status';
+import Session from './app/components/session';
+import Car from './app/components/car';
 
 const App = React.createClass({
   render() {
@@ -23,7 +24,8 @@ const App = React.createClass({
 const routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute name="root" handler={Root} />
-    <Route name="status" path="status" handler={Status} />
+    <Route name="session" path="session" handler={Session} />
+    <Route name="car" path="car" handler={Car} />
   </Route>
 );
 

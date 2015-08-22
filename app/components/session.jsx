@@ -1,7 +1,3 @@
-/**
- * This is a Controller/Container View for route: `/`
- */
-
 import _ from 'lodash';
 import React from 'react';
 
@@ -19,7 +15,7 @@ import moment from 'moment';
 import Chart from 'chart.js';
 
 export default React.createClass({
-  displayName: 'Status',
+  displayName: 'Session',
 
   statics: {
     // willTransitionTo(transition, params, query, callback) {
@@ -63,7 +59,7 @@ export default React.createClass({
     };
 
     return (
-      <div className="Status">
+      <div className="Session">
         <h2>Session: {this.state.session_id}</h2>
 
         <div>
@@ -100,6 +96,9 @@ export default React.createClass({
     const energyData = [];
 
     _.each(updateData, function(dataPoint) {
+      if (dataPoint.power_kw === 0) {
+        return;
+      }
       const formattedTime = moment(dataPoint.timestamp).calendar();
       labels.push(formattedTime);
       powerData.push(dataPoint.power_kw);
