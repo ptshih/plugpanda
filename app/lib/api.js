@@ -42,15 +42,21 @@ const api = {
     });
   }),
 
+  fetchCar: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/car/status',
+    });
+  }),
+
   fetchSession: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/session/status',
     });
   }),
 
-  fetchCar: Promise.method(function() {
+  fetchHistory: Promise.method(function() {
     return this._request({
-      url: window.location.origin + '/api/car/status',
+      url: window.location.origin + '/api/session/history',
     });
   }),
 

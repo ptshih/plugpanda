@@ -7,8 +7,9 @@ import {Route, RouteHandler, DefaultRoute} from 'react-router';
 
 // Components (containers)
 import Root from './app/components/root';
-import Session from './app/components/session';
 import Car from './app/components/car';
+import Session from './app/components/session';
+import History from './app/components/history';
 
 const App = React.createClass({
   render() {
@@ -24,8 +25,9 @@ const App = React.createClass({
 const routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute name="root" handler={Root} />
-    <Route name="session" path="session" handler={Session} />
     <Route name="car" path="car" handler={Car} />
+    <Route name="session" path="session" handler={Session} />
+    <Route name="history" path="history" handler={History} />
   </Route>
 );
 
