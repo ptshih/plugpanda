@@ -26,8 +26,8 @@ module.exports = {
           scope: 'remote_services vehicle_data',
         },
       }).then((data) => {
-        // Update `expires_at` using `expires_in`
-        data.expires_at = nowTime + (data.expires_in * 1000);
+        // Update `expires_at` using `expires_in` (minus 5 minutes)
+        data.expires_at = nowTime + (data.expires_in * 1000) - 300000;
 
         // Update db with new auth data
         return db.findAndModify('bmws', {
