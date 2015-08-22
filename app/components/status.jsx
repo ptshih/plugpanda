@@ -131,6 +131,7 @@ export default React.createClass({
       datasets: datasets,
     }, {
       responsive: true,
+      maintainAspectRatio: false,
     });
   },
 });

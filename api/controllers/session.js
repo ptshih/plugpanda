@@ -144,7 +144,7 @@ module.exports = BaseController.extend({
     }).tap((shouldUpdate) => {
       // Save Session
       if (shouldUpdate) {
-        console.log(`-----> Saving Session: ${sessionId}.`);
+        console.log(`-----> Saving Session: ${session.get('session_id')}.`);
         return session.save();
       }
     }).then(() => {
