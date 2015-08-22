@@ -14,6 +14,11 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
+    this.routes.get['/session'] = {
+      action: this.session,
+      middleware: [authenticateUserMiddleware],
+    };
+
     this.routes.get['/session/status'] = {
       action: this.status,
       middleware: [authenticateUserMiddleware],
@@ -24,22 +29,46 @@ module.exports = BaseController.extend({
       middleware: [authenticateWorkerMiddleware, authenticateUserMiddleware],
     };
 
-    this.routes.get['/session/history'] = {
+    this.routes.get['/sessions'] = {
       action: this.history,
       middleware: [authenticateUserMiddleware],
     };
 
-    this.routes.post['/session/:session_id/stop'] = {
+    this.routes.get['/sessions/:session_id'] = {
+      action: this.session,
+      middleware: [authenticateUserMiddleware],
+    };
+
+    this.routes.post['/sessions/:session_id/stop'] = {
       action: this.stop,
       middleware: [authenticateUserMiddleware],
     };
 
-    this.routes.post['/session/:session_id/stop_ack'] = {
+    this.routes.post['/sessions/:session_id/stop_ack'] = {
       action: this.stopAck,
       middleware: [authenticateUserMiddleware],
     };
   },
 
+  session(req, res, next) {
+    const session = new SessionModel();
+    session.db = this.get('db');
+    session.user_id = req.user_id;
+
+    const query = {};
+    if (req.params.session_id) {
+      query.session_id = _.parseInt(req.params.session_id);
+    }
+
+    return session.fetch({
+      query: query,
+      require: true,
+      sort: [['updated', 'desc']],
+    }).then(() => {
+      // Respond with Session
+      res.json(session.render());
+    }).catch(next);
+  },
 
   status(req, res, next) {
     const session = new SessionModel();

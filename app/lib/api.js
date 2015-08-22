@@ -50,13 +50,13 @@ const api = {
 
   fetchSession: Promise.method(function() {
     return this._request({
-      url: window.location.origin + '/api/session/status',
+      url: window.location.origin + '/api/session',
     });
   }),
 
   fetchHistory: Promise.method(function() {
     return this._request({
-      url: window.location.origin + '/api/session/history',
+      url: window.location.origin + '/api/sessions',
     });
   }),
 

@@ -27,7 +27,8 @@ const routes = (
     <DefaultRoute name="root" handler={Root} />
     <Route name="car" path="car" handler={Car} />
     <Route name="session" path="session" handler={Session} />
-    <Route name="history" path="history" handler={History} />
+    <Route name="session_id" path="sessions/:session_id" handler={Session} />
+    <Route name="history" path="sessions" handler={History} />
   </Route>
 );
 
