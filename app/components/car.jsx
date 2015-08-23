@@ -55,7 +55,7 @@ export default React.createClass({
     const mapUrl = this._buildStaticMap(this.state.position);
 
     return (
-      <div className="container-fluid">
+      <div className="Section container-fluid">
         <h2>VIN: {this.state.vin}</h2>
 
         <div>
@@ -84,7 +84,7 @@ export default React.createClass({
         </div>
 
         <div>
-          <img src={mapUrl} />
+          <img className="Car-map" src={mapUrl} />
         </div>
       </div>
     );

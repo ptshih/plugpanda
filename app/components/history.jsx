@@ -85,7 +85,7 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="Section container-fluid">
         <div className="row">
           <div className="col-xs-12">
             <h2>History</h2>

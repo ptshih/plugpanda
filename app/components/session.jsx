@@ -88,7 +88,7 @@ export default React.createClass({
     }];
 
     return (
-      <div className="container-fluid">
+      <div className="Section container-fluid">
         <h2>Session: {this.state.session_id}</h2>
 
         <div>

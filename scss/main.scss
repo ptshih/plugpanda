@@ -2,6 +2,11 @@
 
 @import 'bootstrap/bootstrap';
 
-.App {
+.Section {
   margin: 0.9375rem auto;
+}
+
+.Car-map {
+  width: 100%;
+  max-width: 400px;
 }

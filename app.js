@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 // Router
 import React from 'react';
 import Router from 'react-router';
-import {Route, RouteHandler, DefaultRoute} from 'react-router';
+import {Route, RouteHandler, DefaultRoute, Link} from 'react-router';
 
 // Components (containers)
 import Root from './app/components/root';
@@ -15,6 +15,21 @@ const App = React.createClass({
   render() {
     return (
       <div className="App">
+        <nav className="navbar navbar-light bg-faded">
+          <Link to="root" className="navbar-brand">Home</Link>
+          <ul className="nav navbar-nav">
+            <li className="nav-item">
+              <Link to="session" className="nav-link">Session</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="history" className="nav-link">History</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="car" className="nav-link">Car</Link>
+            </li>
+          </ul>
+        </nav>
+
         <RouteHandler />
       </div>
     );

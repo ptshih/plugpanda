@@ -14,7 +14,7 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="Section container-fluid">
         <h2>Welcome to Panda Beta</h2>
         <ul>
           <li><Link to="car">Car Status</Link></li>
