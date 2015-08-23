@@ -45,18 +45,24 @@ const api = {
   fetchCar: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/car/status',
+    }).then((body) => {
+      return body.data;
     });
   }),
 
   fetchSession: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/session',
+    }).then((body) => {
+      return body.data;
     });
   }),
 
   fetchHistory: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/sessions',
+    }).then((body) => {
+      return body.data;
     });
   }),
 

@@ -30,6 +30,7 @@
     "morgan": "1.6.1",
     "muni": "1.2.4",
     "nconf": "0.7.2",
+    "node-sass": "3.2.0",
     "nodemon": "1.4.1",
     "react": "0.13.3",
     "react-router": "0.13.3",
@@ -43,7 +44,6 @@
   "devDependencies": {
     "live-reload": "*",
     "parallelshell": "*",
-    "watch": "*",
     "watchify": "*"
   },
   "main": "server.js",
@@ -65,10 +65,10 @@
     "deploy": "npm run bump && git push heroku",
     "build": "npm run build:js && npm run build:css",
     "build:js": "mkdir -p assets/js && browserify --extension=.jsx app.js | uglifyjs -m -o assets/js/main.min.js",
-    "build:css": "mkdir -p assets/css && lessc --clean-css='--s1 --advanced --compatibility=ie8' less/main.less assets/css/main.min.css",
+    "build:css": "mkdir -p assets/css && node-sass --output-style compressed scss/main.scss assets/css/main.css",
     "watch": "parallelshell 'npm run start:watch' 'npm run watch:js' 'npm run watch:css' 'npm run live-reload'",
     "watch:js": "mkdir -p assets/js && watchify --extension=.jsx app.js -o assets/js/main.js -v",
-    "watch:css": "mkdir -p assets/js && watch 'lessc less/main.less assets/css/main.css' less/"
+    "watch:css": "mkdir -p assets/css && nodemon -e scss -x 'node-sass scss/main.scss assets/css/main.css'"
   },
   "browserify": {
     "transform": [

@@ -65,8 +65,8 @@ module.exports = BaseController.extend({
       require: true,
       sort: [['updated', 'desc']],
     }).then(() => {
-      // Respond with Session
-      res.json(session.render());
+      res.data = sessions.render();
+      next();
     }).catch(next);
   },
 
@@ -177,8 +177,8 @@ module.exports = BaseController.extend({
         return session.save();
       }
     }).then(() => {
-      // Respond with Session
-      res.json(session.render());
+      res.data = session.render();
+      next();
     }).catch(next);
   },
 
@@ -199,7 +199,8 @@ module.exports = BaseController.extend({
     sessions.user_id = req.user_id;
 
     return sessions.fetch(qo).tap(() => {
-      res.json(sessions.render());
+      res.data = sessions.render();
+      next();
     }).catch(next);
   },
 
@@ -215,7 +216,8 @@ module.exports = BaseController.extend({
     }).then(() => {
       return session.sendStopRequest();
     }).then((body) => {
-      res.json(body);
+      res.data = body;
+      next();
     }).catch(next);
   },
 
@@ -231,7 +233,8 @@ module.exports = BaseController.extend({
     }).then(() => {
       return session.sendStopAckRequest();
     }).then((body) => {
-      res.json(body);
+      res.data = body;
+      next();
     }).catch(next);
   },
 });

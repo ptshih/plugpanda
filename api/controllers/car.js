@@ -41,7 +41,8 @@ module.exports = BaseController.extend({
     }).tap(() => {
       return car.save();
     }).then(() => {
-      res.json(car.render());
+      res.data = car.render();
+      next();
     }).catch(next);
   },
 
@@ -65,7 +66,8 @@ module.exports = BaseController.extend({
     car.bmw = req.bmw;
 
     return car.executeService(req.body.type).tap((result) => {
-      res.json(result.executionStatus);
+      res.data = result.executionStatus;
+      next();
     }).catch(next);
   },
 });
