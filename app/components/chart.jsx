@@ -8,6 +8,17 @@ export default React.createClass({
   propTypes: {
     labels: React.PropTypes.array.isRequired,
     datasets: React.PropTypes.array.isRequired,
+    width: React.PropTypes.string,
+    height: React.PropTypes.string,
+    responsive: React.PropTypes.bool,
+  },
+
+  getDefaultProps() {
+    return {
+      width: '100%',
+      height: '400px',
+      responsive: true,
+    };
   },
 
   componentDidMount() {
@@ -18,24 +29,25 @@ export default React.createClass({
 
   render() {
     const chartStyle = {
-      width: '100%',
-      height: '400px',
+      width: this.props.width,
+      height: this.props.height,
     };
 
     return (
-      <canvas id="timeline" ref="chart" style={chartStyle}></canvas>
+      <canvas ref="chart" style={chartStyle}></canvas>
     );
   },
 
+  // Private
 
   _initializeChart() {
     const chartEl = React.findDOMNode(this.refs.chart);
     const chartCtx = chartEl.getContext('2d');
-    const chart = new Chart(chartCtx).Line({
+    new Chart(chartCtx).Line({
       labels: this.props.labels,
       datasets: this.props.datasets,
     }, {
-      responsive: true,
+      responsive: this.props.responsive,
     });
   },
 });

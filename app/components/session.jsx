@@ -108,12 +108,12 @@ export default React.createClass({
 
         <div>
           <h3>Power (kW)</h3>
-          <Chart ref="chart-power" labels={labels} datasets={powerDatasets} />
+          <Chart labels={labels} datasets={powerDatasets} />
         </div>
 
         <div>
           <h3>Energy (kWh)</h3>
-          <Chart ref="chart-energy" labels={labels} datasets={energyDatasets} />
+          <Chart labels={labels} datasets={energyDatasets} />
         </div>
       </div>
     );
