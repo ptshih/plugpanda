@@ -9,7 +9,7 @@ import HistoryStore from '../stores/car-store';
 import HistoryActions from '../actions/car-actions';
 
 // Components
-// import {Link} from 'react-router';
+import {Link} from 'react-router';
 
 export default React.createClass({
   displayName: 'History',
@@ -62,10 +62,10 @@ export default React.createClass({
 
     return (
       <tr key={idx}>
-        <td>{session.session_id}</td>
+        <td><Link to="session_id" params={{session_id: session.session_id}}>{session.session_id}</Link></td>
         <td>{displayTime}</td>
         <td>{session.energy_kwh}</td>
-        <td>{session.total_amount}</td>
+        <td>{session.total_amount.toFixed(2)}</td>
       </tr>
     );
   },
@@ -99,8 +99,8 @@ export default React.createClass({
                 <tr>
                   <th>Session</th>
                   <th>Duration</th>
-                  <th>Energy</th>
-                  <th>Cost</th>
+                  <th>Energy (kW)</th>
+                  <th>Cost ($)</th>
                 </tr>
               </thead>
 

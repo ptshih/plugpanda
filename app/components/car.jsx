@@ -11,6 +11,8 @@ import CarActions from '../actions/car-actions';
 // Components
 // import {Link} from 'react-router';
 
+import moment from 'moment';
+
 export default React.createClass({
   displayName: 'Car',
 
@@ -57,7 +59,21 @@ export default React.createClass({
         <h2>VIN: {this.state.vin}</h2>
 
         <div>
+          <p>Last Updated: {moment(this.state.updateTime).fromNow()}</p>
+        </div>
+
+        <div>
           <p>Miles: {this.state.miles}</p>
+        </div>
+
+        <div>
+          <p>Lock: {this.state.doorLockState}</p>
+          <p>Driver Front: {this.state.doorDriverFront}</p>
+          <p>Driver Rear: {this.state.doorDriverRear}</p>
+          <p>Passenger Front: {this.state.doorPassengerFront}</p>
+          <p>Passenger Rear: {this.state.doorPassengerRear}</p>
+          <p>Trunk {this.state.trunk}</p>
+          <p>Frunk {this.state.hood}</p>
         </div>
 
         <div>

@@ -14,7 +14,7 @@ import History from './app/components/history';
 const App = React.createClass({
   render() {
     return (
-      <div>
+      <div className="App">
         <RouteHandler />
       </div>
     );

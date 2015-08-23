@@ -24,8 +24,7 @@ export default React.createClass({
     // },
 
     fetch(params, query) {
-      // console.log(params);
-      return api.fetchSession().then((state) => {
+      return api.fetchSession(params.session_id).then((state) => {
         SessionActions.sync(state);
       });
     },
