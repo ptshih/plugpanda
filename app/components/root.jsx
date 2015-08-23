@@ -18,7 +18,7 @@ export default React.createClass({
         <h2>Welcome to Panda Beta</h2>
         <ul>
           <li><Link to="car">Car Status</Link></li>
-          <li><Link to="session">Charging Session</Link></li>
+          <li><Link to="session" params={{session_id: 'current'}}>Current Session</Link></li>
           <li><Link to="history">Charging History</Link></li>
         </ul>
 

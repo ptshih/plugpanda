@@ -11,6 +11,8 @@ import HistoryActions from '../actions/car-actions';
 // Components
 import {Link} from 'react-router';
 
+import moment from 'moment';
+
 export default React.createClass({
   displayName: 'History',
 
@@ -50,22 +52,38 @@ export default React.createClass({
   // Render
 
   getSession(session, idx) {
-    let displayTime;
+    let displayHours;
+    let displayMinutes;
     const chargingTime = (session.charging_time / 1000 / 60).toFixed(0);
     if (chargingTime >= 60) {
-      const hours = Math.floor(chargingTime / 60);
-      const minutes = chargingTime % 60;
-      displayTime = `${hours} hours, ${minutes} minutes`;
+      displayHours = Math.floor(chargingTime / 60);
+      displayMinutes = chargingTime % 60;
     } else {
-      displayTime = `${chargingTime} minutes`;
+      displayHours = 0;
+      displayMinutes = chargingTime;
+    }
+
+    let activeClass = '';
+    if (session.status === 'on') {
+      activeClass = 'table-success';
+    } else if (session.status === 'stopping') {
+      activeClass = 'table-danger';
     }
 
     return (
-      <tr key={idx}>
-        <td><Link to="session_id" params={{session_id: session.session_id}}>{session.session_id}</Link></td>
-        <td>{displayTime}</td>
-        <td>{session.energy_kwh}</td>
-        <td>{session.total_amount.toFixed(2)}</td>
+      <tr key={idx} className={activeClass}>
+        <td>
+          <Link to="session" params={{session_id: session.session_id}}>{session.session_id}</Link>
+          <div>{moment(session.updated_date).fromNow()}</div>
+        </td>
+        <td>
+          <div>{displayHours}h {displayMinutes}m</div>
+        </td>
+        <td>
+          <div>{session.energy_kwh.toFixed(2)}kW</div>
+          <div>{session.miles_added.toFixed(2)}mi</div>
+        </td>
+        <td>${session.total_amount.toFixed(2)}</td>
       </tr>
     );
   },
@@ -99,8 +117,8 @@ export default React.createClass({
                 <tr>
                   <th>Session</th>
                   <th>Duration</th>
-                  <th>Energy (kW)</th>
-                  <th>Cost ($)</th>
+                  <th>Energy</th>
+                  <th>Cost</th>
                 </tr>
               </thead>
 

@@ -19,7 +19,7 @@ const App = React.createClass({
           <Link to="root" className="navbar-brand">Home</Link>
           <ul className="nav navbar-nav">
             <li className="nav-item">
-              <Link to="session" className="nav-link">Session</Link>
+              <Link to="session" params={{session_id: 'current'}} className="nav-link">Session</Link>
             </li>
             <li className="nav-item">
               <Link to="history" className="nav-link">History</Link>
@@ -41,8 +41,7 @@ const routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute name="root" handler={Root} />
     <Route name="car" path="car" handler={Car} />
-    <Route name="session" path="session" handler={Session} />
-    <Route name="session_id" path="sessions/:session_id" handler={Session} />
+    <Route name="session" path="sessions/:session_id" handler={Session} />
     <Route name="history" path="sessions" handler={History} />
   </Route>
 );

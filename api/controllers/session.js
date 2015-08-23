@@ -14,11 +14,6 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
-    this.routes.get['/session'] = {
-      action: this.session,
-      middleware: [authenticateUserMiddleware],
-    };
-
     this.routes.get['/session/status'] = {
       action: this.status,
       middleware: [authenticateUserMiddleware],
@@ -56,7 +51,7 @@ module.exports = BaseController.extend({
     session.user_id = req.user_id;
 
     const query = {};
-    if (req.params.session_id) {
+    if (req.params.session_id && req.params.session_id !== 'current') {
       query.session_id = _.parseInt(req.params.session_id);
     }
 

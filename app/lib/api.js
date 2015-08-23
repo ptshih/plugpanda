@@ -51,12 +51,8 @@ const api = {
   }),
 
   fetchSession: Promise.method(function(sessionId) {
-    let path = '/api/session';
-    if (sessionId) {
-      path = '/api/sessions/' + sessionId;
-    }
     return this._request({
-      url: window.location.origin + path,
+      url: window.location.origin + '/api/sessions/' + sessionId,
     }).then((body) => {
       return body.data;
     });
