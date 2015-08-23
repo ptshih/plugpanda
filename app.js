@@ -19,13 +19,13 @@ const App = React.createClass({
           <Link to="root" className="navbar-brand">Home</Link>
           <ul className="nav navbar-nav">
             <li className="nav-item">
+              <Link to="car" className="nav-link">Car</Link>
+            </li>
+            <li className="nav-item">
               <Link to="session" params={{session_id: 'current'}} className="nav-link">Session</Link>
             </li>
             <li className="nav-item">
               <Link to="history" className="nav-link">History</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="car" className="nav-link">Car</Link>
             </li>
           </ul>
         </nav>
