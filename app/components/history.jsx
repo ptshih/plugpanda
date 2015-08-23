@@ -84,28 +84,32 @@ export default React.createClass({
   },
 
   render() {
-    const tableStyle = {
-      width: '100%',
-    };
-
     return (
-      <div className="History">
-        <h2>History</h2>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-xs-12">
+            <h2>History</h2>
+          </div>
+        </div>
 
-        <table style={tableStyle}>
-          <thead>
-            <tr>
-              <td>Session</td>
-              <td>Duration</td>
-              <td>Energy</td>
-              <td>Cost</td>
-            </tr>
-          </thead>
+        <div className="row">
+          <div className="col-xs-12">
+            <table className="table table-striped">
+              <thead className="thead-default">
+                <tr>
+                  <th>Session</th>
+                  <th>Duration</th>
+                  <th>Energy</th>
+                  <th>Cost</th>
+                </tr>
+              </thead>
 
-          <tbody>
-            {this.getSessions()}
-          </tbody>
-        </table>
+              <tbody>
+                {this.getSessions()}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     );
   },

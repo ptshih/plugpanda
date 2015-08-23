@@ -9,10 +9,10 @@ import SessionStore from '../stores/session-store';
 import SessionActions from '../actions/session-actions';
 
 // Components
+import Chart from './chart';
 // import {Link} from 'react-router';
 
 import moment from 'moment';
-import Chart from 'chart.js';
 
 export default React.createClass({
   displayName: 'Session',
@@ -24,7 +24,7 @@ export default React.createClass({
     // },
 
     fetch(params, query) {
-      console.log(params);
+      // console.log(params);
       return api.fetchSession().then((state) => {
         SessionActions.sync(state);
       });
@@ -37,8 +37,6 @@ export default React.createClass({
 
   componentDidMount() {
     SessionStore.addChangeListener(this.onChange);
-
-    this._initializeChart();
   },
 
   componentWillUnmount() {
@@ -54,13 +52,44 @@ export default React.createClass({
   // Render
 
   render() {
-    const chartStyle = {
-      width: '100%',
-      height: '400px',
-    };
+    const labels = [];
+    const powerData = [];
+    const energyData = [];
+
+    _.each(this.state.update_data, function(dataPoint) {
+      if (dataPoint.power_kw === 0) {
+        return;
+      }
+
+      labels.push(moment(dataPoint.timestamp).calendar());
+      powerData.push(dataPoint.power_kw);
+      energyData.push(dataPoint.energy_kwh);
+    });
+
+    const powerDatasets = [{
+      label: 'Power (kW)',
+      data: powerData,
+      fillColor: 'rgba(220,220,220,0.2)',
+      strokeColor: 'rgba(220,220,220,1)',
+      pointColor: 'rgba(220,220,220,1)',
+      pointStrokeColor: '#fff',
+      pointHighlightFill: '#fff',
+      pointHighlightStroke: 'rgba(220,220,220,1)',
+    }];
+
+    const energyDatasets = [{
+      label: 'Energy (kWh)',
+      data: energyData,
+      fillColor: 'rgba(151,187,205,0.2)',
+      strokeColor: 'rgba(151,187,205,1)',
+      pointColor: 'rgba(151,187,205,1)',
+      pointStrokeColor: '#fff',
+      pointHighlightFill: '#fff',
+      pointHighlightStroke: 'rgba(151,187,205,1)',
+    }];
 
     return (
-      <div className="Session">
+      <div className="container-fluid">
         <h2>Session: {this.state.session_id}</h2>
 
         <div>
@@ -78,60 +107,16 @@ export default React.createClass({
         </div>
 
         <div>
-          <h3>Charging Activity</h3>
-          <canvas id="timeline" ref="chart" style={chartStyle}></canvas>
+          <h3>Power (kW)</h3>
+          <Chart ref="chart-power" labels={labels} datasets={powerDatasets} />
+        </div>
+
+        <div>
+          <h3>Energy (kWh)</h3>
+          <Chart ref="chart-energy" labels={labels} datasets={energyDatasets} />
         </div>
       </div>
     );
   },
 
-
-  _initializeChart() {
-    const chartEl = React.findDOMNode(this.refs.chart);
-    const chartCtx = chartEl.getContext('2d');
-    // debugger
-
-    const updateData = this.state.update_data;
-    const labels = [];
-    const powerData = [];
-    const energyData = [];
-
-    _.each(updateData, function(dataPoint) {
-      if (dataPoint.power_kw === 0) {
-        return;
-      }
-      const formattedTime = moment(dataPoint.timestamp).calendar();
-      labels.push(formattedTime);
-      powerData.push(dataPoint.power_kw);
-      energyData.push(dataPoint.energy_kwh);
-    });
-
-    const datasets = [{
-      label: 'Power (kW)',
-      data: powerData,
-      fillColor: 'rgba(220,220,220,0.2)',
-      strokeColor: 'rgba(220,220,220,1)',
-      pointColor: 'rgba(220,220,220,1)',
-      pointStrokeColor: '#fff',
-      pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(220,220,220,1)',
-    }, {
-      label: 'Energy (kWh)',
-      data: energyData,
-      fillColor: 'rgba(151,187,205,0.2)',
-      strokeColor: 'rgba(151,187,205,1)',
-      pointColor: 'rgba(151,187,205,1)',
-      pointStrokeColor: '#fff',
-      pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(151,187,205,1)',
-    }];
-
-    const chart = new Chart(chartCtx).Line({
-      labels: labels,
-      datasets: datasets,
-    }, {
-      responsive: true,
-      maintainAspectRatio: false,
-    });
-  },
 });

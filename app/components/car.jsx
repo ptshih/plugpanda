@@ -50,8 +50,10 @@ export default React.createClass({
   render() {
     const fuelPercent = ((this.state.maxFuel / this.state.remainingFuel) * 100).toFixed(0);
 
+    const mapUrl = this._buildStaticMap(this.state.position);
+
     return (
-      <div className="Car">
+      <div className="container-fluid">
         <h2>VIN: {this.state.vin}</h2>
 
         <div>
@@ -64,7 +66,17 @@ export default React.createClass({
           <p>Charging Status: {this.state.chargingStatus}</p>
           <p>Port Status: {this.state.connectionStatus}</p>
         </div>
+
+        <div>
+          <img src={mapUrl} />
+        </div>
       </div>
     );
+  },
+
+  _buildStaticMap(position, zoom = 16, size = '400x400') {
+    const lat = position.lat;
+    const lon = position.lon;
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=${zoom}&size=${size}&markers=${lat},${lon}`;
   },
 });

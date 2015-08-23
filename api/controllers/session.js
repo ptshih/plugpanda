@@ -65,7 +65,7 @@ module.exports = BaseController.extend({
       require: true,
       sort: [['updated', 'desc']],
     }).then(() => {
-      res.data = sessions.render();
+      res.data = session.render();
       next();
     }).catch(next);
   },
