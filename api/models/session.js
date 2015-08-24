@@ -36,6 +36,12 @@ module.exports = BaseModel.extend({
         total_amount: 0.0,
         lat: 0,
         lon: 0,
+        company_name: null,
+        address1: null,
+        state_name: null,
+        city: null,
+        currency_iso_code: 'USD',
+        enable_stop_charging: true,
         update_data: [],
         vehicle_info: {},
 
@@ -67,6 +73,12 @@ module.exports = BaseModel.extend({
         total_amount: 'ufloat',
         lat: 'float',
         lon: 'float',
+        company_name: 'string',
+        address1: 'string',
+        state_name: 'string',
+        city: 'string',
+        currency_iso_code: 'string',
+        enable_stop_charging: 'boolean',
         update_data: [],
         vehicle_info: {},
 
@@ -180,6 +192,12 @@ module.exports = BaseModel.extend({
       total_amount: obj.total_amount,
       lat: obj.lat,
       lon: obj.lon,
+      company_name: obj.company_name,
+      address1: obj.address1,
+      state_name: obj.state_name,
+      city: obj.city,
+      currency_iso_code: obj.currency_iso_code,
+      enable_stop_charging: obj.enable_stop_charging,
     };
 
     // Only when charging is active
