@@ -12,6 +12,7 @@ const carStore = new CarStore();
 // Components
 // import {Link} from 'react-router';
 import Table from './table';
+import StaticMap from './static-map';
 
 import moment from 'moment';
 
@@ -54,8 +55,6 @@ export default React.createClass({
   render() {
     const fuelPercent = ((this.state.maxFuel / this.state.remainingFuel) * 100).toFixed(0);
 
-    const mapUrl = this._buildStaticMap(this.state.position);
-
     const rows = [
       ['VIN', this.state.vin],
       ['Last Updated', moment(this.state.updateTime).fromNow()],
@@ -81,15 +80,12 @@ export default React.createClass({
         />
 
         <div>
-          <img className="Car-map" src={mapUrl} />
+          <StaticMap
+            lat={this.state.position.lat}
+            lon={this.state.position.lon}
+          />
         </div>
       </div>
     );
-  },
-
-  _buildStaticMap(position, zoom = 16, size = '400x400') {
-    const lat = position.lat;
-    const lon = position.lon;
-    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=${zoom}&size=${size}&markers=${lat},${lon}`;
   },
 });

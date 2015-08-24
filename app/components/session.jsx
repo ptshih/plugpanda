@@ -12,7 +12,7 @@ const sessionStore = new SessionStore();
 // Components
 import Chart from './chart';
 import Table from './table';
-// import {Link} from 'react-router';
+import StaticMap from './static-map';
 
 import moment from 'moment';
 
@@ -134,6 +134,13 @@ export default React.createClass({
         <div>
           <h3>Energy (kWh)</h3>
           <Chart labels={labels} datasets={energyDatasets} />
+        </div>
+
+        <div>
+          <StaticMap
+            lat={this.state.lat}
+            lon={this.state.lon}
+          />
         </div>
       </div>
     );

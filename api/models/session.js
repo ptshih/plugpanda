@@ -34,6 +34,8 @@ module.exports = BaseModel.extend({
         power_kw: 0.0,
         miles_added: 0.0,
         total_amount: 0.0,
+        lat: 0,
+        lon: 0,
         update_data: [],
         vehicle_info: {},
 
@@ -63,6 +65,8 @@ module.exports = BaseModel.extend({
         power_kw: 'ufloat',
         miles_added: 'ufloat',
         total_amount: 'ufloat',
+        lat: 'float',
+        lon: 'float',
         update_data: [],
         vehicle_info: {},
 
@@ -174,6 +178,8 @@ module.exports = BaseModel.extend({
       power_kw: obj.power_kw,
       miles_added: obj.miles_added,
       total_amount: obj.total_amount,
+      lat: obj.lat,
+      lon: obj.lon,
     };
 
     // Only when charging is active
