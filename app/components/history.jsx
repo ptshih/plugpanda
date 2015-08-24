@@ -112,7 +112,7 @@ export default React.createClass({
       <div className="Section container-fluid">
         <div className="row">
           <div className="col-xs-12">
-            <h2>History</h2>
+            <h3>History</h3>
           </div>
         </div>
 

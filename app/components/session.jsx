@@ -11,6 +11,7 @@ const sessionStore = new SessionStore();
 
 // Components
 import Chart from './chart';
+import Table from './table';
 // import {Link} from 'react-router';
 
 import moment from 'moment';
@@ -66,6 +67,8 @@ export default React.createClass({
       energyData.push(dataPoint.energy_kwh);
     });
 
+    const averagePower = _.sum(powerData) / _.size(powerData);
+
     const powerDatasets = [{
       label: 'Power (kW)',
       data: powerData,
@@ -91,23 +94,37 @@ export default React.createClass({
     const estimatedAmount = (this.state.charging_time / 1000 / 60 / 60);
     const amount = this.state.total_amount > 0 ? this.state.total_amount : estimatedAmount;
 
+    let displayHours;
+    let displayMinutes;
+    const chargingTime = (this.state.charging_time / 1000 / 60).toFixed(0);
+    if (chargingTime >= 60) {
+      displayHours = Math.floor(chargingTime / 60);
+      displayMinutes = chargingTime % 60;
+    } else {
+      displayHours = 0;
+      displayMinutes = chargingTime;
+    }
+
+    const rows = [
+      ['Session Status', this.state.status],
+      ['Charging Status', this.state.current_charging],
+      ['Station', this.state.device_id],
+      ['Port', this.state.outlet_number],
+      ['Charging Time', `${displayHours}h ${displayMinutes}m`],
+      ['Average Power', `${averagePower.toFixed(3)} kWh`],
+      ['Total Energy', `${this.state.energy_kwh.toFixed(3)} kW`],
+      ['Added Distance', `${this.state.miles_added.toFixed(3)} miles`],
+      ['Total Price', `$${amount.toFixed(2)}`],
+    ];
+
     return (
       <div className="Section container-fluid">
-        <h2>Session: {this.state.session_id}</h2>
+        <h3>Session: {this.state.session_id}</h3>
 
-        <div>
-          <p>Status: {this.state.status}</p>
-          <p>Current Charging: {this.state.current_charging}</p>
-          <p>Device/Station: {this.state.device_id}</p>
-          <p>Outlet/Port: {this.state.outlet_number}</p>
-        </div>
-
-        <div>
-          <p>Power (kw): {this.state.power_kw}</p>
-          <p>Energy (kWh): {this.state.energy_kwh}</p>
-          <p>Distance (mi): {this.state.miles_added}</p>
-          <p>Price ($): {amount.toFixed(2)}</p>
-        </div>
+        <Table
+          headers={['Key', 'Value']}
+          rows={rows}
+        />
 
         <div>
           <h3>Power (kW)</h3>

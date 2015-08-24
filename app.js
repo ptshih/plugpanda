@@ -3,40 +3,28 @@ import Promise from 'bluebird';
 // Router
 import React from 'react';
 import Router from 'react-router';
-import {Route, RouteHandler, DefaultRoute, Link} from 'react-router';
+import {Route, RouteHandler, DefaultRoute} from 'react-router';
 
 // Components (containers)
 import Root from './app/components/root';
+import Nav from './app/components/nav';
 import Car from './app/components/car';
 import Session from './app/components/session';
 import History from './app/components/history';
 
+// App Layout
 const App = React.createClass({
   render() {
     return (
       <div className="App">
-        <nav className="navbar navbar-light bg-faded">
-          <Link to="root" className="navbar-brand">Home</Link>
-          <ul className="nav navbar-nav">
-            <li className="nav-item">
-              <Link to="car" className="nav-link">Car</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="session" params={{session_id: 'current'}} className="nav-link">Session</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="history" className="nav-link">History</Link>
-            </li>
-          </ul>
-        </nav>
-
+        <Nav />
         <RouteHandler />
       </div>
     );
   },
 });
 
-// Routes
+// Define Routes
 const routes = (
   <Route name="app" path="/" handler={App}>
     <DefaultRoute name="root" handler={Root} />

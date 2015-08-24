@@ -57,7 +57,7 @@ export default React.createClass({
 
     return (
       <div className="Section container-fluid">
-        <h2>VIN: {this.state.vin}</h2>
+        <h3>VIN: {this.state.vin}</h3>
 
         <div>
           <p>Last Updated: {moment(this.state.updateTime).fromNow()}</p>
