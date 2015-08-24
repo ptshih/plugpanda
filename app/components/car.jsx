@@ -7,6 +7,7 @@ import api from '../lib/api';
 // Store and Actions
 import CarStore from '../stores/car-store';
 import CarActions from '../actions/car-actions';
+const carStore = new CarStore();
 
 // Components
 // import {Link} from 'react-router';
@@ -30,21 +31,21 @@ export default React.createClass({
   },
 
   getInitialState() {
-    return CarStore.getState();
+    return carStore.getState();
   },
 
   componentDidMount() {
-    CarStore.addChangeListener(this.onChange);
+    carStore.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    CarStore.removeChangeListener(this.onChange);
+    carStore.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(CarStore.getState());
+    this.setState(carStore.getState());
   },
 
   // Render

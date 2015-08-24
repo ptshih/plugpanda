@@ -7,6 +7,7 @@ import api from '../lib/api';
 // Store and Actions
 import SessionStore from '../stores/session-store';
 import SessionActions from '../actions/session-actions';
+const sessionStore = new SessionStore();
 
 // Components
 import Chart from './chart';
@@ -31,21 +32,21 @@ export default React.createClass({
   },
 
   getInitialState() {
-    return SessionStore.getState();
+    return sessionStore.getState();
   },
 
   componentDidMount() {
-    SessionStore.addChangeListener(this.onChange);
+    sessionStore.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    SessionStore.removeChangeListener(this.onChange);
+    sessionStore.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(SessionStore.getState());
+    this.setState(sessionStore.getState());
   },
 
   // Render

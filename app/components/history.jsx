@@ -7,6 +7,7 @@ import api from '../lib/api';
 // Store and Actions
 import HistoryStore from '../stores/car-store';
 import HistoryActions from '../actions/car-actions';
+const historyStore = new HistoryStore();
 
 // Components
 import {Link} from 'react-router';
@@ -32,21 +33,21 @@ export default React.createClass({
   },
 
   getInitialState() {
-    return HistoryStore.getState();
+    return historyStore.getState();
   },
 
   componentDidMount() {
-    HistoryStore.addChangeListener(this.onChange);
+    historyStore.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    HistoryStore.removeChangeListener(this.onChange);
+    historyStore.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(HistoryStore.getState());
+    this.setState(historyStore.getState());
   },
 
   // Render
