@@ -11,6 +11,7 @@ const carStore = new CarStore();
 
 // Components
 // import {Link} from 'react-router';
+import Table from './table';
 
 import moment from 'moment';
 
@@ -55,34 +56,29 @@ export default React.createClass({
 
     const mapUrl = this._buildStaticMap(this.state.position);
 
+    const rows = [
+      ['VIN', this.state.vin],
+      ['Last Updated', moment(this.state.updateTime).fromNow()],
+      ['Miles', this.state.miles],
+      ['Lock', this.state.doorLockState],
+      ['Battery', `${this.state.chargingLevelHv}%`],
+      ['Fuel', `${fuelPercent}%`],
+      ['Charging Status', this.state.chargingStatus],
+      ['Port Status', this.state.connectionStatus],
+      ['Driver Front', this.state.doorDriverFront],
+      ['Driver Rear', this.state.doorDriverRear],
+      ['Passenger Front', this.state.doorPassengerFront],
+      ['Passenger Rear', this.state.doorPassengerRear],
+      ['Trunk', this.state.trunk],
+      ['Frunk', this.state.hood],
+    ];
+
     return (
       <div className="Section container-fluid">
-        <h3>VIN: {this.state.vin}</h3>
-
-        <div>
-          <p>Last Updated: {moment(this.state.updateTime).fromNow()}</p>
-        </div>
-
-        <div>
-          <p>Miles: {this.state.miles}</p>
-        </div>
-
-        <div>
-          <p>Lock: {this.state.doorLockState}</p>
-          <p>Driver Front: {this.state.doorDriverFront}</p>
-          <p>Driver Rear: {this.state.doorDriverRear}</p>
-          <p>Passenger Front: {this.state.doorPassengerFront}</p>
-          <p>Passenger Rear: {this.state.doorPassengerRear}</p>
-          <p>Trunk {this.state.trunk}</p>
-          <p>Frunk {this.state.hood}</p>
-        </div>
-
-        <div>
-          <p>Battery: {this.state.chargingLevelHv}%</p>
-          <p>Fuel: {fuelPercent}%</p>
-          <p>Charging Status: {this.state.chargingStatus}</p>
-          <p>Port Status: {this.state.connectionStatus}</p>
-        </div>
+        <Table
+          headers={['Key', 'Value']}
+          rows={rows}
+        />
 
         <div>
           <img className="Car-map" src={mapUrl} />

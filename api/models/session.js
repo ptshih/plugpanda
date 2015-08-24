@@ -35,6 +35,7 @@ module.exports = BaseModel.extend({
         miles_added: 0.0,
         total_amount: 0.0,
         update_data: [],
+        vehicle_info: {},
 
         // Session Status
         status: 'starting',
@@ -63,6 +64,7 @@ module.exports = BaseModel.extend({
         miles_added: 'ufloat',
         total_amount: 'ufloat',
         update_data: [],
+        vehicle_info: {},
 
         // Session Status
         status: 'string', // starting, on, stopping, off
@@ -177,6 +179,11 @@ module.exports = BaseModel.extend({
     // Only when charging is active
     if (obj.update_data) {
       attrs.update_data = obj.update_data;
+    }
+
+    // Optional vehicle info
+    if (obj.vehicle_info) {
+      attrs.vehicle_info = obj.vehicle_info;
     }
 
     return attrs;
