@@ -5,9 +5,11 @@ import React from 'react';
 import Router from 'react-router';
 import {Route, RouteHandler, DefaultRoute} from 'react-router';
 
+// Components
+import Nav from './app/components/nav';
+
 // Components (containers)
 import Root from './app/components/root';
-import Nav from './app/components/nav';
 import Car from './app/components/car';
 import Session from './app/components/session';
 import History from './app/components/history';

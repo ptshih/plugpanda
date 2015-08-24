@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import NavLink from './nav-link';
 
 export default React.createClass({
   displayName: 'Nav',
@@ -20,13 +21,13 @@ export default React.createClass({
         <Link to="root" className="navbar-brand">Home</Link>
         <ul className="nav navbar-nav">
           <li className="nav-item">
-            <Link to="car" className="nav-link">Car</Link>
+            <NavLink to="car">Car</NavLink>
           </li>
           <li className="nav-item">
-            <Link to="session" params={{session_id: 'current'}} className="nav-link">Session</Link>
+            <NavLink to="session" params={{session_id: 'current'}}>Session</NavLink>
           </li>
           <li className="nav-item">
-            <Link to="history" className="nav-link">History</Link>
+            <NavLink to="history">History</NavLink>
           </li>
         </ul>
       </nav>
