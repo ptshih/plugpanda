@@ -82,6 +82,7 @@ export default React.createClass({
         </td>
         <td>
           <div>{displayHours}h {displayMinutes}m</div>
+          <div>{session.status}</div>
         </td>
         <td>
           <div>{session.energy_kwh.toFixed(2)}kW</div>
@@ -89,6 +90,7 @@ export default React.createClass({
         </td>
         <td>
           <div>${amount.toFixed(2)}</div>
+          <div>{session.payment_type}</div>
         </td>
       </tr>
     );
