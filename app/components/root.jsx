@@ -15,7 +15,7 @@ export default React.createClass({
   render() {
     return (
       <div className="Section container-fluid">
-        <h2>Welcome to Panda Beta</h2>
+        <h2>Welcome to Plug Panda Beta</h2>
         <ul>
           <li><Link to="car">Car Status</Link></li>
           <li><Link to="session" params={{session_id: 'current'}}>Current Session</Link></li>

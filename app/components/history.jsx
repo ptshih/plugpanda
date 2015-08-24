@@ -63,6 +63,9 @@ export default React.createClass({
       displayMinutes = chargingTime;
     }
 
+    const estimatedAmount = (session.charging_time / 1000 / 60 / 60);
+    const amount = session.total_amount > 0 ? session.total_amount : estimatedAmount;
+
     let activeClass = '';
     if (session.status === 'on') {
       activeClass = 'table-success';
@@ -83,7 +86,9 @@ export default React.createClass({
           <div>{session.energy_kwh.toFixed(2)}kW</div>
           <div>{session.miles_added.toFixed(2)}mi</div>
         </td>
-        <td>${session.total_amount.toFixed(2)}</td>
+        <td>
+          <div>${amount.toFixed(2)}</div>
+        </td>
       </tr>
     );
   },

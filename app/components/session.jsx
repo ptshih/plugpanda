@@ -87,6 +87,9 @@ export default React.createClass({
       pointHighlightStroke: 'rgba(151,187,205,1)',
     }];
 
+    const estimatedAmount = (this.state.charging_time / 1000 / 60 / 60);
+    const amount = this.state.total_amount > 0 ? this.state.total_amount : estimatedAmount;
+
     return (
       <div className="Section container-fluid">
         <h2>Session: {this.state.session_id}</h2>
@@ -102,7 +105,7 @@ export default React.createClass({
           <p>Power (kw): {this.state.power_kw}</p>
           <p>Energy (kWh): {this.state.energy_kwh}</p>
           <p>Distance (mi): {this.state.miles_added}</p>
-          <p>Price ($): {this.state.total_amount}</p>
+          <p>Price ($): {amount.toFixed(2)}</p>
         </div>
 
         <div>
