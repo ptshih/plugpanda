@@ -8,15 +8,11 @@ export default React.createClass({
   propTypes: {
     labels: React.PropTypes.array.isRequired,
     datasets: React.PropTypes.array.isRequired,
-    width: React.PropTypes.string,
-    height: React.PropTypes.string,
     responsive: React.PropTypes.bool,
   },
 
   getDefaultProps() {
     return {
-      width: '100%',
-      height: '400px',
       responsive: true,
     };
   },
@@ -28,13 +24,8 @@ export default React.createClass({
   // Render
 
   render() {
-    const chartStyle = {
-      width: this.props.width,
-      height: this.props.height,
-    };
-
     return (
-      <canvas ref="chart" style={chartStyle}></canvas>
+      <canvas ref="chart" className="Chart"></canvas>
     );
   },
 

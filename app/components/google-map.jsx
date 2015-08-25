@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default React.createClass({
-  displayName: 'StaticMap',
+  displayName: 'GoogleMap',
 
   propTypes: {
     lat: React.PropTypes.number.isRequired,
@@ -14,8 +14,8 @@ export default React.createClass({
   getDefaultProps() {
     return {
       zoom: 16,
-      width: 400,
-      height: 400,
+      width: 640,
+      height: 480,
     };
   },
 
@@ -23,7 +23,7 @@ export default React.createClass({
 
   render() {
     return (
-      <img className="Car-map" src={this._buildStaticMap()} />
+      <img className="GoogleMap" src={this._buildStaticMap()} />
     );
   },
 

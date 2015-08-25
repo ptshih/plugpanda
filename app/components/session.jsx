@@ -3,6 +3,7 @@ import React from 'react';
 
 // API
 import api from '../lib/api';
+import math from '../lib/math';
 
 // Store and Actions
 import SessionStore from '../stores/session-store';
@@ -12,7 +13,7 @@ const sessionStore = new SessionStore();
 // Components
 import Chart from './chart';
 import Table from './table';
-import StaticMap from './static-map';
+import GoogleMap from './google-map';
 
 import moment from 'moment';
 
@@ -62,12 +63,10 @@ export default React.createClass({
         return;
       }
 
-      labels.push(moment(dataPoint.timestamp).calendar());
-      powerData.push(dataPoint.power_kw);
-      energyData.push(dataPoint.energy_kwh);
+      labels.push(moment(dataPoint.timestamp).format('LT'));
+      powerData.push(math.round(dataPoint.power_kw));
+      energyData.push(math.round(dataPoint.energy_kwh));
     });
-
-    const averagePower = _.sum(powerData) / _.size(powerData);
 
     const powerDatasets = [{
       label: 'Power (kW)',
@@ -91,12 +90,12 @@ export default React.createClass({
       pointHighlightStroke: 'rgba(151,187,205,1)',
     }];
 
-    const estimatedAmount = (this.state.charging_time / 1000 / 60 / 60);
+    const estimatedAmount = math.round(this.state.charging_time / 1000 / 60 / 60);
     const amount = this.state.total_amount > 0 ? this.state.total_amount : estimatedAmount;
 
     let displayHours;
     let displayMinutes;
-    const chargingTime = (this.state.charging_time / 1000 / 60).toFixed(0);
+    const chargingTime = math.round(this.state.charging_time / 1000 / 60, 0);
     if (chargingTime >= 60) {
       displayHours = Math.floor(chargingTime / 60);
       displayMinutes = chargingTime % 60;
@@ -105,39 +104,41 @@ export default React.createClass({
       displayMinutes = chargingTime;
     }
 
+    const averagePower = math.round(_.sum(powerData) / _.size(powerData), 3);
+    const totalEnergy = math.round(this.state.energy_kwh, 3);
+    const milesAdded = math.round(this.state.miles_added, 1);
+
     const rows = [
       ['Session Status', this.state.status],
       ['Charging Status', this.state.current_charging],
       ['Station', this.state.device_id],
       ['Port', this.state.outlet_number],
       ['Charging Time', `${displayHours}h ${displayMinutes}m`],
-      ['Average Power', `${averagePower.toFixed(3)} kWh`],
-      ['Total Energy', `${this.state.energy_kwh.toFixed(3)} kW`],
-      ['Added Distance', `${this.state.miles_added.toFixed(3)} miles`],
-      ['Total Price', `$${amount.toFixed(2)}`],
+      ['Average Power', `${averagePower} kWh`],
+      ['Total Energy', `${totalEnergy} kW`],
+      ['Added Distance', `${milesAdded} miles`],
+      ['Total Price', `$${amount}`],
     ];
 
     return (
-      <div className="Section container-fluid">
-        <h3>Session: {this.state.session_id}</h3>
-
-        <Table
-          headers={['Key', 'Value']}
-          rows={rows}
-        />
+      <div className="Section">
+        <div>
+          <h5>Session {this.state.session_id}</h5>
+          <Table rows={rows} />
+        </div>
 
         <div>
-          <h3>Power (kW)</h3>
+          <h5>Power (kW)</h5>
           <Chart labels={labels} datasets={powerDatasets} />
         </div>
 
         <div>
-          <h3>Energy (kWh)</h3>
+          <h5>Energy (kWh)</h5>
           <Chart labels={labels} datasets={energyDatasets} />
         </div>
 
         <div>
-          <StaticMap
+          <GoogleMap
             lat={this.state.lat}
             lon={this.state.lon}
           />

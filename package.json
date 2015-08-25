@@ -44,6 +44,7 @@
   "devDependencies": {
     "live-reload": "*",
     "parallelshell": "*",
+    "watch": "*",
     "watchify": "*"
   },
   "main": "server.js",
@@ -55,7 +56,7 @@
     "postinstall": "npm run build",
     "test": "mocha",
     "start": "node --harmony server.js",
-    "start:watch": "DEBUG=muni:* nodemon --harmony -w server.js -w app.js -w api server.js",
+    "start:watch": "DEBUG=muni:* nodemon --harmony -e js -e jsx -w server.js -w app.js -w api server.js",
     "clean": "rm -rf assets/*",
     "bump": "git checkout master && git pull origin master && npm version patch && git push --follow-tags",
     "lint:app": "eslint --ext .js --ext .jsx --ignore-path .gitignore app",
@@ -68,7 +69,7 @@
     "build:css": "mkdir -p assets/css && node-sass --output-style compressed scss/main.scss assets/css/main.min.css",
     "watch": "parallelshell 'npm run start:watch' 'npm run watch:js' 'npm run watch:css' 'npm run live-reload'",
     "watch:js": "mkdir -p assets/js && watchify --extension=.jsx app.js -o assets/js/main.js -v",
-    "watch:css": "mkdir -p assets/css && nodemon -e scss -x 'node-sass scss/main.scss assets/css/main.css'"
+    "watch:css": "mkdir -p assets/css && watch 'node-sass scss/main.scss assets/css/main.css' scss/"
   },
   "browserify": {
     "transform": [

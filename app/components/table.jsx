@@ -21,7 +21,7 @@ export default React.createClass({
     }
 
     return (
-      <thead>
+      <thead className="thead-default">
         {headers.map((header, idx) => {
           return (
             <th key={idx}>{header}</th>
@@ -48,14 +48,16 @@ export default React.createClass({
   },
 
   getTableCol(col, idx) {
+    const className = idx > 0 ? 'text-right' : '';
+
     return (
-      <td key={idx}>{col}</td>
+      <td key={idx} className={className}>{col}</td>
     );
   },
 
   render() {
     return (
-      <table className="table">
+      <table className="table table-sm">
         {this.getTableHead(this.props.headers)}
         {this.getTableBody(this.props.rows)}
       </table>

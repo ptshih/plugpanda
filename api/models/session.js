@@ -197,7 +197,7 @@ module.exports = BaseModel.extend({
       state_name: obj.state_name,
       city: obj.city,
       currency_iso_code: obj.currency_iso_code,
-      enable_stop_charging: obj.enable_stop_charging,
+      vehicle_info: obj.vehicle_info,
     };
 
     // Only when charging is active
@@ -205,9 +205,9 @@ module.exports = BaseModel.extend({
       attrs.update_data = obj.update_data;
     }
 
-    // Optional vehicle info
-    if (obj.vehicle_info) {
-      attrs.vehicle_info = obj.vehicle_info;
+    // Only when charging is active
+    if (obj.enable_stop_charging) {
+      attrs.enable_stop_charging = obj.enable_stop_charging;
     }
 
     return attrs;

@@ -3,6 +3,7 @@ import React from 'react';
 
 // API
 import api from '../lib/api';
+import math from '../lib/math';
 
 // Store and Actions
 import CarStore from '../stores/car-store';
@@ -12,7 +13,7 @@ const carStore = new CarStore();
 // Components
 // import {Link} from 'react-router';
 import Table from './table';
-import StaticMap from './static-map';
+import GoogleMap from './google-map';
 
 import moment from 'moment';
 
@@ -53,7 +54,7 @@ export default React.createClass({
   // Render
 
   render() {
-    const fuelPercent = ((this.state.maxFuel / this.state.remainingFuel) * 100).toFixed(0);
+    const fuelPercent = math.round((this.state.maxFuel / this.state.remainingFuel) * 100, 0);
 
     const rows = [
       ['VIN', this.state.vin],
@@ -73,14 +74,13 @@ export default React.createClass({
     ];
 
     return (
-      <div className="Section container-fluid">
+      <div className="Section">
         <Table
-          headers={['Key', 'Value']}
           rows={rows}
         />
 
         <div>
-          <StaticMap
+          <GoogleMap
             lat={this.state.position.lat}
             lon={this.state.position.lon}
           />

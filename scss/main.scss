@@ -3,10 +3,17 @@
 @import 'bootstrap/bootstrap';
 
 .Section {
+  @extend .container;
   margin: 0.9375rem auto;
 }
 
-.Car-map {
+.GoogleMap {
   width: 100%;
-  max-width: 400px;
+  max-width: 60rem;
+}
+
+.Chart {
+  width: 100%;
+  max-width: 60rem;
+  height: 400px;
 }
