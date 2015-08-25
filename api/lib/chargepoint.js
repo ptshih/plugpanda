@@ -49,8 +49,8 @@ module.exports = {
       json: {
         user_id: userId,
         stop_session: {
-          device_id: this.get('device_id'),
-          port_number: this.get('outlet_number'),
+          device_id: deviceId,
+          port_number: outletNumber,
         },
       },
     });
