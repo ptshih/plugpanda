@@ -1,8 +1,10 @@
+const bmw = require('../lib/bmw');
+
 const BaseController = require('./base');
 const CarModel = require('../models/car');
 // const CarCollection = require('../collections/car');
 
-const bmwMiddleware = require('../middleware/bmw');
+const authenticateBmwMiddleware = require('../middleware/authenticate_bmw');
 
 module.exports = BaseController.extend({
   setupRoutes() {
@@ -10,18 +12,18 @@ module.exports = BaseController.extend({
 
     this.routes.get['/car/status'] = {
       action: this.status,
-      middleware: [bmwMiddleware],
+      middleware: [authenticateBmwMiddleware],
     };
 
     this.routes.post['/car/poi'] = {
       action: this.poi,
-      middleware: [bmwMiddleware],
+      middleware: [authenticateBmwMiddleware],
       requiredParams: ['street', 'city', 'country'],
     };
 
     this.routes.post['/car/service'] = {
       action: this.service,
-      middleware: [bmwMiddleware],
+      middleware: [authenticateBmwMiddleware],
       requiredParams: ['type'],
     };
   },
@@ -37,7 +39,12 @@ module.exports = BaseController.extend({
         vin: car.bmw.vin,
       },
     }).tap(() => {
-      return car.updateStatus();
+      return bmw.sendStatusRequest(
+        req.bmw.access_token,
+        req.bmw.vin
+      ).tap((data) => {
+        car.setFromBMW(data.vehicleStatus);
+      });
     }).tap(() => {
       return car.save();
     }).then(() => {
@@ -51,11 +58,15 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
     car.bmw = req.bmw;
 
-    return car.sendPOI({
-      street: req.body.street,
-      city: req.body.city,
-      country: req.body.country,
-    }).tap(() => {
+    return bmw.sendPOIRequest(
+      req.bmw.access_token,
+      req.bmw.vin,
+      {
+        street: req.body.street,
+        city: req.body.city,
+        country: req.body.country,
+      }
+    ).tap(() => {
       res.sendStatus(204).end();
     }).catch(next);
   },
@@ -65,7 +76,11 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
     car.bmw = req.bmw;
 
-    return car.executeService(req.body.type).tap((result) => {
+    return bmw.sendExecuteServiceRequest(
+      req.bmw.access_token,
+      req.bmw.vin,
+      req.body.type
+    ).tap((result) => {
       res.data = result.executionStatus;
       next();
     }).catch(next);

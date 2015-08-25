@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const chargepoint = require('../lib/chargepoint');
+const twilio = require('../lib/twilio');
 
 const POWER_KW_MIN = 5;
 const CHARGING_TIME_MIN = 300000;
@@ -45,10 +47,10 @@ module.exports = BaseController.extend({
     };
   },
 
+
   session(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
-    session.user_id = req.user_id;
 
     const query = {};
     if (req.params.session_id && req.params.session_id !== 'current') {
@@ -68,9 +70,8 @@ module.exports = BaseController.extend({
   status(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
-    session.user_id = req.user_id;
 
-    return session.sendStatusRequest().tap((chargingStatus) => {
+    return chargepoint.sendStatusRequest(req.user_id).tap((chargingStatus) => {
       // Fetch from DB
       return session.fetch({
         query: {
@@ -152,7 +153,11 @@ module.exports = BaseController.extend({
         console.log(`-----> Session: ${sessionId} is being stopped.`);
 
         // Send a stop request to Chargepoint
-        return session.sendStopRequest().tap((body) => {
+        return chargepoint.sendStopRequest(
+          req.user_id,
+          session.get('device_id'),
+          session.get('outlet_number')
+        ).tap((body) => {
           if (!body.stop_session || !body.stop_session.status) {
             throw new Error(`Invalid response from Chargepoint.`);
           }
@@ -165,7 +170,7 @@ module.exports = BaseController.extend({
           session.set('ack_id', body.stop_session.ack_id);
         }).tap(() => {
           // Send SMS notification via Twilio
-          return session.sendNotification({
+          return twilio.sendNotification({
             body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
           }).tap((body) => {
             console.log(`-----> Stop notification sent: ${body.sid}.`);
@@ -204,7 +209,6 @@ module.exports = BaseController.extend({
 
     const sessions = new SessionCollection();
     sessions.db = this.get('db');
-    sessions.user_id = req.user_id;
 
     return sessions.fetch(qo).tap(() => {
       res.data = sessions.render();
@@ -215,14 +219,17 @@ module.exports = BaseController.extend({
   stop(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
-    session.user_id = req.user_id;
 
     return session.fetch({
       query: {
         session_id: _.parseInt(req.params.session_id),
       },
     }).then(() => {
-      return session.sendStopRequest();
+      return chargepoint.sendStopRequest(
+        req.user_id,
+        session.get('device_id'),
+        session.get('outlet_number')
+      );
     }).then((body) => {
       res.data = body;
       next();
@@ -232,14 +239,13 @@ module.exports = BaseController.extend({
   stopAck(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
-    session.user_id = req.user_id;
 
     return session.fetch({
       query: {
         session_id: _.parseInt(req.params.session_id),
       },
     }).then(() => {
-      return session.sendStopAckRequest();
+      return chargepoint.sendStopAckRequest(req.user_id, session.get('ack_id'));
     }).then((body) => {
       res.data = body;
       next();

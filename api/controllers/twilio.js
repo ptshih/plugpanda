@@ -17,6 +17,7 @@ module.exports = BaseController.extend({
     };
   },
 
+
   sms(req, res, next) {
     // Parse command from SMS
     const text = (req.body.Body || '').toLowerCase().trim();
