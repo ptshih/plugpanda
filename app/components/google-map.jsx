@@ -13,7 +13,7 @@ export default React.createClass({
 
   getDefaultProps() {
     return {
-      zoom: 16,
+      zoom: 17,
       width: 640,
       height: 480,
     };
@@ -23,7 +23,7 @@ export default React.createClass({
 
   render() {
     return (
-      <img className="GoogleMap" src={this._buildStaticMap()} />
+      <a href={this._buildLink()}><img className="GoogleMap" src={this._buildStaticMap()} /></a>
     );
   },
 
@@ -31,5 +31,9 @@ export default React.createClass({
 
   _buildStaticMap() {
     return `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.lat},${this.props.lon}&zoom=${this.props.zoom}&size=${this.props.width}x${this.props.height}&markers=${this.props.lat},${this.props.lon}`;
+  },
+
+  _buildLink() {
+    return `https://maps.google.com?q=${this.props.lat},${this.props.lon}`;
   },
 });

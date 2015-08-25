@@ -4,14 +4,13 @@ import React from 'react';
 // import {Link} from 'react-router';
 
 export default React.createClass({
-  displayName: 'Root',
+  displayName: 'Station',
 
   // Render
 
   render() {
     return (
       <div className="Section">
-        <img src="/img/banksy_panda.png" className="BanksyPanda" />
       </div>
     );
   },

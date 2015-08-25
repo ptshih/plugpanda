@@ -8,7 +8,9 @@ import BaseStore from './base-store';
 // Store
 class CarStore extends BaseStore {
   defaults() {
-    return {};
+    return {
+      position: {},
+    };
   }
 
   // Constructor

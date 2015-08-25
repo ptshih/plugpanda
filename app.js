@@ -7,6 +7,7 @@ import {Route, RouteHandler, DefaultRoute} from 'react-router';
 
 // Components
 import Nav from './app/components/nav';
+import Error from './app/components/error';
 
 // Components (containers)
 import Root from './app/components/root';
@@ -50,5 +51,8 @@ Router.run(routes, Router.HistoryLocation, (Handler, state) => {
 
   return Promise.props(promises).then(() => {
     React.render(<Handler />, document.getElementById('app'));
+  }).catch((err) => {
+    // Render Error
+    React.render(<Error err={err}/>, document.getElementById('app'));
   });
 });
