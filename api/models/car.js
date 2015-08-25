@@ -58,8 +58,8 @@ module.exports = BaseModel.extend({
         updateTime: 'date',
 
         // Charging Status
-        connectionStatus: 'string',
-        chargingStatus: 'string',
+        connectionStatus: 'string', // CONNECTED, DISCONNECTED
+        chargingStatus: 'string', // FINISHED_FULLY_CHARGED, INVALID
         chargingTimeRemaining: 'uinteger',
 
         // Range

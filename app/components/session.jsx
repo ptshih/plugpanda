@@ -21,11 +21,6 @@ export default React.createClass({
   displayName: 'Session',
 
   statics: {
-    // willTransitionTo(transition, params, query, callback) {
-    //   // transition.redirect('root');
-    //   callback();
-    // },
-
     fetch(params, query) {
       return api.fetchSession(params.session_id).then((state) => {
         SessionActions.sync(state);
@@ -90,9 +85,6 @@ export default React.createClass({
       pointHighlightStroke: 'rgba(151,187,205,1)',
     }];
 
-    const estimatedAmount = math.round(this.state.charging_time / 1000 / 60 / 60);
-    const amount = this.state.total_amount > 0 ? this.state.total_amount : estimatedAmount;
-
     let displayHours;
     let displayMinutes;
     const chargingTime = math.round(this.state.charging_time / 1000 / 60, 0);
@@ -114,10 +106,10 @@ export default React.createClass({
       ['Station', this.state.device_id],
       ['Port', this.state.outlet_number],
       ['Charging Time', `${displayHours}h ${displayMinutes}m`],
-      ['Average Power', `${averagePower} kWh`],
-      ['Total Energy', `${totalEnergy} kW`],
-      ['Added Distance', `${milesAdded} miles`],
-      ['Total Price', `$${amount}`],
+      ['Average Power', `${averagePower.toFixed(3)} kWh`],
+      ['Total Energy', `${totalEnergy.toFixed(3)} kW`],
+      ['Added Distance', `${milesAdded.toFixed(1)} miles`],
+      ['Total Price', `$${this.state.total_amount.toFixed(2)}`],
     ];
 
     return (

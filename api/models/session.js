@@ -62,7 +62,7 @@ module.exports = BaseModel.extend({
         outlet_number: 'uinteger',
         port_level: 'uinteger',
         payment_type: 'string', // paid, free
-        current_charging: 'string', // not_charging, in_use, done
+        current_charging: 'string', // not_charging, in_use, done, fully_charged
         charging_time: 'uinteger',
         session_time: 'uinteger',
         start_time: 'timestamp',

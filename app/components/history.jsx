@@ -3,6 +3,7 @@ import React from 'react';
 
 // API
 import api from '../lib/api';
+import math from '../lib/math';
 
 // Store and Actions
 import HistoryStore from '../stores/car-store';
@@ -18,12 +19,7 @@ export default React.createClass({
   displayName: 'History',
 
   statics: {
-    // willTransitionTo(transition, params, query, callback) {
-    //   // transition.redirect('root');
-    //   callback();
-    // },
-
-    fetch(params, query) {
+    fetch() {
       return api.fetchHistory().then((sessions) => {
         HistoryActions.sync({
           sessions: sessions,
@@ -64,12 +60,12 @@ export default React.createClass({
       displayMinutes = chargingTime;
     }
 
-    const estimatedAmount = (session.charging_time / 1000 / 60 / 60);
-    const amount = session.total_amount > 0 ? session.total_amount : estimatedAmount;
+    const totalEnergy = math.round(session.energy_kwh, 3);
+    const milesAdded = math.round(session.miles_added, 1);
 
     let activeClass = '';
     if (session.status === 'on') {
-      activeClass = 'table-success';
+      activeClass = 'table-info';
     } else if (session.status === 'stopping') {
       activeClass = 'table-danger';
     }
@@ -78,18 +74,18 @@ export default React.createClass({
       <tr key={idx} className={activeClass}>
         <td>
           <Link to="session" params={{session_id: session.session_id}}>{session.session_id}</Link>
-          <div>{moment(session.updated_date).fromNow()}</div>
+          <div>{session.device_id} ({session.outlet_number})</div>
         </td>
         <td>
           <div>{displayHours}h {displayMinutes}m</div>
-          <div>{session.status}</div>
+          <div>{moment(session.updated_date).fromNow()}</div>
         </td>
         <td>
-          <div>{session.energy_kwh.toFixed(2)}kW</div>
-          <div>{session.miles_added.toFixed(2)}mi</div>
+          <div>{totalEnergy.toFixed(3)}kW</div>
+          <div>{milesAdded.toFixed(1)}mi</div>
         </td>
         <td>
-          <div>${amount.toFixed(2)}</div>
+          <div>${session.total_amount.toFixed(2)}</div>
           <div>{session.payment_type}</div>
         </td>
       </tr>
@@ -114,7 +110,7 @@ export default React.createClass({
       <div className="Section">
         <div className="row">
           <div className="col-xs-12">
-            <table className="table table-striped">
+            <table className="table">
               <thead className="thead-default">
                 <tr>
                   <th>Session</th>

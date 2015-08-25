@@ -21,12 +21,7 @@ export default React.createClass({
   displayName: 'Car',
 
   statics: {
-    // willTransitionTo(transition, params, query, callback) {
-    //   // transition.redirect('root');
-    //   callback();
-    // },
-
-    fetch(params, query) {
+    fetch() {
       return api.fetchCar().then((state) => {
         CarActions.sync(state);
       });
@@ -55,10 +50,12 @@ export default React.createClass({
 
   render() {
     const fuelPercent = math.round((this.state.maxFuel / this.state.remainingFuel) * 100, 0);
+    const timeDiff = moment(this.state.updateTime).diff(moment());
+    const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
 
     const rows = [
       ['VIN', this.state.vin],
-      ['Last Updated', moment(this.state.updateTime).fromNow()],
+      ['Last Updated', lastUpdated],
       ['Miles', this.state.miles],
       ['Lock', this.state.doorLockState],
       ['Battery', `${this.state.chargingLevelHv}%`],

@@ -91,44 +91,58 @@ module.exports = BaseController.extend({
       const chargingTime = session.get('charging_time');
       const paymentType = session.get('payment_type');
 
-      // This session is terminated, do nothing
-      if (status === 'off') {
-        console.log(`-----> Session: ${sessionId} is terminated.`);
-        return false;
-      }
-
-      // This session is being started
-      if (status === 'starting' && currentCharging === 'not_charging') {
-        console.log(`-----> Session: ${sessionId} is being started.`);
-        return true;
-      }
-
-      // This session is done, regardless of status
-      if (currentCharging === 'done') {
-        // Turn off the session
-        console.log(`-----> Session: ${sessionId} is being terminated.`);
-        session.set('status', 'off');
-        return true;
-      }
-
-      // When session is stopping but still `in_use`, do nothing
+      // NOTES
       // After unplugging, `current_charging` will become `done`
-      if (status === 'stopping' && currentCharging === 'in_use') {
-        // Waiting to be unplugged...
+
+      // This session is stopped
+      // Do nothing
+      if (status === 'off') {
         console.log(`-----> Session: ${sessionId} is stopped.`);
         return false;
       }
 
-      // This is a new active session
+      // This session is fully charged but hasn't been stopped
+      if (status !== 'stopping' && currentCharging === 'fully_charged') {
+        console.log(`-----> Session: ${sessionId} is fully charged.`);
+        return false;
+      }
+
+      // This session is stopping but still plugged in
+      // Do nothing
+      // Waiting to be unplugged...
+      if (status === 'stopping' && currentCharging === 'in_use') {
+        console.log(`-----> Session: ${sessionId} is stopping.`);
+        return false;
+      }
+
+      // This session is new and hasn't begun charging
+      // This is a transitory state, happens when a charge first starts
+      // Wait for `current_charging` to become `in_use`
+      if (status === 'starting' && currentCharging === 'not_charging') {
+        console.log(`-----> Session: ${sessionId} is starting.`);
+        return false;
+      }
+
+      // This session is actively charging
       if (status === 'starting' && currentCharging === 'in_use') {
+        console.log(`-----> Session: ${sessionId} is being started.`);
         // Turn on the session
-        console.log(`-----> Session: ${sessionId} is being activated.`);
         session.set('status', 'on');
         return true;
       }
 
-      // This is a currently active session
-      // Check `power_kw` and `charging_time`
+      // This session is done and unplugged
+      // Turn off the session permanently
+      if (status === 'on' && currentCharging === 'done') {
+        console.log(`-----> Session: ${sessionId} is being stopped.`);
+        // Turn off the session
+        session.set('status', 'off');
+        return true;
+      }
+
+      // This session is almost done charging
+      // Charging rate has dropped below `POWER_KW_MIN`
+      // And has been charging at least `CHARGING_TIME_MIN`
       if (status === 'on' &&
         currentCharging === 'in_use' &&
         paymentType === 'paid' &&
@@ -136,19 +150,19 @@ module.exports = BaseController.extend({
         powerKw < POWER_KW_MIN &&
         chargingTime > CHARGING_TIME_MIN) {
         console.log(`-----> Session: ${sessionId} is being stopped.`);
-        // Conditions met, stop session
+
+        // Send a stop request to Chargepoint
         return session.sendStopRequest().tap((body) => {
           if (!body.stop_session || !body.stop_session.status) {
-            throw new Error(`Failed to stop session -> ${sessionId}.`);
+            throw new Error(`Invalid response from Chargepoint.`);
           }
 
           // Stop the session
           session.set('status', 'stopping');
 
-          // Save `ack_id`
-          if (body.stop_session.ack_id) {
-            session.set('ack_id', body.stop_session.ack_id);
-          }
+          // Save `ack_id` from Chargepoint
+          // This is used to monitor the status of a stop request
+          session.set('ack_id', body.stop_session.ack_id);
         }).tap(() => {
           // Send SMS notification via Twilio
           return session.sendNotification({
@@ -158,17 +172,16 @@ module.exports = BaseController.extend({
           });
         }).catch((err) => {
           // Ignore errors
-          console.error(`-----> Failed to stop session: ${sessionId} with error: ${err.message}.`);
+          console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
         }).return(true);
       }
 
-      // Currently active session, should not be stopped
-      console.log(`-----> Session: ${sessionId} is activated.`);
+      // This session is currently active
+      console.log(`-----> Session: ${sessionId} is active.`);
       return true;
-    }).tap((shouldUpdate) => {
+    }).tap((shouldSave) => {
       // Save Session
-      if (shouldUpdate) {
-        console.log(`-----> Saving Session: ${session.get('session_id')}.`);
+      if (shouldSave) {
         return session.save();
       }
     }).then(() => {
