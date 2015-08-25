@@ -5,7 +5,7 @@
 import React from 'react';
 
 // Components
-import {Link} from 'react-router';
+// import {Link} from 'react-router';
 
 export default React.createClass({
   displayName: 'Root',
@@ -14,14 +14,8 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="Section container-fluid">
-        <h2>Welcome to Plug Panda Beta</h2>
-        <ul>
-          <li><Link to="car">Car Status</Link></li>
-          <li><Link to="session" params={{session_id: 'current'}}>Current Session</Link></li>
-          <li><Link to="history">Charging History</Link></li>
-        </ul>
-
+      <div className="Section">
+        <img src="/img/banksy_panda.jpg" className="BanksyPanda" />
       </div>
     );
   },
