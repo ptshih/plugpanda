@@ -41,11 +41,71 @@ module.exports = {
   }),
 
   /**
+   * Get car vehicle data
+   */
+  sendVehicleRequest: Muni.Promise.method(function(accessToken, vin) {
+    return request.send({
+      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }),
+
+  /**
    * Check the status of the car
    */
   sendStatusRequest: Muni.Promise.method(function(accessToken, vin) {
     return request.send({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/status`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }),
+
+  /**
+   * Get car driving statistics
+   */
+  sendStatisticsRequest: Muni.Promise.method(function(accessToken, vin, filter = 'allTrips') {
+    return request.send({
+      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/statistics/${filter}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }),
+
+  /**
+   * Get car destinations
+   */
+  sendDestinationsRequest: Muni.Promise.method(function(accessToken, vin) {
+    return request.send({
+      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/destinations`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }),
+
+  /**
+   * Get car charging profile
+   */
+  sendChargingProfileRequest: Muni.Promise.method(function(accessToken, vin) {
+    return request.send({
+      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/chargingprofile`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }),
+
+  /**
+   * Get car range map
+   */
+  sendRangeMapRequest: Muni.Promise.method(function(accessToken, vin) {
+    return request.send({
+      url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/rangemap`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -113,6 +173,4 @@ module.exports = {
       },
     });
   }),
-
-
 };

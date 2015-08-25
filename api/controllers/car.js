@@ -10,8 +10,33 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
+    this.routes.get['/car'] = {
+      action: this.vehicle,
+      middleware: [authenticateBmwMiddleware],
+    };
+
     this.routes.get['/car/status'] = {
       action: this.status,
+      middleware: [authenticateBmwMiddleware],
+    };
+
+    this.routes.get['/car/statistics'] = {
+      action: this.statistics,
+      middleware: [authenticateBmwMiddleware],
+    };
+
+    this.routes.get['/car/destinations'] = {
+      action: this.destinations,
+      middleware: [authenticateBmwMiddleware],
+    };
+
+    this.routes.get['/car/chargingprofile'] = {
+      action: this.chargingprofile,
+      middleware: [authenticateBmwMiddleware],
+    };
+
+    this.routes.get['/car/rangemap'] = {
+      action: this.rangemap,
       middleware: [authenticateBmwMiddleware],
     };
 
@@ -28,6 +53,16 @@ module.exports = BaseController.extend({
     };
   },
 
+
+  vehicle(req, res, next) {
+    return bmw.sendVehicleRequest(
+      req.bmw.access_token,
+      req.bmw.vin
+    ).then((data) => {
+      res.data = data.vehicle;
+      next();
+    }).catch(next);
+  },
 
   status(req, res, next) {
     const car = new CarModel();
@@ -49,6 +84,48 @@ module.exports = BaseController.extend({
       return car.save();
     }).then(() => {
       res.data = car.render();
+      next();
+    }).catch(next);
+  },
+
+  statistics(req, res, next) {
+    const filter = req.query.filter || 'allTrips';
+    return bmw.sendStatisticsRequest(
+      req.bmw.access_token,
+      req.bmw.vin,
+      filter
+    ).then((data) => {
+      res.data = data[filter];
+      next();
+    }).catch(next);
+  },
+
+  destinations(req, res, next) {
+    return bmw.sendDestinationsRequest(
+      req.bmw.access_token,
+      req.bmw.vin
+    ).then((data) => {
+      res.data = data.destinations;
+      next();
+    }).catch(next);
+  },
+
+  chargingprofile(req, res, next) {
+    return bmw.sendChargingProfileRequest(
+      req.bmw.access_token,
+      req.bmw.vin
+    ).then((data) => {
+      res.data = data.weeklyPlanner;
+      next();
+    }).catch(next);
+  },
+
+  rangemap(req, res, next) {
+    return bmw.sendRangeMapRequest(
+      req.bmw.access_token,
+      req.bmw.vin
+    ).then((data) => {
+      res.data = data.rangemap;
       next();
     }).catch(next);
   },
