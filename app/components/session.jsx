@@ -115,7 +115,7 @@ export default React.createClass({
     return (
       <div className="Section">
         <div>
-          <h5>Session {this.state.session_id}</h5>
+          <h5>Session: {this.state.session_id}</h5>
           <Table rows={rows} />
         </div>
 

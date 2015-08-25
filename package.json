@@ -56,7 +56,7 @@
     "postinstall": "npm run build",
     "test": "mocha",
     "start": "node --harmony server.js",
-    "start:watch": "DEBUG=muni:* nodemon --harmony -e js -e jsx -w server.js -w app.js -w api server.js",
+    "start:watch": "DEBUG=muni:* nodemon --harmony -e js -e jsx -w server.js -w app.js -w api/ server.js",
     "clean": "rm -rf assets/*",
     "bump": "git checkout master && git pull origin master && npm version patch && git push --follow-tags",
     "lint:app": "eslint --ext .js --ext .jsx --ignore-path .gitignore app",

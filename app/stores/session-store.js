@@ -8,7 +8,9 @@ import BaseStore from './base-store';
 // Store
 class SessionStore extends BaseStore {
   defaults() {
-    return {};
+    return {
+      vehicle_info: {},
+    };
   }
 
   // Constructor

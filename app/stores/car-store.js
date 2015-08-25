@@ -9,7 +9,12 @@ import BaseStore from './base-store';
 class CarStore extends BaseStore {
   defaults() {
     return {
-      position: {},
+      position: {
+        lat: 37.7833,
+        lon: -122.4167,
+        heading: 0,
+        status: 'OK',
+      },
     };
   }
 

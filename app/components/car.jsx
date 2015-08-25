@@ -54,7 +54,6 @@ export default React.createClass({
     const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
 
     const rows = [
-      ['VIN', this.state.vin],
       ['Last Updated', lastUpdated],
       ['Miles', this.state.miles],
       ['Lock', this.state.doorLockState],
@@ -72,6 +71,7 @@ export default React.createClass({
 
     return (
       <div className="Section">
+        <h5>VIN: {this.state.vin}</h5>
         <Table
           rows={rows}
         />
