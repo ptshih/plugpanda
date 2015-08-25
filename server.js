@@ -7,7 +7,7 @@ const path = require('path');
 global.nconf = require('nconf');
 nconf.env().defaults({
   NODE_ENV: 'development',
-  VERSION: require('./package.json').version,
+  VERSION: new Date().getTime(),
   PORT: 9001,
   HOST: 'http://localhost:9001',
 });
