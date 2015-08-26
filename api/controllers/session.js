@@ -90,6 +90,11 @@ module.exports = BaseController.extend({
       // Turn off the session permanently
       if (currentCharging === 'done') {
         console.log(`-----> Session: ${sessionId} is done and unplugged.`);
+        if (status === 'off') {
+          return false;
+        }
+
+        // `status` is `on` or `starting` or `stopping`
         session.set('status', 'off');
         return true;
       }
@@ -104,12 +109,12 @@ module.exports = BaseController.extend({
       if (currentCharging === 'fully_charged') {
         console.log(`-----> Session: ${sessionId} is fully charged.`);
 
-        if (status === 'starting' || status === 'off') {
+        if (status === 'starting') {
           session.set('status', 'on');
           return true;
         }
 
-        // `status` is `on` or `stopping`
+        // `status` is `on` or `off` or `stopping`
         return false;
       }
 
@@ -117,7 +122,7 @@ module.exports = BaseController.extend({
       if (currentCharging === 'in_use') {
         console.log(`-----> Session: ${sessionId} is actively charging.`);
 
-        if (status === 'starting' || status === 'off') {
+        if (status === 'starting') {
           session.set('status', 'on');
           return true;
         }
@@ -130,7 +135,7 @@ module.exports = BaseController.extend({
           return session.stopSession(req.user_id);
         }
 
-        // `status` is `on` (but should not stop) or `stopping`
+        // `status` is `on` (but should not stop) or `off` or `stopping`
         return false;
       }
 
