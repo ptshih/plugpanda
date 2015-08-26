@@ -134,7 +134,7 @@ module.exports = BaseController.extend({
 
       // This session is done and unplugged
       // Turn off the session permanently
-      if (status === 'on' && currentCharging === 'done') {
+      if (currentCharging === 'done') {
         console.log(`-----> Session: ${sessionId} is being stopped.`);
         // Turn off the session
         session.set('status', 'off');
