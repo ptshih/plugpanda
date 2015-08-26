@@ -1,9 +1,5 @@
 const _ = require('lodash');
 const chargepoint = require('../lib/chargepoint');
-const twilio = require('../lib/twilio');
-
-const POWER_KW_MIN = 5;
-const CHARGING_TIME_MIN = 300000;
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
 const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
@@ -84,106 +80,63 @@ module.exports = BaseController.extend({
     }).then(() => {
       // Session Status
       const sessionId = session.get('session_id');
-      const deviceId = session.get('device_id');
-      const outletNumber = session.get('outlet_number');
       const status = session.get('status');
       const currentCharging = session.get('current_charging');
-      const powerKw = session.get('power_kw');
-      const chargingTime = session.get('charging_time');
-      const paymentType = session.get('payment_type');
 
       // NOTES
       // After unplugging, `current_charging` will become `done`
 
-      // This session is stopped
-      // Do nothing
-      if (status === 'off') {
-        console.log(`-----> Session: ${sessionId} is stopped.`);
-        return false;
-      }
-
-      // This session is fully charged but hasn't been stopped
-      if (status !== 'stopping' && currentCharging === 'fully_charged') {
-        console.log(`-----> Session: ${sessionId} is fully charged.`);
-        return false;
-      }
-
-      // This session is stopping but still plugged in
-      // Do nothing
-      // Waiting to be unplugged...
-      if (status === 'stopping' && currentCharging === 'in_use') {
-        console.log(`-----> Session: ${sessionId} is stopping.`);
-        return false;
-      }
-
-      // This session is new and hasn't begun charging
-      // This is a transitory state, happens when a charge first starts
-      // Wait for `current_charging` to become `in_use`
-      if (status === 'starting' && currentCharging === 'not_charging') {
-        console.log(`-----> Session: ${sessionId} is starting.`);
-        return false;
-      }
-
-      // This session is actively charging
-      if (status === 'starting' && currentCharging === 'in_use') {
-        console.log(`-----> Session: ${sessionId} is being started.`);
-        // Turn on the session
-        session.set('status', 'on');
-        return true;
-      }
-
       // This session is done and unplugged
       // Turn off the session permanently
       if (currentCharging === 'done') {
-        console.log(`-----> Session: ${sessionId} is being stopped.`);
-        // Turn off the session
+        console.log(`-----> Session: ${sessionId} is done and unplugged.`);
         session.set('status', 'off');
         return true;
       }
 
-      // This session is almost done charging
-      // Charging rate has dropped below `POWER_KW_MIN`
-      // And has been charging at least `CHARGING_TIME_MIN`
-      if (status === 'on' &&
-        currentCharging === 'in_use' &&
-        paymentType === 'paid' &&
-        powerKw > 0 &&
-        powerKw < POWER_KW_MIN &&
-        chargingTime > CHARGING_TIME_MIN) {
-        console.log(`-----> Session: ${sessionId} is being stopped.`);
-
-        // Send a stop request to Chargepoint
-        return chargepoint.sendStopRequest(
-          req.user_id,
-          session.get('device_id'),
-          session.get('outlet_number')
-        ).tap((body) => {
-          if (!body.stop_session || !body.stop_session.status) {
-            throw new Error(`Invalid response from Chargepoint.`);
-          }
-
-          // Stop the session
-          session.set('status', 'stopping');
-
-          // Save `ack_id` from Chargepoint
-          // This is used to monitor the status of a stop request
-          session.set('ack_id', body.stop_session.ack_id);
-        }).tap(() => {
-          // Send SMS notification via Twilio
-          return twilio.sendNotification({
-            body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
-          }).tap((body) => {
-            console.log(`-----> Stop notification sent: ${body.sid}.`);
-          });
-        }).catch((err) => {
-          // Ignore errors
-          console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-        }).return(true);
+      // This session is warming up and plugged in
+      if (currentCharging === 'not_charging') {
+        console.log(`-----> Session: ${sessionId} is not charging.`);
+        return false;
       }
 
-      // This session is currently active
-      console.log(`-----> Session: ${sessionId} is active.`);
-      return true;
+      // This session is fully charged and plugged in
+      if (currentCharging === 'fully_charged') {
+        console.log(`-----> Session: ${sessionId} is fully charged.`);
+
+        if (status === 'starting' || status === 'off') {
+          session.set('status', 'on');
+          return true;
+        }
+
+        // `status` is `on` or `stopping`
+        return false;
+      }
+
+      // The session is actively charging and plugged in
+      if (currentCharging === 'in_use') {
+        console.log(`-----> Session: ${sessionId} is actively charging.`);
+
+        if (status === 'starting' || status === 'off') {
+          session.set('status', 'on');
+          return true;
+        }
+
+        // This session is tapering and is almost done charging
+        // Charging rate has dropped below `POWER_KW_MIN`
+        // And has been charging at least `CHARGING_TIME_MIN`
+        if (status === 'on' && session.shouldStopSession()) {
+          console.log(`-----> Session: ${sessionId} should be stopped.`);
+          return session.stopSession(req.user_id);
+        }
+
+        // `status` is `on` (but should not stop) or `stopping`
+        return false;
+      }
+
+      // Unknown session status
+      console.log(`-----> Session: ${sessionId} has unknown charging status: ${currentCharging}.`);
+      return false;
     }).tap((shouldSave) => {
       // Save Session
       if (shouldSave) {

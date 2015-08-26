@@ -1,4 +1,9 @@
+const POWER_KW_MIN = 5;
+const CHARGING_TIME_MIN = 300000;
+
 const _ = require('lodash');
+const chargepoint = require('../lib/chargepoint');
+const twilio = require('../lib/twilio');
 
 const BaseModel = require('./base');
 
@@ -83,6 +88,52 @@ module.exports = BaseModel.extend({
     this.set(this._convertFromChargepoint(chargingStatus));
   },
 
+  shouldStopSession() {
+    return this.get('payment_type') === 'paid' &&
+      this.get('power_kw') > 0 &&
+      this.get('power_kw') < POWER_KW_MIN &&
+      this.get('charging_time') > CHARGING_TIME_MIN;
+  },
+
+  /**
+   * Send stop request to Chargepoint
+   * Send SMS notification via Twilio
+   */
+  stopSession(userId) {
+    const sessionId = this.get('session_id');
+    const deviceId = this.get('device_id');
+    const outletNumber = this.get('outlet_number');
+
+    // Send a stop request to Chargepoint
+    return chargepoint.sendStopRequest(
+      userId,
+      deviceId,
+      outletNumber
+    ).tap((body) => {
+      if (!body.stop_session || !body.stop_session.status) {
+        throw new Error(`Invalid response from Chargepoint.`);
+      }
+
+      // Stop the session
+      this.set('status', 'stopping');
+
+      // Save `ack_id` from Chargepoint
+      // This is used to monitor the status of a stop request
+      this.set('ack_id', body.stop_session.ack_id);
+    }).tap(() => {
+      // Send SMS notification via Twilio
+      return twilio.sendNotification({
+        body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
+      }).tap((body) => {
+        console.log(`-----> Stop notification sent: ${body.sid}.`);
+      });
+    }).catch((err) => {
+      // Ignore errors
+      console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
+      return true;
+    }).return(true);
+  },
+
   _convertFromChargepoint(obj) {
     const attrs = {
       company_id: obj.company_id,
@@ -122,4 +173,6 @@ module.exports = BaseModel.extend({
 
     return attrs;
   },
+
+
 });
