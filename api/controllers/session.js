@@ -132,7 +132,11 @@ module.exports = BaseController.extend({
         // And has been charging at least `CHARGING_TIME_MIN`
         if (status === 'on' && session.shouldStopSession()) {
           console.log(`-----> Session: ${sessionId} should be stopped.`);
-          return session.stopSession(req.user_id);
+          return session.stopSession(req.user_id).catch((err) => {
+            // Ignore errors
+            console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
+            return true;
+          }).return(true);
         }
 
         // `status` is `on` (but should not stop) or `off` or `stopping`
@@ -183,11 +187,7 @@ module.exports = BaseController.extend({
         session_id: _.parseInt(req.params.session_id),
       },
     }).then(() => {
-      return chargepoint.sendStopRequest(
-        req.user_id,
-        session.get('device_id'),
-        session.get('outlet_number')
-      );
+      return session.stopSession(req.user_id);
     }).then((body) => {
       res.data = body;
       next();

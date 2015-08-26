@@ -110,8 +110,12 @@ module.exports = BaseModel.extend({
       deviceId,
       outletNumber
     ).tap((body) => {
-      if (!body.stop_session || !body.stop_session.status) {
+      if (!body.stop_session) {
         throw new Error(`Invalid response from Chargepoint.`);
+      }
+
+      if (!body.stop_session.status) {
+        throw new Error(`Stop session failed with error: ${body.stop_session.error}.`);
       }
 
       // Stop the session
@@ -127,11 +131,7 @@ module.exports = BaseModel.extend({
       }).tap((body) => {
         console.log(`-----> Stop notification sent: ${body.sid}.`);
       });
-    }).catch((err) => {
-      // Ignore errors
-      console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-      return true;
-    }).return(true);
+    });
   },
 
   _convertFromChargepoint(obj) {
@@ -173,6 +173,4 @@ module.exports = BaseModel.extend({
 
     return attrs;
   },
-
-
 });
