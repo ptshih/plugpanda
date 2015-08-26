@@ -3,7 +3,7 @@ import React from 'react';
 // Components
 
 export default React.createClass({
-  displayName: 'Error',
+  displayName: 'Err',
 
   propTypes: {
     err: React.PropTypes.object.isRequired,
