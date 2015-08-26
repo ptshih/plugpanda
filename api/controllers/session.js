@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const chargepoint = require('../lib/chargepoint');
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
 const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
@@ -67,7 +66,7 @@ module.exports = BaseController.extend({
     const session = new SessionModel();
     session.db = this.get('db');
 
-    return chargepoint.sendStatusRequest(req.user_id).tap((chargingStatus) => {
+    return session.currentSessionStatus(req.user_id).tap((chargingStatus) => {
       // Fetch from DB
       return session.fetch({
         query: {
@@ -203,7 +202,7 @@ module.exports = BaseController.extend({
         session_id: _.parseInt(req.params.session_id),
       },
     }).then(() => {
-      return chargepoint.sendStopAckRequest(req.user_id, session.get('ack_id'));
+      return session.stopSessionAck(req.user_id);
     }).then((body) => {
       res.data = body;
       next();

@@ -134,6 +134,14 @@ module.exports = BaseModel.extend({
     });
   },
 
+  stopSessionAck(userId) {
+    return chargepoint.sendStopAckRequest(userId, this.get('ack_id'));
+  },
+
+  currentSessionStatus(userId) {
+    return chargepoint.sendStatusRequest(userId);
+  },
+
   _convertFromChargepoint(obj) {
     const attrs = {
       company_id: obj.company_id,
