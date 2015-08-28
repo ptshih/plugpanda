@@ -109,7 +109,7 @@ module.exports = BaseModel.extend({
       userId,
       deviceId,
       outletNumber
-    ).tap((body) => {
+    ).then((body) => {
       if (!body.stop_session) {
         throw new Error(`Invalid response from Chargepoint.`);
       }
@@ -118,13 +118,10 @@ module.exports = BaseModel.extend({
         throw new Error(`Stop session failed with error: ${body.stop_session.error}.`);
       }
 
-      // Stop the session
-      this.set('status', 'stopping');
+      return body.stop_session;
+    }).tap((stopSession) => {
+      console.log(`-----> Stop session ack: ${stopSession.ack_id}.`);
 
-      // Save `ack_id` from Chargepoint
-      // This is used to monitor the status of a stop request
-      this.set('ack_id', body.stop_session.ack_id);
-    }).tap(() => {
       // Send SMS notification via Twilio
       return twilio.sendNotification({
         body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,

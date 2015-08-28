@@ -104,19 +104,6 @@ module.exports = BaseController.extend({
         return false;
       }
 
-      // This session is fully charged and plugged in
-      if (currentCharging === 'fully_charged') {
-        console.log(`-----> Session: ${sessionId} is fully charged.`);
-
-        if (status === 'starting') {
-          session.set('status', 'on');
-          return true;
-        }
-
-        // `status` is `on` or `off` or `stopping`
-        return false;
-      }
-
       // The session is actively charging and plugged in
       if (currentCharging === 'in_use') {
         console.log(`-----> Session: ${sessionId} is actively charging.`);
@@ -134,14 +121,39 @@ module.exports = BaseController.extend({
           // And has been charging at least `CHARGING_TIME_MIN`
           if (session.shouldStopSession()) {
             console.log(`-----> Session: ${sessionId} should be stopped.`);
-            return session.stopSession(req.user_id).catch((err) => {
+            return session.stopSession(req.user_id).then((stopSession) => {
+              // Stop the session
+              // Save `ack_id` from Chargepoint
+              // This is used to monitor the status of a stop request
+              session.set('status', 'stopping');
+              session.set('ack_id', stopSession.ack_id);
+              return true;
+            }).catch((err) => {
               // Ignore errors
               console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
               return true;
-            }).return(true);
+            });
           }
 
           return true;
+        }
+
+        // This session is fully charged and plugged in
+        if (currentCharging === 'fully_charged') {
+          console.log(`-----> Session: ${sessionId} is fully charged.`);
+
+          return session.stopSession(req.user_id).then((stopSession) => {
+            // Stop the session
+            // Save `ack_id` from Chargepoint
+            // This is used to monitor the status of a stop request
+            session.set('status', 'stopping');
+            session.set('ack_id', stopSession.ack_id);
+            return true;
+          }).catch((err) => {
+            // Ignore errors
+            console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
+            return true;
+          });
         }
 
         // `status` is `off` or `stopping`
@@ -193,8 +205,8 @@ module.exports = BaseController.extend({
       },
     }).then(() => {
       return session.stopSession(req.user_id);
-    }).then((body) => {
-      res.data = body;
+    }).then((stopSession) => {
+      res.data = stopSession;
       next();
     }).catch(next);
   },
