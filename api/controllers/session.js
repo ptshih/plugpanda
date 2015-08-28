@@ -84,44 +84,31 @@ module.exports = BaseController.extend({
 
       // NOTES
       // After unplugging, `current_charging` will become `done`
-
-      // This session is done and unplugged
-      // Turn off the session permanently
       if (currentCharging === 'done') {
+        // This session is done and unplugged
+        // Turn off the session permanently
         console.log(`-----> Session: ${sessionId} is done and unplugged.`);
-        if (status === 'off') {
-          return false;
-        }
-
-        // `status` is `on` or `starting` or `stopping`
         session.set('status', 'off');
         return true;
-      }
-
-      // This session is warming up and plugged in
-      if (currentCharging === 'not_charging') {
+      } else if (currentCharging === 'not_charging') {
+        // This session is warming up and plugged in
         console.log(`-----> Session: ${sessionId} is not charging.`);
-        return false;
-      }
-
-      // The session is actively charging and plugged in
-      if (currentCharging === 'in_use') {
-        // This session is stopping
+        session.set('status', 'starting');
+        return true;
+      } else if (currentCharging === 'in_use') {
+        // The session is actively charging and plugged in
         if (status === 'stopping') {
+          // This session is stopping
           console.log(`-----> Session: ${sessionId} is stopping.`);
+          // Don't save
           return false;
-        }
-
-
-        // This session has started
-        if (status === 'starting') {
+        } else if (status === 'starting') {
+          // This session was starting
+          // Start the session
           session.set('status', 'on');
           console.log(`-----> Session: ${sessionId} is starting.`);
           return true;
-        }
-
-        // This session is actively charging and updating
-        if (status === 'on') {
+        } else if (status === 'on') {
           // This session is tapering and is almost done charging
           // Charging rate has dropped below `POWER_KW_MIN`
           // And has been charging at least `CHARGING_TIME_MIN`
@@ -141,16 +128,15 @@ module.exports = BaseController.extend({
             });
           }
 
+          // This session is actively charging and updating
           console.log(`-----> Session: ${sessionId} is actively charging.`);
           return true;
         }
 
-        // `status` is `off` or `stopping`
+        // `status` is `off`
         return false;
-      }
-
-      // This session is fully charged and plugged in
-      if (currentCharging === 'fully_charged') {
+      } else if (currentCharging === 'fully_charged') {
+        // This session is fully charged and plugged in
         console.log(`-----> Session: ${sessionId} is fully charged.`);
 
         return session.stopSession(req.user_id).then((stopSession) => {
