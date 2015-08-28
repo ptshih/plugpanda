@@ -121,8 +121,14 @@ module.exports = BaseController.extend({
       if (currentCharging === 'in_use') {
         console.log(`-----> Session: ${sessionId} is actively charging.`);
 
+        // This session has started
         if (status === 'starting') {
           session.set('status', 'on');
+          return true;
+        }
+
+        // This session is actively charging and updating
+        if (status === 'on') {
           return true;
         }
 
@@ -138,8 +144,8 @@ module.exports = BaseController.extend({
           }).return(true);
         }
 
-        // `status` is `on` (but should not stop) or `off` or `stopping`
-        return true;
+        // `status` is `off` or `stopping`
+        return false;
       }
 
       // Unknown session status
