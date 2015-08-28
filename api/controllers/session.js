@@ -129,19 +129,19 @@ module.exports = BaseController.extend({
 
         // This session is actively charging and updating
         if (status === 'on') {
-          return true;
-        }
+          // This session is tapering and is almost done charging
+          // Charging rate has dropped below `POWER_KW_MIN`
+          // And has been charging at least `CHARGING_TIME_MIN`
+          if (session.shouldStopSession()) {
+            console.log(`-----> Session: ${sessionId} should be stopped.`);
+            return session.stopSession(req.user_id).catch((err) => {
+              // Ignore errors
+              console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
+              return true;
+            }).return(true);
+          }
 
-        // This session is tapering and is almost done charging
-        // Charging rate has dropped below `POWER_KW_MIN`
-        // And has been charging at least `CHARGING_TIME_MIN`
-        if (status === 'on' && session.shouldStopSession()) {
-          console.log(`-----> Session: ${sessionId} should be stopped.`);
-          return session.stopSession(req.user_id).catch((err) => {
-            // Ignore errors
-            console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-            return true;
-          }).return(true);
+          return true;
         }
 
         // `status` is `off` or `stopping`
