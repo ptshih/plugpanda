@@ -139,7 +139,7 @@ module.exports = BaseController.extend({
         }
 
         // `status` is `on` (but should not stop) or `off` or `stopping`
-        return false;
+        return true;
       }
 
       // Unknown session status
