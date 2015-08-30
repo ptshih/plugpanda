@@ -21,6 +21,10 @@ export default React.createClass({
     this._initializeChart();
   },
 
+  componentDidUpdate() {
+    this._initializeChart();
+  },
+
   // Render
 
   render() {
