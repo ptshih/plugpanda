@@ -1,6 +1,5 @@
 // const _ = require('lodash');
 const BMW = require('../lib/bmw');
-const math = require('../lib/math');
 
 // Twilio
 const twilio = require('twilio');
@@ -73,7 +72,7 @@ module.exports = BaseController.extend({
           return `SOC: ${car.get('chargingLevelHv')}%`;
         case 'fuel':
         case 'gas':
-          const fuelPercent = math.round((car.get('remainingFuel') / car.get('maxFuel')) * 100, 0);
+          const fuelPercent = ((car.get('remainingFuel') / car.get('maxFuel')) * 100).toFixed(0);
           return `Fuel: ${fuelPercent}%`;
         case 'door':
         case 'alarm':
