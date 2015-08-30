@@ -49,7 +49,7 @@ export default React.createClass({
   // Render
 
   render() {
-    const fuelPercent = math.round((this.state.maxFuel / this.state.remainingFuel) * 100, 0);
+    const fuelPercent = math.round((this.state.remainingFuel / this.state.maxFuel) * 100, 0);
     const timeDiff = moment(this.state.updateTime).diff(moment());
     const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
 
