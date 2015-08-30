@@ -78,7 +78,7 @@ module.exports = BaseController.extend({
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
-        car.setFrombmwapi(data.vehicleStatus);
+        car.setFromBMW(data.vehicleStatus);
       });
     }).tap(() => {
       return car.save();
