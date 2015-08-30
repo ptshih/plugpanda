@@ -1,5 +1,5 @@
 // const _ = require('lodash');
-const BMW = require('../lib/bmw');
+const bmwapi = require('../lib/bmw');
 
 const BaseController = require('./base');
 const CarModel = require('../models/car');
@@ -56,7 +56,7 @@ module.exports = BaseController.extend({
 
 
   vehicle(req, res, next) {
-    return BMW.sendVehicleRequest(
+    return bmwapi.sendVehicleRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -74,11 +74,11 @@ module.exports = BaseController.extend({
         vin: req.bmw.vin,
       },
     }).tap(() => {
-      return BMW.sendStatusRequest(
+      return bmwapi.sendStatusRequest(
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
-        car.setFromBMW(data.vehicleStatus);
+        car.setFrombmwapi(data.vehicleStatus);
       });
     }).tap(() => {
       return car.save();
@@ -90,7 +90,7 @@ module.exports = BaseController.extend({
 
   statistics(req, res, next) {
     const filter = req.query.filter || 'allTrips';
-    return BMW.sendStatisticsRequest(
+    return bmwapi.sendStatisticsRequest(
       req.bmw.access_token,
       req.bmw.vin,
       filter
@@ -101,7 +101,7 @@ module.exports = BaseController.extend({
   },
 
   destinations(req, res, next) {
-    return BMW.sendDestinationsRequest(
+    return bmwapi.sendDestinationsRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -111,7 +111,7 @@ module.exports = BaseController.extend({
   },
 
   chargingprofile(req, res, next) {
-    return BMW.sendChargingProfileRequest(
+    return bmwapi.sendChargingProfileRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -121,7 +121,7 @@ module.exports = BaseController.extend({
   },
 
   rangemap(req, res, next) {
-    return BMW.sendRangeMapRequest(
+    return bmwapi.sendRangeMapRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -135,7 +135,7 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
     car.bmw = req.bmw;
 
-    return BMW.sendPOIRequest(
+    return bmwapi.sendPOIRequest(
       req.bmw.access_token,
       req.bmw.vin,
       {
@@ -153,7 +153,7 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
     car.bmw = req.bmw;
 
-    return BMW.sendExecuteServiceRequest(
+    return bmwapi.sendExecuteServiceRequest(
       req.bmw.access_token,
       req.bmw.vin,
       req.body.type

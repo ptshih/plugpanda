@@ -1,7 +1,7 @@
-const BMW = require('../lib/bmw');
+const bmwapi = require('../lib/bmw');
 
 module.exports = function(req, res, next) {
-  return BMW.auth().then((bmw) => {
+  return bmwapi.auth().then((bmw) => {
     req.bmw = bmw;
     return next();
   }).catch((err) => {

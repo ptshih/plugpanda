@@ -1,5 +1,5 @@
 // const _ = require('lodash');
-const BMW = require('../lib/bmw');
+const bmwapi = require('../lib/bmw');
 
 // Twilio
 const twilio = require('twilio');
@@ -7,8 +7,6 @@ const twilio = require('twilio');
 const CarModel = require('../models/car');
 const SessionModel = require('../models/session');
 const BaseController = require('./base');
-
-const authenticateBmwMiddleware = require('../middleware/authenticate_bmw');
 
 module.exports = BaseController.extend({
   setupRoutes() {
@@ -53,7 +51,7 @@ module.exports = BaseController.extend({
     const car = new CarModel();
     car.db = this.get('db');
 
-    return BMW.auth().then((bmw) => {
+    return bmwapi.auth().then((bmw) => {
       req.bmw = bmw;
       return car.fetch({
         query: {
@@ -61,7 +59,7 @@ module.exports = BaseController.extend({
         },
       });
     }).tap(() => {
-      return BMW.sendStatusRequest(
+      return bmwapi.sendStatusRequest(
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
