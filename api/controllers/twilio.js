@@ -1,6 +1,6 @@
 // const _ = require('lodash');
 const BMW = require('../lib/bmw');
-import math from '../lib/math';
+const math = require('../lib/math');
 
 // Twilio
 const twilio = require('twilio');
