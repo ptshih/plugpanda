@@ -1,5 +1,5 @@
 // const _ = require('lodash');
-const bmw = require('../lib/bmw');
+const BMW = require('../lib/bmw');
 
 const BaseController = require('./base');
 const CarModel = require('../models/car');
@@ -56,7 +56,7 @@ module.exports = BaseController.extend({
 
 
   vehicle(req, res, next) {
-    return bmw.sendVehicleRequest(
+    return BMW.sendVehicleRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -74,7 +74,7 @@ module.exports = BaseController.extend({
         vin: req.bmw.vin,
       },
     }).tap(() => {
-      return bmw.sendStatusRequest(
+      return BMW.sendStatusRequest(
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
@@ -90,7 +90,7 @@ module.exports = BaseController.extend({
 
   statistics(req, res, next) {
     const filter = req.query.filter || 'allTrips';
-    return bmw.sendStatisticsRequest(
+    return BMW.sendStatisticsRequest(
       req.bmw.access_token,
       req.bmw.vin,
       filter
@@ -101,7 +101,7 @@ module.exports = BaseController.extend({
   },
 
   destinations(req, res, next) {
-    return bmw.sendDestinationsRequest(
+    return BMW.sendDestinationsRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -111,7 +111,7 @@ module.exports = BaseController.extend({
   },
 
   chargingprofile(req, res, next) {
-    return bmw.sendChargingProfileRequest(
+    return BMW.sendChargingProfileRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -121,7 +121,7 @@ module.exports = BaseController.extend({
   },
 
   rangemap(req, res, next) {
-    return bmw.sendRangeMapRequest(
+    return BMW.sendRangeMapRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -135,7 +135,7 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
     car.bmw = req.bmw;
 
-    return bmw.sendPOIRequest(
+    return BMW.sendPOIRequest(
       req.bmw.access_token,
       req.bmw.vin,
       {
@@ -153,7 +153,7 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
     car.bmw = req.bmw;
 
-    return bmw.sendExecuteServiceRequest(
+    return BMW.sendExecuteServiceRequest(
       req.bmw.access_token,
       req.bmw.vin,
       req.body.type

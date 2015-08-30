@@ -61,7 +61,7 @@ module.exports = BaseController.extend({
         },
       });
     }).tap(() => {
-      return bmw.sendStatusRequest(
+      return BMW.sendStatusRequest(
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
