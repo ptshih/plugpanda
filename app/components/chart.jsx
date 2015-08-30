@@ -39,6 +39,9 @@ export default React.createClass({
       datasets: this.props.datasets,
     }, {
       responsive: this.props.responsive,
+      showTooltips: false,
+      scaleIntegersOnly: false,
+      pointHitDetectionRadius: 0,
     });
   },
 });
