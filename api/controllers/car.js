@@ -68,11 +68,10 @@ module.exports = BaseController.extend({
   status(req, res, next) {
     const car = new CarModel();
     car.db = this.get('db');
-    car.bmw = req.bmw;
 
     return car.fetch({
       query: {
-        vin: car.bmw.vin,
+        vin: req.bmw.vin,
       },
     }).tap(() => {
       return bmw.sendStatusRequest(

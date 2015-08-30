@@ -21,8 +21,8 @@ module.exports = BaseModel.extend({
 
         // Range
         chargingLevelHv: 0,
-        remainingFuel: 0,
-        maxFuel: 9, // CODED
+        remainingFuel: 0.0,
+        maxFuel: 9.0, // CODED
         remainingRangeElectricMls: 0,
         remainingRangeFuelMls: 0,
 
@@ -62,8 +62,8 @@ module.exports = BaseModel.extend({
 
         // Range
         chargingLevelHv: 'uinteger',
-        remainingFuel: 'uinteger',
-        maxFuel: 'uinteger', // CODED
+        remainingFuel: 'ufloat',
+        maxFuel: 'ufloat', // CODED
         remainingRangeElectricMls: 'uinteger',
         remainingRangeFuelMls: 'uinteger',
 

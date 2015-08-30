@@ -8,6 +8,8 @@ const CarModel = require('../models/car');
 const SessionModel = require('../models/session');
 const BaseController = require('./base');
 
+const authenticateBmwMiddleware = require('../middleware/authenticate_bmw');
+
 module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
@@ -52,14 +54,19 @@ module.exports = BaseController.extend({
     car.db = this.get('db');
 
     return BMW.auth().then((bmw) => {
-      car.bmw = bmw;
+      req.bmw = bmw;
       return car.fetch({
         query: {
-          vin: car.bmw.vin,
+          vin: req.bmw.vin,
         },
       });
     }).tap(() => {
-      return car.updateStatus();
+      return bmw.sendStatusRequest(
+        req.bmw.access_token,
+        req.bmw.vin
+      ).tap((data) => {
+        car.setFromBMW(data.vehicleStatus);
+      });
     }).tap(() => {
       return car.save();
     }).then(() => {
