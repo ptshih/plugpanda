@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const chargepoint = require('../lib/chargepoint');
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
 const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
@@ -66,7 +67,7 @@ module.exports = BaseController.extend({
     const session = new SessionModel();
     session.db = this.get('db');
 
-    return session.currentSessionStatus(req.user_id).tap((chargingStatus) => {
+    return chargepoint.sendStatusRequest(req.user.get('chargepoint')).tap((chargingStatus) => {
       // Fetch from DB
       return session.fetch({
         query: {
@@ -132,7 +133,7 @@ module.exports = BaseController.extend({
           // And has been charging at least `CHARGING_TIME_MIN`
           if (session.shouldStopSession()) {
             console.log(`-----> Session: ${sessionId} should be stopped.`);
-            return session.stopSession(req.user_id).then((stopSession) => {
+            return session.stopSession().then((stopSession) => {
               // Stop the session
               // Save `ack_id` from Chargepoint
               // This is used to monitor the status of a stop request
@@ -160,7 +161,7 @@ module.exports = BaseController.extend({
         console.log(`-----> Session: ${sessionId} is fully charged.`);
 
         // Stop the session
-        return session.stopSession(req.user_id).then((stopSession) => {
+        return session.stopSession().then((stopSession) => {
           // Save `ack_id` from Chargepoint
           // This is used to monitor the status of a stop request
           session.set('status', 'stopping');
@@ -217,7 +218,7 @@ module.exports = BaseController.extend({
         session_id: _.parseInt(req.params.session_id),
       },
     }).then(() => {
-      return session.stopSession(req.user_id);
+      return session.stopSession();
     }).then((stopSession) => {
       res.data = stopSession;
       next();
@@ -233,7 +234,7 @@ module.exports = BaseController.extend({
         session_id: _.parseInt(req.params.session_id),
       },
     }).then(() => {
-      return session.stopSessionAck(req.user_id);
+      return session.stopSessionAck();
     }).then((body) => {
       res.data = body;
       next();

@@ -5,14 +5,14 @@ const _ = require('lodash');
 const chargepoint = require('../lib/chargepoint');
 const twilio = require('../lib/twilio');
 
-const BaseModel = require('./base');
+const BaseUserModel = require('./base_user');
 
-module.exports = BaseModel.extend({
+module.exports = BaseUserModel.extend({
   urlRoot: 'sessions',
 
   defaults() {
     return _.extend({},
-      _.result(BaseModel.prototype, 'defaults'), {
+      _.result(BaseUserModel.prototype, 'defaults'), {
         // From Chargepoint
         company_id: 0,
         session_id: 0,
@@ -49,7 +49,7 @@ module.exports = BaseModel.extend({
 
   schema() {
     return _.extend({},
-      _.result(BaseModel.prototype, 'schema'), {
+      _.result(BaseUserModel.prototype, 'schema'), {
         // From Chargepoint
         company_id: 'uinteger',
         session_id: 'uinteger',
@@ -99,14 +99,14 @@ module.exports = BaseModel.extend({
    * Send stop request to Chargepoint
    * Send SMS notification via Twilio
    */
-  stopSession(userId) {
+  stopSession() {
     const sessionId = this.get('session_id');
     const deviceId = this.get('device_id');
     const outletNumber = this.get('outlet_number');
 
     // Send a stop request to Chargepoint
     return chargepoint.sendStopRequest(
-      userId,
+      this.user.get('chargepoint'),
       deviceId,
       outletNumber
     ).then((body) => {
@@ -131,12 +131,8 @@ module.exports = BaseModel.extend({
     });
   },
 
-  stopSessionAck(userId) {
-    return chargepoint.sendStopAckRequest(userId, this.get('ack_id'));
-  },
-
-  currentSessionStatus(userId) {
-    return chargepoint.sendStatusRequest(userId);
+  stopSessionAck() {
+    return chargepoint.sendStopAckRequest(this.user.get('chargepoint'), this.get('ack_id'));
   },
 
   _convertFromChargepoint(obj) {

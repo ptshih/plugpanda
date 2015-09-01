@@ -2,6 +2,7 @@ const Muni = require('muni');
 const db = require('../config/db');
 
 // Controllers
+const UserController = require('../controllers/user');
 const CarController = require('../controllers/car');
 const SessionController = require('../controllers/session');
 const StationController = require('../controllers/station');
@@ -11,6 +12,9 @@ const TwilioController = require('../controllers/twilio');
 const router = new Muni.Router({
   version: 'api',
   controllers: {
+    user: new UserController({
+      db: db,
+    }),
     car: new CarController({
       db: db,
     }),

@@ -1,13 +1,13 @@
 const _ = require('lodash');
 
-const BaseModel = require('./base');
+const BaseUserModel = require('./base_user');
 
-module.exports = BaseModel.extend({
+module.exports = BaseUserModel.extend({
   urlRoot: 'cars',
 
   defaults() {
     return _.extend({},
-      _.result(BaseModel.prototype, 'defaults'), {
+      _.result(BaseUserModel.prototype, 'defaults'), {
         // From BMW
         vin: null,
         miles: 0,
@@ -48,7 +48,7 @@ module.exports = BaseModel.extend({
 
   schema() {
     return _.extend({},
-      _.result(BaseModel.prototype, 'schema'), {
+      _.result(BaseUserModel.prototype, 'schema'), {
         // From BMW
         vin: 'string',
         miles: 'uinteger',

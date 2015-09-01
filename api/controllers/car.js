@@ -5,6 +5,7 @@ const BaseController = require('./base');
 const CarModel = require('../models/car');
 // const CarCollection = require('../collections/car');
 
+const authenticateUserMiddleware = require('../middleware/authenticate_user');
 const authenticateBmwMiddleware = require('../middleware/authenticate_bmw');
 
 module.exports = BaseController.extend({
@@ -13,43 +14,43 @@ module.exports = BaseController.extend({
 
     this.routes.get['/car'] = {
       action: this.vehicle,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
     this.routes.get['/car/status'] = {
       action: this.status,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
     this.routes.get['/car/statistics'] = {
       action: this.statistics,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
     this.routes.get['/car/destinations'] = {
       action: this.destinations,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
     this.routes.get['/car/chargingprofile'] = {
       action: this.chargingprofile,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
     this.routes.get['/car/rangemap'] = {
       action: this.rangemap,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
     this.routes.post['/car/poi'] = {
       action: this.poi,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
       requiredParams: ['street', 'city', 'country'],
     };
 
     this.routes.post['/car/service'] = {
       action: this.service,
-      middleware: [authenticateBmwMiddleware],
+      middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
       requiredParams: ['type'],
     };
   },

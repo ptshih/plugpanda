@@ -29,6 +29,11 @@ if (!nconf.get('PANDA_WORKER_TOKEN')) {
   process.exit(1);
 }
 
+if (!nconf.get('PANDA_CLIENT_TOKEN')) {
+  console.error('Missing ENV for PANDA_CLIENT_TOKEN.');
+  process.exit(1);
+}
+
 // Transparently support JSX
 require('babel/register');
 

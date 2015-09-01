@@ -17,7 +17,7 @@ module.exports = BaseController.extend({
 
 
   station(req, res, next) {
-    return chargepoint.sendStationRequest(req.user_id, req.params.station_id).then((body) => {
+    return chargepoint.sendStationRequest(req.user.get('chargepoint'), req.params.station_id).then((body) => {
       res.data = body;
       next();
     }).catch(next);
