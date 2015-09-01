@@ -11,11 +11,11 @@ import SessionActions from '../actions/session-actions';
 const sessionStore = new SessionStore();
 
 // Components
-import Chart from './chart';
 import Table from './table';
 import GoogleMap from './google-map';
+import Highcharts from 'react-highcharts';
 
-import moment from 'moment';
+// import moment from 'moment';
 
 export default React.createClass({
   displayName: 'Session',
@@ -48,8 +48,46 @@ export default React.createClass({
 
   // Render
 
+  getChartConfig(name, data, options = {}) {
+    _.defaults(options, {
+      color: 'rgba(151,187,205,1)',
+      fillColor: 'rgba(151,187,205,0.2)',
+    });
+
+    return {
+      chart: {
+        type: 'area',
+      },
+      title: {
+        text: '',
+      },
+      xAxis: {
+        type: 'datetime',
+      },
+      yAxis: {
+        title: '',
+      },
+      series: [{
+        name: name,
+        data: data,
+      }],
+      plotOptions: {
+        area: {
+          color: options.color,
+          fillColor: options.fillColor,
+          showInLegend: false,
+          marker: {
+            enabled: true,
+            symbol: 'circle',
+            radius: 3,
+          },
+        },
+      },
+    };
+  },
+
   render() {
-    const labels = [];
+    // Charts
     const powerData = [];
     const energyData = [];
 
@@ -57,33 +95,22 @@ export default React.createClass({
       if (dataPoint.power_kw === 0) {
         return;
       }
-      labels.push(moment(dataPoint.timestamp).format('LT'));
-      powerData.push(math.round(dataPoint.power_kw));
-      energyData.push(math.round(dataPoint.energy_kwh));
+
+      powerData.push([
+        dataPoint.timestamp,
+        math.round(dataPoint.power_kw),
+      ]);
+
+      energyData.push([
+        dataPoint.timestamp,
+        math.round(dataPoint.energy_kwh),
+      ]);
     });
 
-    const powerDatasets = [{
-      label: 'Power (kW)',
-      data: powerData,
-      fillColor: 'rgba(220,220,220,0.2)',
-      strokeColor: 'rgba(220,220,220,1)',
-      pointColor: 'rgba(220,220,220,1)',
-      pointStrokeColor: '#fff',
-      pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(220,220,220,1)',
-    }];
+    const powerConfig = this.getChartConfig('Power (kW)', powerData);
+    const energyConfig = this.getChartConfig('Energy (kWh)', energyData);
 
-    const energyDatasets = [{
-      label: 'Energy (kWh)',
-      data: energyData,
-      fillColor: 'rgba(151,187,205,0.2)',
-      strokeColor: 'rgba(151,187,205,1)',
-      pointColor: 'rgba(151,187,205,1)',
-      pointStrokeColor: '#fff',
-      pointHighlightFill: '#fff',
-      pointHighlightStroke: 'rgba(151,187,205,1)',
-    }];
-
+    // Stats
     let displayHours;
     let displayMinutes;
     const chargingTime = math.round(this.state.charging_time / 1000 / 60, 0);
@@ -111,6 +138,7 @@ export default React.createClass({
       ['Total Price', `$${this.state.total_amount.toFixed(2)}`],
     ];
 
+
     return (
       <div className="Section">
         <div>
@@ -120,12 +148,12 @@ export default React.createClass({
 
         <div>
           <h5>Power (kW)</h5>
-          <Chart labels={labels} datasets={powerDatasets} />
+          <Highcharts config={powerConfig} />
         </div>
 
         <div>
           <h5>Energy (kWh)</h5>
-          <Chart labels={labels} datasets={energyDatasets} />
+          <Highcharts config={energyConfig} />
         </div>
 
         <div>

@@ -29,6 +29,9 @@ export default React.createClass({
           <li className="nav-item">
             <NavLink to="history">History</NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to="account">Account</NavLink>
+          </li>
         </ul>
       </nav>
     );

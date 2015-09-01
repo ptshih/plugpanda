@@ -14,6 +14,7 @@ import Root from './app/components/root';
 import Car from './app/components/car';
 import Session from './app/components/session';
 import History from './app/components/history';
+import Account from './app/components/account';
 
 // App Layout
 const App = React.createClass({
@@ -34,6 +35,7 @@ const routes = (
     <Route name="car" path="car" handler={Car} />
     <Route name="session" path="sessions/:session_id" handler={Session} />
     <Route name="history" path="sessions" handler={History} />
+    <Route name="account" path="account" handler={Account} />
   </Route>
 );
 
