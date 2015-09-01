@@ -13,9 +13,14 @@ module.exports = {
    * 4. Save the Session to db
    *
    */
-  sendStatusRequest: Muni.Promise.method(function(chargepoint) {
+  sendStatusRequest: Muni.Promise.method(function(chargepoint, sessionId) {
+    let sessionQuery = '';
+    if (sessionId) {
+      sessionQuery = `"session_id":${sessionId}`;
+    }
+
     return request.send({
-      url: `https://mc.chargepoint.com/map-prod/v2?{"charging_status":{},"user_id":${chargepoint.user_id}}`,
+      url: `https://mc.chargepoint.com/map-prod/v2?{"charging_status":{${sessionQuery}},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.access_token}`,
       },

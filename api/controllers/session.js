@@ -56,7 +56,14 @@ module.exports = BaseController.extend({
     return session.fetch({
       query: query,
       require: true,
-      sort: [['updated', 'desc']],
+      sort: [['created', 'desc']],
+    }).tap(() => {
+      if (query.session_id) {
+        return chargepoint.sendStatusRequest(req.user.get('chargepoint'), query.session_id).then((chargingStatus) => {
+          // Update from Chargepoint
+          return session.setFromChargepoint(chargingStatus);
+        });
+      }
     }).then(() => {
       res.data = session.render();
       next();
@@ -73,115 +80,15 @@ module.exports = BaseController.extend({
         query: {
           session_id: chargingStatus.session_id,
         },
-      }).tap(() => {
-        // Update from Chargepoint
-        session.setFromChargepoint(chargingStatus);
       });
-    }).then(() => {
-      // Session Status
-      const sessionId = session.get('session_id');
-      const status = session.get('status');
-      const currentCharging = session.get('current_charging');
-
-      // NOTES
-      // After unplugging, `current_charging` will become `done`
-
-      // This session is done and unplugged
-      // Turn off the session permanently
-      if (currentCharging === 'done') {
-        console.log(`-----> Session: ${sessionId} is done and unplugged.`);
-        session.set('status', 'off');
-        return true;
+    }).tap((chargingStatus) => {
+      // Set `user_id` if new session
+      if (!session.get('user_id')) {
+        session.set('user_id', req.user.id);
       }
 
-      // This session is warming up and plugged in
-      if (currentCharging === 'not_charging') {
-        console.log(`-----> Session: ${sessionId} is not charging.`);
-        session.set('status', 'starting');
-        return true;
-      }
-
-      // The session is actively charging and plugged in
-      if (currentCharging === 'in_use') {
-        // This session is stopping
-        if (status === 'stopping') {
-          console.log(`-----> Session: ${sessionId} is stopping.`);
-          // Don't save
-          return false;
-        }
-
-        // This session was off
-        if (status === 'off') {
-          console.log(`-----> Session: ${sessionId} was off.`);
-          // Start the session
-          session.set('status', 'on');
-          return true;
-        }
-
-        // This session was starting
-        if (status === 'starting') {
-          console.log(`-----> Session: ${sessionId} is starting.`);
-          // Start the session
-          session.set('status', 'on');
-          return true;
-        }
-
-        // This session is actively charging and updating
-        if (status === 'on') {
-          // This session is tapering and is almost done charging
-          // Charging rate has dropped below `POWER_KW_MIN`
-          // And has been charging at least `CHARGING_TIME_MIN`
-          if (session.shouldStopSession()) {
-            console.log(`-----> Session: ${sessionId} should be stopped.`);
-            return session.stopSession().then((stopSession) => {
-              // Stop the session
-              // Save `ack_id` from Chargepoint
-              // This is used to monitor the status of a stop request
-              session.set('status', 'stopping');
-              session.set('ack_id', stopSession.ack_id);
-              return true;
-            }).catch((err) => {
-              // Ignore errors
-              console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-              return true;
-            });
-          }
-
-          // This session is charging above the minimum rate
-          console.log(`-----> Session: ${sessionId} is actively charging.`);
-          return true;
-        }
-
-        // Unknown `status`, don't save
-        return false;
-      }
-
-      // This session is fully charged and plugged in
-      if (currentCharging === 'fully_charged') {
-        console.log(`-----> Session: ${sessionId} is fully charged.`);
-
-        // Stop the session
-        return session.stopSession().then((stopSession) => {
-          // Save `ack_id` from Chargepoint
-          // This is used to monitor the status of a stop request
-          session.set('status', 'stopping');
-          session.set('ack_id', stopSession.ack_id);
-          return true;
-        }).catch((err) => {
-          // Ignore errors
-          console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-          return true;
-        });
-      }
-
-      // Unknown session status
-      console.log(`-----> Session: ${sessionId} has unknown charging status: ${currentCharging}.`);
-      return false;
-    }).tap((shouldSave) => {
-      // Save Session
-      if (shouldSave) {
-        return session.save();
-      }
+      // Update from Chargepoint
+      return session.setFromChargepoint(chargingStatus);
     }).then(() => {
       res.data = session.render();
       next();
@@ -196,7 +103,7 @@ module.exports = BaseController.extend({
         payment_type: 'string',
         device_id: 'integer',
       },
-      sortParam: 'updated',
+      sortParam: 'created',
       sortOrder: 'desc',
     });
 
