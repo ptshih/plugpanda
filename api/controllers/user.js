@@ -3,6 +3,8 @@ const Muni = require('muni');
 const UserModel = require('../models/user');
 const BaseController = require('./base');
 
+const authenticateUserMiddleware = require('../middleware/authenticate_user');
+
 module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
@@ -22,13 +24,22 @@ module.exports = BaseController.extend({
       action: this.register,
       requiredParams: ['email'],
     };
+
+    this.routes.get['/account'] = {
+      action: this.account,
+      middleware: [authenticateUserMiddleware],
+    };
   },
 
+  account(req, res, next) {
+    res.data = req.user.render();
+    return next();
+  },
 
   // POST
   // Updated this method to NOT user a UserModel
   // Because it needs to support BOTH V1 and V2 users
-  login: function(req, res, next) {
+  login(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
     const password = req.body.password || req.query.password;
 
@@ -40,7 +51,7 @@ module.exports = BaseController.extend({
           email: email,
         },
       });
-    }).tap(function(user) {
+    }).tap((user) => {
       if (user.isNew()) {
         throw new Muni.Error('User with email `' + email + '` not found.', 404);
       }
@@ -52,26 +63,26 @@ module.exports = BaseController.extend({
   },
 
   // POST
-  register: function(req, res, next) {
+  register(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
     let password = req.body.password || req.query.password;
     const name = req.body.name || null;
 
-    return Muni.Promise.bind(this).then(function() {
+    return Muni.Promise.bind(this).then(() => {
       const user = new UserModel();
       user.db = this.get('db');
       return user;
-    }).tap(function(user) {
+    }).tap((user) => {
       if (!password) {
         password = user.generateRandomPassword();
       }
       return user.setPassword(password);
-    }).tap(function(user) {
+    }).tap((user) => {
       return user.setFromRequest({
         email: email,
         name: name,
       });
-    }).tap(function(user) {
+    }).tap((user) => {
       user.set('access_token', user.generateAccessToken());
       return user.save();
     }).then(this.render(req, res, next)).catch(next);

@@ -66,6 +66,14 @@ const api = {
     });
   }),
 
+  fetchAccount: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/account',
+    }).then((body) => {
+      return body.data;
+    });
+  }),
+
   // BMW
 
   // POST
