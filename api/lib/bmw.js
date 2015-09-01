@@ -27,6 +27,7 @@ module.exports = {
     }).then((newBmw) => {
       // Update `expires_at` using `expires_in` (minus 5 minutes)
       newBmw.expires_at = nowTime + (newBmw.expires_in * 1000) - 300000;
+      newBmw.vin = bmw.vin;
 
       // Update user with new auth newBmw
       user.set('bmw', newBmw);

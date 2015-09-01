@@ -53,37 +53,13 @@ export default React.createClass({
     const powerData = [];
     const energyData = [];
 
-    const warmupData = [];
-
-    _.each(this.state.update_data, function(dataPoint, idx) {
-      if (idx < 5) {
-        if (dataPoint.power_kw > 0) {
-          warmupData.push(dataPoint);
-        }
-
+    _.each(this.state.update_data, function(dataPoint) {
+      if (dataPoint.power_kw === 0) {
         return;
       }
-
-      let power = 0;
-      let energy = 0;
       labels.push(moment(dataPoint.timestamp).format('LT'));
-
-      if (idx === 5) {
-        _.each(warmupData, function(warmupDataPoint) {
-          power += warmupDataPoint.power_kw;
-        });
-        power /= warmupData.length;
-        _.each(warmupData, function(warmupDataPoint) {
-          energy += warmupDataPoint.energy_kwh;
-        });
-        energy /= warmupData.length;
-      } else {
-        power = dataPoint.power_kw;
-        energy = dataPoint.energy_kwh;
-      }
-
-      powerData.push(math.round(power));
-      energyData.push(math.round(energy));
+      powerData.push(math.round(dataPoint.power_kw));
+      energyData.push(math.round(dataPoint.energy_kwh));
     });
 
     const powerDatasets = [{
