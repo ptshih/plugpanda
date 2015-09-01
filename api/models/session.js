@@ -85,7 +85,7 @@ module.exports = BaseUserModel.extend({
     );
   },
 
-  setFromChargepoint(chargingStatus) {
+  saveFromChargepoint(chargingStatus) {
     return Muni.Promise.bind(this).tap(() => {
       this.set(this._convertFromChargepoint(chargingStatus));
     }).then(() => {

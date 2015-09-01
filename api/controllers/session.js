@@ -61,7 +61,7 @@ module.exports = BaseController.extend({
       if (query.session_id) {
         return chargepoint.sendStatusRequest(req.user.get('chargepoint'), query.session_id).then((chargingStatus) => {
           // Update from Chargepoint
-          return session.setFromChargepoint(chargingStatus);
+          return session.saveFromChargepoint(chargingStatus);
         });
       }
     }).then(() => {
@@ -88,7 +88,7 @@ module.exports = BaseController.extend({
       }
 
       // Update from Chargepoint
-      return session.setFromChargepoint(chargingStatus);
+      return session.saveFromChargepoint(chargingStatus);
     }).then(() => {
       res.data = session.render();
       next();

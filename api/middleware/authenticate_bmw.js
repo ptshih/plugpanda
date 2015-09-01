@@ -5,7 +5,6 @@ module.exports = function(req, res, next) {
     return next(new Error(`Error authenticating User for BMW: ${err.message}`));
   }
   return bmwapi.auth(req.user).then((bmw) => {
-    console.log(bmw)
     req.bmw = bmw;
     return next();
   }).catch((err) => {
