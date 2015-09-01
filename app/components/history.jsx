@@ -78,7 +78,7 @@ export default React.createClass({
         </td>
         <td>
           <div>{displayHours}h {displayMinutes}m</div>
-          <div>{moment(session.updated_date).fromNow()}</div>
+          <div>{moment(session.created_date).fromNow()}</div>
         </td>
         <td>
           <div>{totalEnergy.toFixed(3)}kW</div>

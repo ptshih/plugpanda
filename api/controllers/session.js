@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Muni = require('muni');
 const chargepoint = require('../lib/chargepoint');
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
@@ -19,6 +20,11 @@ module.exports = BaseController.extend({
 
     this.routes.get['/session/worker'] = {
       action: this.status,
+      middleware: [authenticateWorkerMiddleware, authenticateUserMiddleware],
+    };
+
+    this.routes.get['/session/outdated'] = {
+      action: this.outdated,
       middleware: [authenticateWorkerMiddleware, authenticateUserMiddleware],
     };
 
@@ -113,6 +119,37 @@ module.exports = BaseController.extend({
     return sessions.fetch(qo).tap(() => {
       res.data = sessions.render();
       next();
+    }).catch(next);
+  },
+
+  outdated(req, res, next) {
+    const sessions = new SessionCollection();
+    sessions.db = this.get('db');
+
+    return sessions.fetch({
+      query: {
+        status: 'on',
+        updated: {
+          $lt: new Date().getTime() - 600000,
+        },
+      },
+    }).tap(() => {
+      if (!sessions.length) {
+        res.data = [];
+        return next();
+      }
+
+      const promises = [];
+      sessions.each((session) => {
+        promises.push(chargepoint.sendStatusRequest(req.user.get('chargepoint'), session.get('session_id')).then((chargingStatus) => {
+          return session.saveFromChargepoint(chargingStatus);
+        }));
+      });
+
+      return Muni.Promise.all(promises).then(() => {
+        res.data = sessions.render();
+        return next();
+      });
     }).catch(next);
   },
 
