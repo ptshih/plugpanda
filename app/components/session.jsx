@@ -56,7 +56,7 @@ export default React.createClass({
 
     return {
       chart: {
-        type: 'area',
+        type: 'areaspline',
       },
       title: {
         text: '',
@@ -72,7 +72,7 @@ export default React.createClass({
         data: data,
       }],
       plotOptions: {
-        area: {
+        areaspline: {
           color: options.color,
           fillColor: options.fillColor,
           showInLegend: false,
@@ -86,31 +86,21 @@ export default React.createClass({
     };
   },
 
-  render() {
-    // Charts
-    const powerData = [];
-    const energyData = [];
-
-    _.each(this.state.update_data, function(dataPoint) {
+  getStats() {
+    const totalPower = _.reduce(this.state.update_data, (total, dataPoint) => {
+      return total + dataPoint.power_kw;
+    }, 0);
+    const totalPoints = _.reduce(this.state.update_data, (total, dataPoint) => {
       if (dataPoint.power_kw === 0) {
-        return;
+        return total;
       }
+      return total + 1;
+    }, 0);
 
-      powerData.push([
-        dataPoint.timestamp,
-        math.round(dataPoint.power_kw),
-      ]);
+    const averagePower = math.round(totalPower / totalPoints, 3);
+    const totalEnergy = math.round(this.state.energy_kwh, 3);
+    const milesAdded = math.round(this.state.miles_added, 1);
 
-      energyData.push([
-        dataPoint.timestamp,
-        math.round(dataPoint.energy_kwh),
-      ]);
-    });
-
-    const powerConfig = this.getChartConfig('Power (kW)', powerData);
-    const energyConfig = this.getChartConfig('Energy (kWh)', energyData);
-
-    // Stats
     let displayHours;
     let displayMinutes;
     const chargingTime = math.round(this.state.charging_time / 1000 / 60, 0);
@@ -122,11 +112,7 @@ export default React.createClass({
       displayMinutes = chargingTime;
     }
 
-    const averagePower = math.round(_.sum(powerData) / _.size(powerData), 3);
-    const totalEnergy = math.round(this.state.energy_kwh, 3);
-    const milesAdded = math.round(this.state.miles_added, 1);
-
-    const rows = [
+    return [
       ['Session Status', this.state.status],
       ['Charging Status', this.state.current_charging],
       ['Station', this.state.device_id],
@@ -137,13 +123,48 @@ export default React.createClass({
       ['Added Distance', `${milesAdded.toFixed(1)} miles`],
       ['Total Price', `$${this.state.total_amount.toFixed(2)}`],
     ];
+  },
 
+  getChartData() {
+    const power = [];
+    const energy = [];
+
+    _.each(this.state.update_data, function(dataPoint) {
+      if (dataPoint.power_kw === 0) {
+        return;
+      }
+
+      power.push([
+        dataPoint.timestamp,
+        math.round(dataPoint.power_kw),
+      ]);
+
+      energy.push([
+        dataPoint.timestamp,
+        math.round(dataPoint.energy_kwh),
+      ]);
+    });
+
+    return {
+      power: power,
+      energy: energy,
+    };
+  },
+
+  render() {
+    // Stats
+    const stats = this.getStats();
+
+    // Charts
+    const chartData = this.getChartData();
+    const powerConfig = this.getChartConfig('Power (kW)', chartData.power);
+    const energyConfig = this.getChartConfig('Energy (kWh)', chartData.energy);
 
     return (
       <div className="Section">
         <div>
           <h5>Session: {this.state.session_id}</h5>
-          <Table rows={rows} />
+          <Table rows={stats} />
         </div>
 
         <div>
