@@ -130,7 +130,7 @@ module.exports = BaseController.extend({
       query: {
         status: 'on',
         updated: {
-          $lt: new Date().getTime() - 600000,
+          $lt: new Date().getTime() - 600000, // 10 minutes
         },
       },
     }).tap(() => {
@@ -147,7 +147,7 @@ module.exports = BaseController.extend({
       });
 
       return Muni.Promise.all(promises).then(() => {
-        res.data = sessions.render();
+        res.data = sessions.pluck('session_id');
         return next();
       });
     }).catch(next);
