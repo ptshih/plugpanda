@@ -158,30 +158,31 @@ export default React.createClass({
     // Charts
     const chartData = this.getChartData();
     const powerConfig = this.getChartConfig('Power (kW)', chartData.power);
-    const energyConfig = this.getChartConfig('Energy (kWh)', chartData.energy);
+    // const energyConfig = this.getChartConfig('Energy (kWh)', chartData.energy);
 
     return (
       <div className="Section">
         <div>
           <h5>Session: {this.state.session_id}</h5>
-          <Table rows={stats} />
         </div>
 
-        <div>
-          <h5>Power (kW)</h5>
-          <Highcharts config={powerConfig} />
+        <div className="row-margin">
+          <div className="col-md-6 col-xs-12">
+            <Table rows={stats} />
+          </div>
+          <div className="col-md-6 col-xs-12">
+            <GoogleMap
+              lat={this.state.lat}
+              lon={this.state.lon}
+            />
+          </div>
         </div>
 
-        <div>
-          <h5>Energy (kWh)</h5>
-          <Highcharts config={energyConfig} />
-        </div>
-
-        <div>
-          <GoogleMap
-            lat={this.state.lat}
-            lon={this.state.lon}
-          />
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Power (kW)</h5>
+            <Highcharts config={powerConfig} />
+          </div>
         </div>
       </div>
     );
