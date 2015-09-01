@@ -1,4 +1,4 @@
-const POWER_KW_MIN = 5;
+const POWER_KW_MIN = 3.5;
 const CHARGING_TIME_MIN = 300000;
 
 const _ = require('lodash');
