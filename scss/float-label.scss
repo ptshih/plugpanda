@@ -1,0 +1,40 @@
+.FloatLabel {
+  position: relative;
+}
+
+.FloatLabel-label {
+  position: absolute;
+  margin: 0;
+  top: 7px;
+  left: 13px;
+  color: #999;
+  transition: 0.3s ease-in-out;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.FloatLabel-label--on {
+  position: absolute;
+  padding:0 2px;
+  top: -9px;
+  left: 15px;
+  background-color: #fff;
+  font-size: 12px;
+}
+
+.FloatLabel-label--disabled {
+  display: none;
+}
+
+// Unused
+.FloatLabel-error {
+  position: absolute;
+  margin: 0;
+  padding:0 2px;
+  top: 25px;
+  left: 11px;
+  color: #f0461d;
+  background-color: #fff;
+  pointer-events: none;
+  z-index: 3;
+}

@@ -15,7 +15,7 @@ export default React.createClass({
     return {
       zoom: 16,
       width: 480,
-      height: 480,
+      height: 380,
     };
   },
 

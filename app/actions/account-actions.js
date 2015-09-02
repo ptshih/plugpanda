@@ -1,5 +1,5 @@
 /**
- * All Actions for Car
+ * All Actions for Account
  */
 
 import Dispatcher from '../dispatcher/dispatcher';
@@ -15,10 +15,10 @@ const Actions = {
 
   dispatch(type = 'UNKNOWN', data = {}) {
     // DEBUG
-    console.log('DISPATCH: %s -> TYPE: %s', 'car', type);
+    console.log('DISPATCH: %s -> TYPE: %s', 'account', type);
 
     Dispatcher.dispatch({
-      store: 'car',
+      store: 'account',
       type: type,
       data: data,
     });

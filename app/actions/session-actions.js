@@ -34,12 +34,6 @@ const Actions = {
     });
   },
 
-  changeType(type) {
-    this.dispatch('CHANGE_TYPE', {
-      type: type,
-    });
-  },
-
 };
 
 export default Actions;
