@@ -10,7 +10,7 @@ module.exports = {
 
     return request.send({
       method: 'POST',
-      url: `https://webservices.chargepoint.com/backend.php/mobileapi`,
+      url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       json: {
         version: '54',
         validate_login: {

@@ -196,9 +196,16 @@ module.exports = BaseModel.extend({
   // Login to Chargepoint and get `user_id` and `auth_token`
   authenticateChargepoint(email, password) {
     return chargepoint.sendLoginRequest(email, password).tap((login) => {
+      const userId = _.parseInt(login.user_id);
+      const authToken = login.auth_token;
+
+      if (!userId || !authToken) {
+        throw new Error('Invalid Chargepoint Response.');
+      }
+
       this.set('chargepoint', {
-        user_id: _.parseInt(login.user_id),
-        auth_token: login.auth_token,
+        user_id: userId,
+        auth_token: authToken,
       });
     }).return(this);
   },

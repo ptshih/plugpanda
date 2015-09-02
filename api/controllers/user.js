@@ -46,7 +46,9 @@ module.exports = BaseController.extend({
   },
 
   chargepoint(req, res, next) {
-    return req.user.authenticateChargepoint(req.body.email, req.body.password).then(() => {
+    const email = Muni.sanitizeEmail(req.body.email || req.query.email);
+    const password = (req.body.password || req.query.password).trim();
+    return req.user.authenticateChargepoint(email, password).then(() => {
       return req.user.save();
     }).then(() => {
       res.data = req.user.render();
@@ -83,7 +85,7 @@ module.exports = BaseController.extend({
   // POST
   register(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
-    let password = req.body.password || req.query.password;
+    let password = (req.body.password || req.query.password).trim();
     const name = req.body.name || null;
 
     return Muni.Promise.bind(this).then(() => {
