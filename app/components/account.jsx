@@ -60,7 +60,144 @@ export default React.createClass({
     // TODO: readonly for now
   },
 
-  render() {
+  // Render
+
+  getChargepoint() {
+    if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Chargepoint Account</h5>
+
+            <div>Already Authenticated</div>
+            <div>User ID: {this.state.chargepoint.user_id}</div>
+            <div>Auth Token: {this.state.chargepoint.auth_token}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row-margin">
+        <div className="col-xs-12">
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Chargepoint Account</h5>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-5 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Email"
+                  placeholder="your@email.com"
+                />
+              </fieldset>
+            </div>
+            <div className="col-md-5 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Password"
+                  type="password"
+                  placeholder="password"
+                />
+              </fieldset>
+            </div>
+            <div className="col-md-2 col-xs-12">
+              <button className="btn btn-primary">Authenticate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  getBMW() {
+    if (this.state.bmw.vin && this.state.bmw.access_token) {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>BMW Account</h5>
+
+            <div>Already Authenticated</div>
+            <div>VIN: {this.state.bmw.vin}</div>
+            <div>Access Token: {this.state.bmw.access_token}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  },
+
+  getSubscription() {
+    if (this.state.stripe.customer && this.state.stripe.subscription) {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Your Subscription</h5>
+
+            <div>Subscription Active</div>
+            <div>Customer: {this.state.stripe.customer}</div>
+            <div>Subscription: {this.state.stripe.subscription}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row-margin">
+        <div className="col-xs-12">
+          <h5>Your Subscription</h5>
+
+          <p>Subscription is not active.</p>
+          <div>
+            <button className="btn btn-primary">Start Subscription</button>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  getInformation() {
+    return (
+      <div className="row-margin">
+        <div className="col-xs-12">
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Your Information</h5>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Name"
+                  value={this.state.name}
+                  placeholder="Your Name"
+                  onChange={this.onChangeName}
+                />
+              </fieldset>
+            </div>
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Email"
+                  value={this.state.email}
+                  placeholder="Your Email"
+                  onChange={this.onChangeEmail}
+                />
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  getSettings() {
     const currencyOptions = [{
       label: 'usd',
       value: 'USD',
@@ -78,52 +215,53 @@ export default React.createClass({
     }];
 
     return (
-      <div className="Section">
-        <div className="row-margin">
-          <div className="col-md-6 col-xs-12">
-            <fieldset className="form-group">
-              <InputTextFloatLabel
-                label="Name"
-                value={this.state.name}
-                placeholder="Your Name"
-                onChange={this.onChangeName}
-              />
-            </fieldset>
+      <div className="row-margin">
+        <div className="col-xs-12">
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Your Settings</h5>
+            </div>
           </div>
-          <div className="col-md-6 col-xs-12">
-            <fieldset className="form-group">
-              <InputTextFloatLabel
-                label="Email"
-                value={this.state.email}
-                placeholder="Your Email"
-                onChange={this.onChangeEmail}
-              />
-            </fieldset>
-          </div>
-        </div>
 
-        <div className="row-margin">
-          <div className="col-md-6 col-xs-12">
-            <fieldset className="form-group">
-              <SelectFloatLabel
-                label="Currency"
-                value={this.state.currency}
-                onChange={this.onChangeCurrency}
-                options={currencyOptions}
-              />
-            </fieldset>
-          </div>
-          <div className="col-md-6 col-xs-12">
-            <fieldset className="form-group">
-              <SelectFloatLabel
-                label="Timezone"
-                value={this.state.timezone}
-                onChange={this.onChangeTimezone}
-                options={timezoneOptions}
-              />
-            </fieldset>
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <SelectFloatLabel
+                  label="Currency"
+                  value={this.state.currency}
+                  onChange={this.onChangeCurrency}
+                  options={currencyOptions}
+                />
+              </fieldset>
+            </div>
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <SelectFloatLabel
+                  label="Timezone"
+                  value={this.state.timezone}
+                  onChange={this.onChangeTimezone}
+                  options={timezoneOptions}
+                />
+              </fieldset>
+            </div>
           </div>
         </div>
+      </div>
+    );
+  },
+
+  render() {
+    return (
+      <div className="Section">
+        {this.getInformation()}
+
+        {this.getSettings()}
+
+        {this.getChargepoint()}
+
+        {this.getBMW()}
+
+        {this.getSubscription()}
       </div>
     );
   },

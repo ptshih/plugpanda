@@ -6,6 +6,7 @@ export default React.createClass({
 
   propTypes: {
     id: React.PropTypes.string,
+    type: React.PropTypes.string,
     className: React.PropTypes.string,
     value: React.PropTypes.oneOfType([
       React.PropTypes.string,
@@ -21,6 +22,7 @@ export default React.createClass({
 
   getDefaultProps() {
     return {
+      type: 'text',
       placeholder: '',
       disabled: false,
     };
@@ -34,7 +36,7 @@ export default React.createClass({
 
     return (
       <input
-        type="text"
+        type={this.props.type}
         className={className}
         data-prefix={this.props.prefix}
         data-property={this.props.property}
