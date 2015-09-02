@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const Muni = require('muni');
 const Chance = require('chance');
 const chance = new Chance();
+const chargepoint = require('../lib/chargepoint');
 
 const BaseModel = require('./base');
 
@@ -64,7 +65,7 @@ module.exports = BaseModel.extend({
 
         chargepoint: {
           user_id: 0,
-          access_token: null,
+          auth_token: null,
         },
       }
     );
@@ -103,19 +104,19 @@ module.exports = BaseModel.extend({
 
         chargepoint: {
           user_id: 'uinteger',
-          access_token: 'string',
+          auth_token: 'string',
         },
       }
     );
   },
 
-  validate: function() {
+  validate() {
     if (!this.get('email')) {
       return new Muni.Error('User requires an email.', 400);
     }
   },
 
-  decryptAccessToken: function(accessToken) {
+  decryptAccessToken(accessToken) {
     return JSON.parse(Muni.decryptString(accessToken, 'aes256', config.client_id));
   },
 
@@ -160,7 +161,7 @@ module.exports = BaseModel.extend({
     return body;
   }),
 
-  setPassword: function(password) {
+  setPassword(password) {
     if (!password) {
       return this;
     }
@@ -172,12 +173,12 @@ module.exports = BaseModel.extend({
   },
 
   // Convert plain text password into a hash
-  hashPassword: function(password, salt) {
+  hashPassword(password, salt) {
     return bcrypt.hashSync(password, salt);
   },
 
   // Generate a random password
-  generateRandomPassword: function() {
+  generateRandomPassword() {
     return chance.string({
       length: 8,
       pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*',
@@ -185,15 +186,25 @@ module.exports = BaseModel.extend({
   },
 
   // Generates an access token using `_id` and a timestamp
-  generateAccessToken: function() {
+  generateAccessToken() {
     return Muni.encryptString(JSON.stringify({
       _id: this.id,
       created: (new Date()).getTime(),
     }), 'aes256', nconf.get('PANDA_CLIENT_TOKEN'));
   },
 
+  // Login to Chargepoint and get `user_id` and `auth_token`
+  authenticateChargepoint(email, password) {
+    return chargepoint.sendLoginRequest(email, password).tap((login) => {
+      this.set('chargepoint', {
+        user_id: _.parseInt(login.user_id),
+        auth_token: login.auth_token,
+      });
+    }).return(this);
+  },
+
   // Return name parsed from email
-  _usernameFromEmail: function(email) {
+  _usernameFromEmail(email) {
     const matches = /[(\W|^)[\w.+\-]{0,25}(?=@)/.exec(email);
     return _.first(matches);
   },

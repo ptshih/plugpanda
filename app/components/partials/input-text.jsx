@@ -29,7 +29,7 @@ export default React.createClass({
   // Render
 
   render() {
-    const className = ['form-control', this.props.className].join(' ').trim();
+    const className = ['Input', 'form-control', this.props.className].join(' ').trim();
     const props = _.omit(this.props, ['className', 'children', 'prefix', 'property']);
 
     return (

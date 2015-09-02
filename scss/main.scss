@@ -5,8 +5,12 @@
 
 .row-margin {
   @extend .row;
-  margin-top: 0.9375rem;
-  margin-bottom: 0.9375rem;
+
+  // Medium devices (tablets, 48em and up)
+  @media (min-width: 48em) {
+    margin-top: 0.9375rem;
+    margin-bottom: 0.9375rem;
+  }
 }
 
 .Section {
@@ -45,4 +49,10 @@
   -moz-appearance: none;
   appearance: none;
   padding: 0.375rem 0.825rem
+}
+
+.Input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }

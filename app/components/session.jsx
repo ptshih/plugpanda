@@ -162,8 +162,10 @@ export default React.createClass({
 
     return (
       <div className="Section">
-        <div>
-          <h5>Session: {this.state.session_id}</h5>
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Session: {this.state.session_id}</h5>
+          </div>
         </div>
 
         <div className="row-margin">

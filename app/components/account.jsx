@@ -77,44 +77,53 @@ export default React.createClass({
       value: 'PST',
     }];
 
-
     return (
       <div className="Section">
-        <fieldset className="form-group">
-          <InputTextFloatLabel
-            label="Name"
-            value={this.state.name}
-            placeholder="Your Name"
-            onChange={this.onChangeName}
-          />
-        </fieldset>
+        <div className="row-margin">
+          <div className="col-md-6 col-xs-12">
+            <fieldset className="form-group">
+              <InputTextFloatLabel
+                label="Name"
+                value={this.state.name}
+                placeholder="Your Name"
+                onChange={this.onChangeName}
+              />
+            </fieldset>
+          </div>
+          <div className="col-md-6 col-xs-12">
+            <fieldset className="form-group">
+              <InputTextFloatLabel
+                label="Email"
+                value={this.state.email}
+                placeholder="Your Email"
+                onChange={this.onChangeEmail}
+              />
+            </fieldset>
+          </div>
+        </div>
 
-        <fieldset className="form-group">
-          <InputTextFloatLabel
-            label="Email"
-            value={this.state.email}
-            placeholder="Your Email"
-            onChange={this.onChangeEmail}
-          />
-        </fieldset>
-
-        <fieldset className="form-group">
-          <SelectFloatLabel
-            label="Currency"
-            value={this.state.currency}
-            onChange={this.onChangeCurrency}
-            options={currencyOptions}
-          />
-        </fieldset>
-
-        <fieldset className="form-group">
-          <SelectFloatLabel
-            label="Timezone"
-            value={this.state.timezone}
-            onChange={this.onChangeTimezone}
-            options={timezoneOptions}
-          />
-        </fieldset>
+        <div className="row-margin">
+          <div className="col-md-6 col-xs-12">
+            <fieldset className="form-group">
+              <SelectFloatLabel
+                label="Currency"
+                value={this.state.currency}
+                onChange={this.onChangeCurrency}
+                options={currencyOptions}
+              />
+            </fieldset>
+          </div>
+          <div className="col-md-6 col-xs-12">
+            <fieldset className="form-group">
+              <SelectFloatLabel
+                label="Timezone"
+                value={this.state.timezone}
+                onChange={this.onChangeTimezone}
+                options={timezoneOptions}
+              />
+            </fieldset>
+          </div>
+        </div>
       </div>
     );
   },

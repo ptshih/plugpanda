@@ -3,6 +3,27 @@ const request = require('./request');
 const Muni = require('muni');
 
 module.exports = {
+  sendLoginRequest: Muni.Promise.method(function(email, password) {
+    if (!email || !password) {
+      throw new Error('Missing email or password.');
+    }
+
+    return request.send({
+      method: 'POST',
+      url: `https://webservices.chargepoint.com/backend.php/mobileapi`,
+      json: {
+        version: '54',
+        validate_login: {
+          disable_token: false,
+          password: password,
+          user_name: email,
+        },
+      },
+    }).then((data) => {
+      return data.validate_login;
+    });
+  }),
+
   /**
    * Get most recent charging session from Chargepoint
    *
@@ -22,7 +43,7 @@ module.exports = {
     return request.send({
       url: `https://mc.chargepoint.com/map-prod/v2?{"charging_status":{${sessionQuery}},"user_id":${chargepoint.user_id}}`,
       headers: {
-        Cookie: `coulomb_sess=${chargepoint.access_token}`,
+        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
     }).then((data) => {
       return data.charging_status;
@@ -33,7 +54,7 @@ module.exports = {
     return request.send({
       url: `https://mc.chargepoint.com/map-prod/v2?{"station_info":{"device_id":${deviceId},"include_port_status":true},"user_id":${chargepoint.user_id}}`,
       headers: {
-        Cookie: `coulomb_sess=${chargepoint.access_token}`,
+        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
     }).then((data) => {
       return data.station_info;
@@ -50,9 +71,10 @@ module.exports = {
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       headers: {
-        Cookie: `coulomb_sess=${chargepoint.access_token}`,
+        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
       json: {
+        version: '54',
         user_id: chargepoint.user_id,
         stop_session: {
           device_id: deviceId,
@@ -72,9 +94,10 @@ module.exports = {
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       headers: {
-        Cookie: `coulomb_sess=${chargepoint.access_token}`,
+        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
       json: {
+        version: '54',
         user_id: chargepoint.user_id,
         session_ack: {
           ack_id: ackId,
@@ -92,7 +115,7 @@ module.exports = {
     return request.send({
       url: `https://mc.chargepoint.com/map-prod/v2?{"charging_activity":{"page_size":100},"user_id":${chargepoint.user_id}}`,
       headers: {
-        Cookie: `coulomb_sess=${chargepoint.access_token}`,
+        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
     });
   }),

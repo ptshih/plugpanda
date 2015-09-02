@@ -48,12 +48,12 @@ export default React.createClass({
 
   // Render
 
-  render() {
+  getStats() {
     const fuelPercent = math.round((this.state.remainingFuel / this.state.maxFuel) * 100, 0);
     const timeDiff = moment(this.state.updateTime).diff(moment());
     const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
 
-    const rows = [
+    return [
       ['Last Updated', lastUpdated],
       ['Miles', this.state.miles],
       ['Lock', this.state.doorLockState],
@@ -68,19 +68,30 @@ export default React.createClass({
       ['Trunk', this.state.trunk],
       ['Frunk', this.state.hood],
     ];
+  },
+
+  render() {
+    // Stats
+    const stats = this.getStats();
 
     return (
       <div className="Section">
-        <h5>VIN: {this.state.vin}</h5>
-        <Table
-          rows={rows}
-        />
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>VIN: {this.state.vin}</h5>
+          </div>
+        </div>
 
-        <div>
-          <GoogleMap
+        <div className="row-margin">
+          <div className="col-md-6 col-xs-12">
+            <Table rows={stats} />
+          </div>
+          <div className="col-md-6 col-xs-12">
+            <GoogleMap
             lat={this.state.position.lat}
             lon={this.state.position.lon}
-          />
+            />
+          </div>
         </div>
       </div>
     );

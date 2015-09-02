@@ -25,15 +25,33 @@ module.exports = BaseController.extend({
       requiredParams: ['email'],
     };
 
+
+    // Private
+
     this.routes.get['/account'] = {
       action: this.account,
       middleware: [authenticateUserMiddleware],
+    };
+
+    this.routes.post['/account/chargepoint'] = {
+      action: this.chargepoint,
+      middleware: [authenticateUserMiddleware],
+      requiredParams: ['email', 'password'],
     };
   },
 
   account(req, res, next) {
     res.data = req.user.render();
     return next();
+  },
+
+  chargepoint(req, res, next) {
+    return req.user.authenticateChargepoint(req.body.email, req.body.password).then(() => {
+      return req.user.save();
+    }).then(() => {
+      res.data = req.user.render();
+      return next();
+    }).catch(next);
   },
 
   // POST
