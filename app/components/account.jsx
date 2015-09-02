@@ -63,19 +63,19 @@ export default React.createClass({
   // Render
 
   getChargepoint() {
-    if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
-      return (
-        <div className="row-margin">
-          <div className="col-xs-12">
-            <h5>Chargepoint Account</h5>
-
-            <div>Already Authenticated</div>
-            <div>User ID: {this.state.chargepoint.user_id}</div>
-            <div>Auth Token: {this.state.chargepoint.auth_token}</div>
-          </div>
-        </div>
-      );
-    }
+    // if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
+    //   return (
+    //     <div className="row-margin">
+    //       <div className="col-xs-12">
+    //         <h5>Chargepoint Account</h5>
+    //
+    //         <div>Already Authenticated</div>
+    //         <div>User ID: {this.state.chargepoint.user_id}</div>
+    //         <div>Auth Token: {this.state.chargepoint.auth_token}</div>
+    //       </div>
+    //     </div>
+    //   );
+    // }
 
     return (
       <div className="row-margin">
@@ -87,7 +87,7 @@ export default React.createClass({
           </div>
 
           <div className="row">
-            <div className="col-md-5 col-xs-12">
+            <div className="col-md-6 col-xs-12">
               <fieldset className="form-group">
                 <InputTextFloatLabel
                   label="Email"
@@ -95,7 +95,7 @@ export default React.createClass({
                 />
               </fieldset>
             </div>
-            <div className="col-md-5 col-xs-12">
+            <div className="col-md-6 col-xs-12">
               <fieldset className="form-group">
                 <InputTextFloatLabel
                   label="Password"
@@ -104,7 +104,10 @@ export default React.createClass({
                 />
               </fieldset>
             </div>
-            <div className="col-md-2 col-xs-12">
+          </div>
+
+          <div className="row">
+            <div className="col-xs-12">
               <button className="btn btn-primary">Authenticate</button>
             </div>
           </div>

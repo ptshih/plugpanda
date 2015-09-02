@@ -6,21 +6,8 @@
 .row-margin {
   @extend .row;
 
-  // Medium devices (tablets, 48em and up)
-  @media (min-width: 48em) {
-    margin-top: 0.9375rem;
-    margin-bottom: 0.9375rem;
-  }
-}
-
-.row-heading {
-  @extend .row;
-
-  // Medium devices (tablets, 48em and up)
-  @media (min-width: 48em) {
-    margin-top: 0.9375rem;
-    margin-bottom: 0.9375rem;
-  }
+  margin-top: 0.9375rem;
+  margin-bottom: 0.9375rem;
 }
 
 .Section {
@@ -69,6 +56,7 @@
 
 
 .Select {
+  // http://codepen.io/pixelthing/pen/JEFHL?editors=110
   position: relative;
   display: inline-block;
   -webkit-appearance: none;
