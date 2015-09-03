@@ -81,7 +81,7 @@ const api = {
       json: {
         email: email,
         password: password,
-      }
+      },
     }).then((body) => {
       const user = body.data;
       auth.setAccessToken(user.access_token);
