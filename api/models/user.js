@@ -48,6 +48,8 @@ module.exports = BaseModel.extend({
         currency: 'usd',
         timezone: 'utc',
 
+        plan: 'free',
+
         stripe: {
           customer: null,
           subscription: null,
@@ -86,6 +88,8 @@ module.exports = BaseModel.extend({
         name: 'string',
         currency: 'string',
         timezone: 'string',
+
+        plan: 'string',
 
         stripe: {
           customer: 'string',

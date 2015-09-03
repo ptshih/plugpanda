@@ -62,107 +62,6 @@ export default React.createClass({
 
   // Render
 
-  getChargepoint() {
-    // if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
-    //   return (
-    //     <div className="row-margin">
-    //       <div className="col-xs-12">
-    //         <h5>Chargepoint Account</h5>
-    //
-    //         <div>Already Authenticated</div>
-    //         <div>User ID: {this.state.chargepoint.user_id}</div>
-    //         <div>Auth Token: {this.state.chargepoint.auth_token}</div>
-    //       </div>
-    //     </div>
-    //   );
-    // }
-
-    return (
-      <div className="row-margin">
-        <div className="col-xs-12">
-          <div className="row">
-            <div className="col-xs-12">
-              <h5>Chargepoint Account</h5>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  label="Email"
-                  placeholder="your@email.com"
-                />
-              </fieldset>
-            </div>
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  label="Password"
-                  type="password"
-                  placeholder="password"
-                />
-              </fieldset>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-xs-12">
-              <button className="btn btn-primary">Authenticate</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  },
-
-  getBMW() {
-    if (this.state.bmw.vin && this.state.bmw.access_token) {
-      return (
-        <div className="row-margin">
-          <div className="col-xs-12">
-            <h5>BMW Account</h5>
-
-            <div>Already Authenticated</div>
-            <div>VIN: {this.state.bmw.vin}</div>
-            <div>Access Token: {this.state.bmw.access_token}</div>
-          </div>
-        </div>
-      );
-    }
-
-    return null;
-  },
-
-  getSubscription() {
-    if (this.state.stripe.customer && this.state.stripe.subscription) {
-      return (
-        <div className="row-margin">
-          <div className="col-xs-12">
-            <h5>Your Subscription</h5>
-
-            <div>Subscription Active</div>
-            <div>Customer: {this.state.stripe.customer}</div>
-            <div>Subscription: {this.state.stripe.subscription}</div>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="row-margin">
-        <div className="col-xs-12">
-          <h5>Your Subscription</h5>
-
-          <p>Subscription is not active.</p>
-          <div>
-            <button className="btn btn-primary">Start Subscription</button>
-          </div>
-        </div>
-      </div>
-    );
-  },
-
   getInformation() {
     return (
       <div className="row-margin">
@@ -247,6 +146,121 @@ export default React.createClass({
                 />
               </fieldset>
             </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  getChargepoint() {
+    if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Chargepoint Account</h5>
+
+            <div>Already Authenticated</div>
+            <div>User ID: {this.state.chargepoint.user_id}</div>
+            <div>Auth Token: {this.state.chargepoint.auth_token}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row-margin">
+        <div className="col-xs-12">
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Chargepoint Account</h5>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Email"
+                  placeholder="your@email.com"
+                />
+              </fieldset>
+            </div>
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Password"
+                  type="password"
+                  placeholder="password"
+                />
+              </fieldset>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-12">
+              <button className="btn btn-primary">Authenticate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  getBMW() {
+    if (this.state.bmw.vin && this.state.bmw.access_token) {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>BMW Account</h5>
+
+            <div>Already Authenticated</div>
+            <div>VIN: {this.state.bmw.vin}</div>
+            <div>Access Token: {this.state.bmw.access_token}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  },
+
+  getSubscription() {
+    // Free plans
+    if (this.state.plan === 'free') {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Your Subscription</h5>
+            <div>Hurray! You are on a <strong>FREE</strong> plan!</div>
+          </div>
+        </div>
+      );
+    }
+
+    // Has active subscription
+    if (this.state.stripe.customer && this.state.stripe.subscription) {
+      return (
+        <div className="row-margin">
+          <div className="col-xs-12">
+            <h5>Your Subscription</h5>
+
+            <div>Subscription Active</div>
+            <div>Customer: {this.state.stripe.customer}</div>
+            <div>Subscription: {this.state.stripe.subscription}</div>
+          </div>
+        </div>
+      );
+    }
+
+    // No active subscription
+    return (
+      <div className="row-margin">
+        <div className="col-xs-12">
+          <h5>Your Subscription</h5>
+
+          <p>Subscription is not active.</p>
+          <div>
+            <button className="btn btn-primary">Start Subscription</button>
           </div>
         </div>
       </div>
