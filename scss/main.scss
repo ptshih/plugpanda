@@ -7,6 +7,25 @@
 @import 'google-map';
 
 // Bootstrap Overrides
+
+// When columns are stacked
+// Add a bottom margin
+// XS and S
+.col-xs-12 {
+  margin-bottom: 0.5rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+// Medium devices (tablets, 48em and up)
+@media (min-width: 48em) {
+  .col-xs-12 {
+    margin-bottom: 0;
+  }
+}
+
 .form-group {
   &:last-of-type {
     margin-bottom: 0;
@@ -16,7 +35,7 @@
 // Elements
 article, .Article {
   @extend .container;
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 
 section, .Section {
@@ -31,4 +50,34 @@ section, .Section {
 .BanksyPanda {
   width: 100%;
   max-width: 400px;
+}
+
+.SessionList {
+  list-style: none;
+  padding-left: 0;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.SessionCell {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+
+  cursor: pointer;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.SessionCell--active {
+  background-color: #d9edf7;
+}
+
+.SessionCell--stopping {
+  background-color: #f2dede;
 }
