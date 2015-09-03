@@ -182,7 +182,7 @@ export default React.createClass({
       <div className="row">
         <div className="col-xs-12">
           <h5>Power (kW)</h5>
-          <Highcharts config={powerConfig} />
+          <Highcharts style={{height: '300px'}} config={powerConfig} />
         </div>
       </div>
     );

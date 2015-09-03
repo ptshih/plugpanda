@@ -42,7 +42,6 @@ export default React.createClass({
       displayHours = 0;
       displayMinutes = chargingTime;
     }
-
     const displayDate = moment(session.created_date).calendar(null, {
       lastDay: '[Yesterday] [at] HH:MM',
       sameDay: '[Today] [at] HH:MM',
@@ -74,13 +73,13 @@ export default React.createClass({
       `${session.address1}, ${session.city}` :
       `${session.lat.toFixed(6)},${session.lon.toFixed(6)}`;
 
+    // Status
     let statusClass = '';
     if (session.status === 'on') {
       statusClass = 'SessionCell--active';
     } else if (session.status === 'stopping') {
       statusClass = 'SessionCell--stopping';
     }
-
     const className = ['SessionCell', statusClass].join(' ');
 
     return (
