@@ -13,7 +13,7 @@ const sessionStore = new SessionStore();
 // Components
 import Table from './table';
 import GoogleMap from './google-map';
-import Highcharts from 'react-highcharts';
+import Highcharts from 'react-highcharts/more';
 
 // import moment from 'moment';
 

@@ -54,6 +54,7 @@ Router.run(routes, Router.HistoryLocation, (Handler, state) => {
   return Promise.props(promises).then(() => {
     React.render(<Handler />, document.getElementById('app'));
   }).catch((err) => {
+    console.log(err);
     // Render Error
     React.render(<Err err={err}/>, document.getElementById('app'));
   });

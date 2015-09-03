@@ -14,6 +14,7 @@ const carStore = new CarStore();
 // import {Link} from 'react-router';
 import Table from './table';
 import GoogleMap from './google-map';
+import Highcharts from 'react-highcharts/more';
 
 import moment from 'moment';
 
@@ -91,12 +92,128 @@ export default React.createClass({
     );
   },
 
+  getChartConfig(label, value, suffix = '%') {
+    return {
+      chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false,
+      },
+      pane: {
+        center: ['50%', '60%'],
+        startAngle: -125,
+        endAngle: 125,
+        background: [{
+          borderWidth: 0,
+          backgroundColor: 'transparent',
+        }],
+      },
+      title: null,
+      tooltip: {
+        enabled: false,
+      },
+      yAxis: {
+        min: 0,
+        max: 100,
+        lineColor: 'transparent',
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 0,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 0,
+        tickColor: '#666',
+        labels: {
+          step: 2,
+          rotation: 'auto',
+        },
+        title: {
+          text: label,
+          y: 140,
+        },
+        plotBands: [{
+          from: 0,
+          to: 10,
+          color: '#DF5353',
+          innerRadius: '95%',
+          outerRadius: '105%',
+        }, {
+          from: 10,
+          to: 75,
+          color: '#DDDF0D',
+          innerRadius: '95%',
+          outerRadius: '105%',
+        }, {
+          from: 75,
+          to: 100,
+          color: '#55BF3B',
+          innerRadius: '95%',
+          outerRadius: '105%',
+        }],
+      },
+      plotOptions: {
+        gauge: {
+          dataLabels: {
+            borderColor: 'transparent',
+          },
+          dial: {
+            radius: '70%',
+            backgroundColor: '#666666',
+            borderWidth: 0,
+            baseWidth: 6,
+            topWidth: 1,
+            baseLength: '90%', // of radius
+            rearLength: '0%',
+          },
+          pivot: {
+            backgroundColor: '#666666',
+            radius: 3,
+          },
+        },
+      },
+      series: [{
+        name: label,
+        data: [value],
+        dataLabels: {
+          enabled: true,
+          style: {
+            fontWeight: 'bold',
+            fontSize: '22px',
+          },
+          formatter() {
+            return `${this.y}${suffix}`;
+          },
+        },
+      }],
+    };
+  },
+
   render() {
+    const fuelPercent = math.round((this.state.remainingFuel / this.state.maxFuel) * 100, 0);
+
     return (
       <article>
         <section>
           <h5>VIN: {this.state.vin}</h5>
           {this.getStats()}
+        </section>
+
+        <section>
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <Highcharts style={{height: '300px'}} config={this.getChartConfig('Battery', this.state.chargingLevelHv)} />
+            </div>
+            <div className="col-md-6 col-xs-12">
+              <Highcharts style={{height: '300px'}} config={this.getChartConfig('Fuel', fuelPercent)} />
+            </div>
+          </div>
         </section>
       </article>
     );
