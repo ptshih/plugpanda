@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 
-// API
+// Utils
+import auth from '../lib/auth';
 import api from '../lib/api';
 import math from '../lib/math';
 
@@ -26,6 +27,12 @@ export default React.createClass({
       return api.fetchCar().then((state) => {
         CarActions.sync(state);
       });
+    },
+
+    willTransitionTo(transition) {
+      if (!auth.isLoggedIn()) {
+        transition.redirect('/login');
+      }
     },
   },
 

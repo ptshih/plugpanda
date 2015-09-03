@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 
-// API
+// Utils
+import auth from '../lib/auth';
 import api from '../lib/api';
 import math from '../lib/math';
 
@@ -22,9 +23,16 @@ export default React.createClass({
 
   statics: {
     fetch(params, query) {
+      console.log(params);
       return api.fetchSession(params.session_id).then((state) => {
         SessionActions.sync(state);
       });
+    },
+
+    willTransitionTo(transition) {
+      if (!auth.isLoggedIn()) {
+        transition.redirect('/login');
+      }
     },
   },
 

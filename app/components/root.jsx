@@ -15,4 +15,5 @@ export default React.createClass({
       </article>
     );
   },
+
 });

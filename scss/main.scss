@@ -81,3 +81,21 @@ section, .Section {
 .SessionCell--stopping {
   background-color: #f2dede;
 }
+
+
+.Login--submit {
+  margin-top: 0.5rem;
+}
+
+.Login-message {
+  @extend .alert;
+  margin-bottom: 0.25rem;
+}
+
+.Login-message--loading {
+  @extend .alert-info;
+}
+
+.Login-message--error {
+  @extend .alert-danger;
+}

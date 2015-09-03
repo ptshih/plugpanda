@@ -23,14 +23,17 @@ export default React.createClass({
 
   render() {
     const props = _.omit(this.props, ['className']);
-    const isActive = this.isActive(this.props.to);
+
+    const baseTo = this.props.to.split('/');
+    baseTo.shift();
+    const basePathname = this.getPathname().split('/');
+    basePathname.shift();
+    const isActive = baseTo.length === basePathname.length && _.first(baseTo) === _.first(basePathname);
+
     const className = ['nav-link', isActive ? 'active' : ''].join(' ');
 
     return (
       <Link {...props} className={className}>{this.props.children}</Link>
     );
   },
-
-  // Private
-
 });

@@ -13,6 +13,7 @@ import requestOrig from 'request';
 const request = Promise.promisify(requestOrig);
 Promise.promisifyAll(request);
 
+import auth from './auth';
 
 const api = {
   _request: Promise.method((options = {}) => {
@@ -23,28 +24,24 @@ const api = {
 
     return request(options).then((contents) => {
       const response = contents[0];
+      const body = contents[1];
+
       const statusMessage = response.statusMessage || 'Client Error';
       const statusCode = response.statusCode || 500;
       if (statusCode >= 400 && statusCode < 500) {
-        const clientErr = new Error(statusMessage);
+        const clientErr = new Error(body.data || statusMessage);
         clientErr.code = statusCode;
         throw clientErr;
       }
 
-      const body = contents[1];
       return body;
-    });
-  }),
-
-  _fetch: Promise.method((url) => {
-    return this._request(url).then((body) => {
-      return body.data;
     });
   }),
 
   fetchCar: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/car/status',
+      headers: auth.getHeaders(),
     }).then((body) => {
       return body.data;
     });
@@ -53,6 +50,7 @@ const api = {
   fetchSession: Promise.method(function(sessionId) {
     return this._request({
       url: window.location.origin + '/api/sessions/' + sessionId,
+      headers: auth.getHeaders(),
     }).then((body) => {
       return body.data;
     });
@@ -61,6 +59,7 @@ const api = {
   fetchHistory: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/sessions',
+      headers: auth.getHeaders(),
     }).then((body) => {
       return body.data;
     });
@@ -69,40 +68,26 @@ const api = {
   fetchAccount: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/account',
+      headers: auth.getHeaders(),
     }).then((body) => {
       return body.data;
     });
   }),
 
-  // BMW
-
-  // POST
-  sendPOI: Promise.method(() => {
-
+  login: Promise.method(function(email, password) {
+    return this._request({
+      method: 'POST',
+      url: window.location.origin + '/api/login',
+      json: {
+        email: email,
+        password: password,
+      }
+    }).then((body) => {
+      const user = body.data;
+      auth.setAccessToken(user.access_token);
+      return user;
+    });
   }),
-
-  // POST
-  executeService: Promise.method(() => {
-
-  }),
-
-  // Chargepoint
-
-  // GET
-  fetchChargingStatus: Promise.method(() => {
-
-  }),
-
-  // GET
-  fetchChargingActivity: Promise.method(() => {
-
-  }),
-
-  // POST
-  stopChargingSession: Promise.method(() => {
-
-  }),
-
 };
 
 export default api;

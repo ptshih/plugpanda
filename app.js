@@ -15,6 +15,8 @@ import Car from './app/components/car';
 import Session from './app/components/session';
 import History from './app/components/history';
 import Account from './app/components/account';
+import Login from './app/components/login';
+import Logout from './app/components/logout';
 
 // App Layout
 const App = React.createClass({
@@ -31,11 +33,13 @@ const App = React.createClass({
 // Define Routes
 const routes = (
   <Route name="app" path="/" handler={App}>
-    <DefaultRoute name="root" handler={Root} />
-    <Route name="car" path="car" handler={Car} />
-    <Route name="session" path="sessions/:session_id" handler={Session} />
-    <Route name="history" path="sessions" handler={History} />
-    <Route name="account" path="account" handler={Account} />
+    <DefaultRoute handler={Root} />
+    <Route path="car" handler={Car} />
+    <Route path="sessions/:session_id" handler={Session} />
+    <Route path="sessions" handler={History} />
+    <Route path="account" handler={Account} />
+    <Route path="login" handler={Login} />
+    <Route path="logout" handler={Logout} />
   </Route>
 );
 

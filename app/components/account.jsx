@@ -1,6 +1,7 @@
 import React from 'react';
 
-// API
+// Utils
+import auth from '../lib/auth';
 import api from '../lib/api';
 
 // Store and Actions
@@ -21,6 +22,12 @@ export default React.createClass({
       return api.fetchAccount().then((state) => {
         AccountActions.sync(state);
       });
+    },
+
+    willTransitionTo(transition) {
+      if (!auth.isLoggedIn()) {
+        transition.redirect('/login');
+      }
     },
   },
 
