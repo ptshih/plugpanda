@@ -10,9 +10,9 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="Section">
+      <article>
         <img src="/img/banksy_panda.png" className="BanksyPanda" />
-      </div>
+      </article>
     );
   },
 });

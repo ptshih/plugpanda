@@ -15,7 +15,7 @@ export default React.createClass({
     // const code = this.props.err.code || 500;
     const message = this.props.err.message;
     return (
-      <div className="Section">
+      <article>
         <div className="Error-heading">We're sorry – something has gone wrong on our end.</div>
         <div className="Error-reason"><strong>Reason:</strong>&nbsp;{message}</div>
 
@@ -36,7 +36,7 @@ export default React.createClass({
         <br />
 
         <img src="/img/banksy_panda.png" className="BanksyPanda" />
-      </div>
+      </article>
     );
   },
 });

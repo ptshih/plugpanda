@@ -10,8 +10,8 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="Section">
-      </div>
+      <article>
+      </article>
     );
   },
 });

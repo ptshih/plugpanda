@@ -1,0 +1,13 @@
+.Error-heading {
+  @extend h4;
+}
+
+.Error-reason {
+  @extend p;
+  margin-bottom: 2rem;
+}
+
+.Error-list {
+  list-style: none;
+  padding-left: 0;
+}
