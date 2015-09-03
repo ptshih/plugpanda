@@ -86,7 +86,7 @@ export default React.createClass({
     };
   },
 
-  getStats() {
+  getStatsData() {
     const totalPower = _.reduce(this.state.update_data, (total, dataPoint) => {
       return total + dataPoint.power_kw;
     }, 0);
@@ -151,42 +151,55 @@ export default React.createClass({
     };
   },
 
-  render() {
-    // Stats
-    const stats = this.getStats();
+  // Render
 
+  getStats() {
+    // Stats
+    const statsData = this.getStatsData();
+
+    return (
+      <div className="row">
+        <div className="col-md-6 col-xs-12">
+          <Table rows={statsData} />
+        </div>
+        <div className="col-md-6 col-xs-12">
+          <GoogleMap
+            lat={this.state.lat}
+            lon={this.state.lon}
+          />
+        </div>
+      </div>
+    );
+  },
+
+  getChart() {
     // Charts
     const chartData = this.getChartData();
     const powerConfig = this.getChartConfig('Power (kW)', chartData.power);
     // const energyConfig = this.getChartConfig('Energy (kWh)', chartData.energy);
 
     return (
-      <div className="Section">
-        <div className="row-margin">
-          <div className="col-xs-12">
-            <h5>Session: {this.state.session_id}</h5>
-          </div>
-        </div>
-
-        <div className="row-margin">
-          <div className="col-md-6 col-xs-12">
-            <Table rows={stats} />
-          </div>
-          <div className="col-md-6 col-xs-12">
-            <GoogleMap
-              lat={this.state.lat}
-              lon={this.state.lon}
-            />
-          </div>
-        </div>
-
-        <div className="row-margin">
-          <div className="col-xs-12">
-            <h5>Power (kW)</h5>
-            <Highcharts config={powerConfig} />
-          </div>
+      <div className="row">
+        <div className="col-xs-12">
+          <h5>Power (kW)</h5>
+          <Highcharts config={powerConfig} />
         </div>
       </div>
+    );
+  },
+
+  render() {
+    return (
+      <article>
+        <section>
+          <h5>Session: {this.state.session_id}</h5>
+          {this.getStats()}
+        </section>
+
+        <section>
+          {this.getChart()}
+        </section>
+      </article>
     );
   },
 

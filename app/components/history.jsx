@@ -107,26 +107,28 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="Section">
-        <div className="row">
-          <div className="col-xs-12">
-            <table className="table">
-              <thead className="thead-default">
-                <tr>
-                  <th>Session</th>
-                  <th>Duration</th>
-                  <th>Energy</th>
-                  <th>Cost</th>
-                </tr>
-              </thead>
+      <article>
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              <table className="table">
+                <thead className="thead-default">
+                  <tr>
+                    <th>Session</th>
+                    <th>Duration</th>
+                    <th>Energy</th>
+                    <th>Cost</th>
+                  </tr>
+                </thead>
 
-              <tbody>
-                {this.getSessions()}
-              </tbody>
-            </table>
+                <tbody>
+                  {this.getSessions()}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </article>
     );
   },
 });

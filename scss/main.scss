@@ -3,11 +3,23 @@
 @import 'bootstrap/bootstrap';
 @import 'float-label';
 
-.row-margin {
-  @extend .row;
+article {
+  @extend .container;
+  margin: 2rem auto;
+}
 
-  margin-top: 0.9375rem;
-  margin-bottom: 0.9375rem;
+section {
+  margin-bottom: 2rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.form-group {
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 
 .Section {

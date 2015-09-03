@@ -48,7 +48,7 @@ export default React.createClass({
 
   // Render
 
-  getStats() {
+  getStatsData() {
     const fuelPercent = math.round((this.state.remainingFuel / this.state.maxFuel) * 100, 0);
     const timeDiff = moment(this.state.updateTime).diff(moment());
     const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
@@ -70,30 +70,35 @@ export default React.createClass({
     ];
   },
 
-  render() {
+  // Render
+
+  getStats() {
     // Stats
-    const stats = this.getStats();
+    const statsData = this.getStatsData();
 
     return (
-      <div className="Section">
-        <div className="row-margin">
-          <div className="col-xs-12">
-            <h5>VIN: {this.state.vin}</h5>
-          </div>
+      <div className="row">
+        <div className="col-md-6 col-xs-12">
+          <Table rows={statsData} />
         </div>
-
-        <div className="row-margin">
-          <div className="col-md-6 col-xs-12">
-            <Table rows={stats} />
-          </div>
-          <div className="col-md-6 col-xs-12">
-            <GoogleMap
-            lat={this.state.position.lat}
-            lon={this.state.position.lon}
-            />
-          </div>
+        <div className="col-md-6 col-xs-12">
+          <GoogleMap
+          lat={this.state.position.lat}
+          lon={this.state.position.lon}
+          />
         </div>
       </div>
+    );
+  },
+
+  render() {
+    return (
+      <article>
+        <section>
+          <h5>VIN: {this.state.vin}</h5>
+          {this.getStats()}
+        </section>
+      </article>
     );
   },
 });

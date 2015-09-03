@@ -64,7 +64,7 @@ export default React.createClass({
 
   getInformation() {
     return (
-      <div className="row-margin">
+      <div className="row">
         <div className="col-xs-12">
           <div className="row">
             <div className="col-xs-12">
@@ -117,7 +117,7 @@ export default React.createClass({
     }];
 
     return (
-      <div className="row-margin">
+      <div className="row">
         <div className="col-xs-12">
           <div className="row">
             <div className="col-xs-12">
@@ -155,7 +155,7 @@ export default React.createClass({
   getChargepoint() {
     if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
       return (
-        <div className="row-margin">
+        <div className="row">
           <div className="col-xs-12">
             <h5>Chargepoint Account</h5>
 
@@ -168,7 +168,7 @@ export default React.createClass({
     }
 
     return (
-      <div className="row-margin">
+      <div className="row">
         <div className="col-xs-12">
           <div className="row">
             <div className="col-xs-12">
@@ -209,7 +209,7 @@ export default React.createClass({
   getBMW() {
     if (this.state.bmw.vin && this.state.bmw.access_token) {
       return (
-        <div className="row-margin">
+        <div className="row">
           <div className="col-xs-12">
             <h5>BMW Account</h5>
 
@@ -228,7 +228,7 @@ export default React.createClass({
     // Free plans
     if (this.state.plan === 'free') {
       return (
-        <div className="row-margin">
+        <div className="row">
           <div className="col-xs-12">
             <h5>Your Subscription</h5>
             <div>Hurray! You are on a <strong>FREE</strong> plan!</div>
@@ -240,7 +240,7 @@ export default React.createClass({
     // Has active subscription
     if (this.state.stripe.customer && this.state.stripe.subscription) {
       return (
-        <div className="row-margin">
+        <div className="row">
           <div className="col-xs-12">
             <h5>Your Subscription</h5>
 
@@ -254,7 +254,7 @@ export default React.createClass({
 
     // No active subscription
     return (
-      <div className="row-margin">
+      <div className="row">
         <div className="col-xs-12">
           <h5>Your Subscription</h5>
 
@@ -269,17 +269,13 @@ export default React.createClass({
 
   render() {
     return (
-      <div className="Section">
-        {this.getInformation()}
-
-        {this.getSettings()}
-
-        {this.getChargepoint()}
-
-        {this.getBMW()}
-
-        {this.getSubscription()}
-      </div>
+      <article>
+        <section>{this.getInformation()}</section>
+        <section>{this.getSettings()}</section>
+        <section>{this.getChargepoint()}</section>
+        <section>{this.getBMW()}</section>
+        <section>{this.getSubscription()}</section>
+      </article>
     );
   },
 });
