@@ -86,7 +86,7 @@ export default React.createClass({
       <li className={className} onClick={this.onClick}>
         <div className="row">
           <div className="col-xs-6 text-left">
-            <div><strong>{session.session_id}</strong></div>
+            <div>#{session.session_id}</div>
           </div>
           <div className="col-xs-6 text-right">
             <div>{displayDate}</div>
