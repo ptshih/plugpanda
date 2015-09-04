@@ -15,7 +15,7 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
-    this.routes.post['/workers/chargepoint'] = {
+    this.routes.get['/workers/chargepoint'] = {
       action: this.chargepoint,
       middleware: [authenticateWorkerMiddleware],
     };
