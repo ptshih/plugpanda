@@ -43,7 +43,7 @@ module.exports = BaseController.extend({
       // Fire off the jobs
       const promises = [];
       _.each(accessTokens, function(accessToken) {
-        promises.push(createTask('chargepoint', {
+        promises.push(createTask('session', {
           method: 'GET',
           url: `${nconf.get('HOST')}/api/session/worker`,
           access_token: accessToken,
