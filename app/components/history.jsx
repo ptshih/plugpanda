@@ -11,18 +11,18 @@ import HistoryActions from '../actions/history-actions';
 const historyStore = new HistoryStore();
 
 // Components
-import SessionCell from './session-cell';
+// import SessionCell from './session-cell';
 
 export default React.createClass({
   displayName: 'History',
 
   statics: {
     fetch() {
-      return api.fetchHistory().then((sessions) => {
+      // return api.fetchHistory().then((sessions) => {
         // HistoryActions.sync({
         //   sessions: sessions,
         // });
-      });
+      // });
     },
 
     willTransitionTo(transition) {
