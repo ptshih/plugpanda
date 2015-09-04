@@ -4,6 +4,7 @@ import React from 'react';
 // Utils
 import auth from '../lib/auth';
 import api from '../lib/api';
+import math from '../lib/math';
 
 // Store and Actions
 import HistoryStore from '../stores/history-store';
@@ -53,7 +54,22 @@ export default React.createClass({
   // Render
 
   getSessionCells(session, idx) {
-    return <SessionCell key={idx} session={session} />;
+    // Need to move calculation here
+    // Because can't pass `update_data` into `SessionCell`
+    // due to a Safari memory issue
+    const totalPower = _.reduce(session.update_data, (total, dataPoint) => {
+      return total + dataPoint.power_kw;
+    }, 0);
+    const totalPoints = _.reduce(session.update_data, (total, dataPoint) => {
+      if (dataPoint.power_kw === 0) {
+        return total;
+      }
+      return total + 1;
+    }, 0);
+    const sessionProps = _.omit(session, 'update_data');
+    sessionProps.average_power = math.round(totalPower / totalPoints, 3);
+
+    return <SessionCell key={idx} session={sessionProps} />;
   },
 
   getSessionList() {

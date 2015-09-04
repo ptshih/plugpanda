@@ -58,7 +58,7 @@ const api = {
 
   fetchHistory: Promise.method(function() {
     return this._request({
-      url: window.location.origin + '/api/sessions?limit=5',
+      url: window.location.origin + '/api/sessions',
       headers: auth.getHeaders(),
     }).then((body) => {
       return body.data;

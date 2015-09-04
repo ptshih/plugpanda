@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import moment from 'moment';
 
-// API
+// Utils
 import math from '../lib/math';
 
 // Components
@@ -54,16 +54,7 @@ export default React.createClass({
     // Power, Energy, Miles
     const energyAdded = math.round(session.energy_kwh, 3);
     const milesAdded = math.round(session.miles_added, 1);
-    const totalPower = _.reduce(session.update_data, (total, dataPoint) => {
-      return total + dataPoint.power_kw;
-    }, 0);
-    const totalPoints = _.reduce(session.update_data, (total, dataPoint) => {
-      if (dataPoint.power_kw === 0) {
-        return total;
-      }
-      return total + 1;
-    }, 0);
-    const averagePower = math.round(totalPower / totalPoints, 3);
+    const averagePower = session.average_power;
 
     // Price
     const price = session.payment_type === 'free' ? 'Free' : '$' + session.total_amount.toFixed(2);
