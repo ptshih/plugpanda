@@ -46,7 +46,7 @@ module.exports = BaseController.extend({
       _.each(accessTokens, function(accessToken) {
         promises.push(createTask('session', {
           method: 'GET',
-          url: `${nconf.get('HOST')}/api/session/worker`,
+          url: `${nconf.get('HOST')}/api/session/status`,
           access_token: accessToken,
         }, {
           priority: 2,

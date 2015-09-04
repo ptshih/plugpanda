@@ -3,7 +3,6 @@ const Muni = require('muni');
 const chargepoint = require('../lib/chargepoint');
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
-const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
 
 const BaseController = require('./base');
 const SessionModel = require('../models/session');
@@ -18,14 +17,9 @@ module.exports = BaseController.extend({
       middleware: [authenticateUserMiddleware],
     };
 
-    this.routes.get['/session/worker'] = {
-      action: this.status,
-      middleware: [authenticateWorkerMiddleware, authenticateUserMiddleware],
-    };
-
     this.routes.get['/session/outdated'] = {
       action: this.outdated,
-      middleware: [authenticateWorkerMiddleware, authenticateUserMiddleware],
+      middleware: [authenticateUserMiddleware],
     };
 
     this.routes.get['/sessions'] = {
