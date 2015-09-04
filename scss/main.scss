@@ -32,6 +32,11 @@
   }
 }
 
+// TODO: Remove Me Later
+.navbar-nav .nav-item + .nav-item {
+  margin-left: 0.5rem;
+}
+
 // Elements
 article, .Article {
   @extend .container;
