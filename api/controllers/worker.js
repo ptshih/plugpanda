@@ -15,6 +15,7 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
+    // Polled by an iron worker every 3 minutes
     this.routes.get['/workers/chargepoint'] = {
       action: this.chargepoint,
       middleware: [authenticateWorkerMiddleware],
