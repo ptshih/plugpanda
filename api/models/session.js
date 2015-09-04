@@ -5,7 +5,7 @@ const _ = require('lodash');
 const Muni = require('muni');
 const chargepoint = require('../lib/chargepoint');
 const twilio = require('../lib/twilio');
-const math = require('../lib/math');
+const math = require('../../lib/math');
 
 const BaseUserModel = require('./base_user');
 
@@ -224,16 +224,12 @@ module.exports = BaseUserModel.extend({
       this.user.get('chargepoint'),
       deviceId,
       outletNumber
-    ).then((body) => {
-      if (!body.stop_session) {
-        throw new Error(`Invalid response from Chargepoint.`);
+    ).then((stopSession) => {
+      if (!stopSession.status) {
+        throw new Error(`Stop session failed with error: ${stopSession.error}.`);
       }
 
-      if (!body.stop_session.status) {
-        throw new Error(`Stop session failed with error: ${body.stop_session.error}.`);
-      }
-
-      return body.stop_session;
+      return stopSession;
     }).tap((stopSession) => {
       console.log(`-----> Stop session ack: ${stopSession.ack_id}.`);
 

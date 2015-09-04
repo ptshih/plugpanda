@@ -1,5 +1,5 @@
 // const _ = require('lodash');
-const request = require('./request');
+const request = require('../../lib/request');
 const Muni = require('muni');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
       throw new Error('Missing email or password.');
     }
 
-    return request.send({
+    return request({
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       json: {
@@ -19,8 +19,8 @@ module.exports = {
           user_name: email,
         },
       },
-    }).then((data) => {
-      return data.validate_login;
+    }).then((body) => {
+      return body.validate_login;
     });
   }),
 
@@ -40,24 +40,26 @@ module.exports = {
       sessionQuery = `"session_id":${sessionId}`;
     }
 
-    return request.send({
-      url: `https://mc.chargepoint.com/map-prod/v2?{"charging_status":{${sessionQuery}},"user_id":${chargepoint.user_id}}`,
+    return request({
+      url: `https://mc.chargepoint.com/map-prod/v2`,
+      querystring: `{"charging_status":{${sessionQuery}},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
-    }).then((data) => {
-      return data.charging_status;
+    }).then((body) => {
+      return body.charging_status;
     });
   }),
 
   sendStationRequest: Muni.Promise.method(function(chargepoint, deviceId) {
-    return request.send({
-      url: `https://mc.chargepoint.com/map-prod/v2?{"station_info":{"device_id":${deviceId},"include_port_status":true},"user_id":${chargepoint.user_id}}`,
+    return request({
+      url: `https://mc.chargepoint.com/map-prod/v2`,
+      querystring: `{"station_info":{"device_id":${deviceId},"include_port_status":true},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
-    }).then((data) => {
-      return data.station_info;
+    }).then((body) => {
+      return body.station_info;
     });
   }),
 
@@ -67,7 +69,7 @@ module.exports = {
   sendStopRequest: Muni.Promise.method(function(chargepoint, deviceId, outletNumber) {
     console.log(`-----> Stop Request for Device: ${deviceId}, Port: ${outletNumber}.`);
 
-    return request.send({
+    return request({
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       headers: {
@@ -81,6 +83,8 @@ module.exports = {
           port_number: outletNumber,
         },
       },
+    }).then((body) => {
+      return body.stop_session;
     });
   }),
 
@@ -90,7 +94,7 @@ module.exports = {
   sendStopAckRequest: Muni.Promise.method(function(chargepoint, ackId) {
     console.log(`-----> Stop ACK Request for ACK: ${ackId}.`);
 
-    return request.send({
+    return request({
       method: 'POST',
       url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
       headers: {
@@ -104,6 +108,8 @@ module.exports = {
           session_action: 'stop_session',
         },
       },
+    }).then((body) => {
+      return body.session_ack;
     });
   }),
 
@@ -111,12 +117,15 @@ module.exports = {
    * Get history of all charging sessions stored in database
    * UNUSED
    */
-  _sendHistoryRequest: Muni.Promise.method(function(chargepoint) {
-    return request.send({
-      url: `https://mc.chargepoint.com/map-prod/v2?{"charging_activity":{"page_size":100},"user_id":${chargepoint.user_id}}`,
+  sendHistoryRequest: Muni.Promise.method(function(chargepoint) {
+    return request({
+      url: `https://mc.chargepoint.com/map-prod/v2`,
+      querystring: `{"charging_activity":{"page_size":100},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
+    }).then((body) => {
+      return body.charging_activity;
     });
   }),
 };

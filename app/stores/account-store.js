@@ -2,10 +2,8 @@
  * This Store contains data for Car.
  */
 
-import _ from 'lodash';
+// import _ from 'lodash';
 import BaseStore from './base-store';
-import api from '../lib/api';
-import localStorage from '../lib/local-storage';
 
 // Store
 class AccountStore extends BaseStore {

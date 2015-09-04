@@ -1,9 +1,8 @@
-import _ from 'lodash';
 import React from 'react';
 import moment from 'moment';
 
 // Utils
-import math from '../lib/math';
+import math from '../../lib/math';
 
 // Components
 import {Navigation} from 'react-router';

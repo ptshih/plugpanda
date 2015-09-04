@@ -7,39 +7,14 @@
  * - Parse response envelope
  */
 
-import _ from 'lodash';
+// import _ from 'lodash';
 import Promise from 'bluebird';
-import requestOrig from 'request';
-const request = Promise.promisify(requestOrig);
-Promise.promisifyAll(request);
-
+import request from '../../lib/request';
 import auth from './auth';
 
 const api = {
-  _request: Promise.method((options = {}) => {
-    _.defaults(options, {
-      withCredentials: false,
-      json: true,
-    });
-
-    return request(options).then((contents) => {
-      const response = contents[0];
-      const body = contents[1];
-
-      const statusMessage = response.statusMessage || 'Client Error';
-      const statusCode = response.statusCode || 500;
-      if (statusCode >= 400 && statusCode < 500) {
-        const clientErr = new Error(body.data || statusMessage);
-        clientErr.code = statusCode;
-        throw clientErr;
-      }
-
-      return body;
-    });
-  }),
-
   fetchCar: Promise.method(function() {
-    return this._request({
+    return request({
       url: window.location.origin + '/api/car/status',
       headers: auth.getHeaders(),
     }).then((body) => {
@@ -48,7 +23,7 @@ const api = {
   }),
 
   fetchSession: Promise.method(function(sessionId) {
-    return this._request({
+    return request({
       url: window.location.origin + '/api/sessions/' + sessionId,
       headers: auth.getHeaders(),
     }).then((body) => {
@@ -57,7 +32,7 @@ const api = {
   }),
 
   fetchHistory: Promise.method(function() {
-    return this._request({
+    return request({
       url: window.location.origin + '/api/sessions',
       headers: auth.getHeaders(),
     }).then((body) => {
@@ -66,7 +41,7 @@ const api = {
   }),
 
   fetchAccount: Promise.method(function() {
-    return this._request({
+    return request({
       url: window.location.origin + '/api/account',
       headers: auth.getHeaders(),
     }).then((body) => {
@@ -75,7 +50,7 @@ const api = {
   }),
 
   login: Promise.method(function(email, password) {
-    return this._request({
+    return request({
       method: 'POST',
       url: window.location.origin + '/api/login',
       json: {

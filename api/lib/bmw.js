@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const request = require('./request');
+const request = require('../../lib/request');
 const Muni = require('muni');
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
     }
 
     // Token is expired, refresh it
-    return request.send({
+    return request({
       method: 'POST',
       url: 'https://b2vapi.bmwgroup.us/webapi/oauth/token',
       headers: {
@@ -39,7 +39,7 @@ module.exports = {
    * Get car vehicle data
    */
   sendVehicleRequest: Muni.Promise.method(function(accessToken, vin) {
-    return request.send({
+    return request({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -51,7 +51,7 @@ module.exports = {
    * Check the status of the car
    */
   sendStatusRequest: Muni.Promise.method(function(accessToken, vin) {
-    return request.send({
+    return request({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/status`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -63,7 +63,7 @@ module.exports = {
    * Get car driving statistics
    */
   sendStatisticsRequest: Muni.Promise.method(function(accessToken, vin, filter = 'allTrips') {
-    return request.send({
+    return request({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/statistics/${filter}`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -75,7 +75,7 @@ module.exports = {
    * Get car destinations
    */
   sendDestinationsRequest: Muni.Promise.method(function(accessToken, vin) {
-    return request.send({
+    return request({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/destinations`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -87,7 +87,7 @@ module.exports = {
    * Get car charging profile
    */
   sendChargingProfileRequest: Muni.Promise.method(function(accessToken, vin) {
-    return request.send({
+    return request({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/chargingprofile`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -99,7 +99,7 @@ module.exports = {
    * Get car range map
    */
   sendRangeMapRequest: Muni.Promise.method(function(accessToken, vin) {
-    return request.send({
+    return request({
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/rangemap`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -119,7 +119,7 @@ module.exports = {
       throw new Error('Missing `type`.');
     }
 
-    return request.send({
+    return request({
       method: 'POST',
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/executeService`,
       headers: {
@@ -157,7 +157,7 @@ module.exports = {
       }),
     };
 
-    return request.send({
+    return request({
       method: 'POST',
       url: `https://b2vapi.bmwgroup.us/webapi/v1/user/vehicles/${vin}/sendpoi`,
       headers: {

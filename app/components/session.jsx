@@ -4,7 +4,7 @@ import React from 'react';
 // Utils
 import auth from '../lib/auth';
 import api from '../lib/api';
-import math from '../lib/math';
+import math from '../../lib/math';
 
 // Store and Actions
 import SessionStore from '../stores/session-store';
