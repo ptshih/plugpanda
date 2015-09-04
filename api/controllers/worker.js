@@ -52,6 +52,15 @@ module.exports = BaseController.extend({
           priority: 2,
           delay: 0,
         }));
+
+        promises.push(createTask('session', {
+          method: 'GET',
+          url: `${nconf.get('HOST')}/api/session/outdated`,
+          access_token: accessToken,
+        }, {
+          priority: 2,
+          delay: 0,
+        }));
       });
 
       return Muni.Promise.all(promises).return(userIds);
