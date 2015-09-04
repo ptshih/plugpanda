@@ -61,7 +61,7 @@ module.exports = BaseController.extend({
   // Because it needs to support BOTH V1 and V2 users
   login(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
-    const password = req.body.password || req.query.password;
+    const password = (req.body.password || req.query.password || '').trim();
 
     return Muni.Promise.bind(this).then(function() {
       const user = new UserModel();
@@ -85,7 +85,7 @@ module.exports = BaseController.extend({
   // POST
   register(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
-    let password = (req.body.password || req.query.password).trim();
+    let password = (req.body.password || req.query.password || '').trim();
     const name = req.body.name || null;
 
     return Muni.Promise.bind(this).then(() => {

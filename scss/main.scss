@@ -104,3 +104,8 @@ section, .Section {
 .Login-message--error {
   @extend .alert-danger;
 }
+
+.Login-register {
+  cursor: pointer;
+  text-decoration: underline;
+}

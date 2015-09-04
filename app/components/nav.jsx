@@ -61,14 +61,26 @@ export default React.createClass({
     if (!auth.isLoggedIn()) {
       return (
         <li className="nav-item">
-          <NavLink to="/login">Login</NavLink>
+          <NavLink to="/login">Sign In</NavLink>
         </li>
       );
     }
 
     return (
       <li className="nav-item">
-        <NavLink to="/logout">Logout</NavLink>
+        <NavLink to="/logout">Sign Out</NavLink>
+      </li>
+    );
+  },
+
+  getRegister() {
+    if (auth.isLoggedIn()) {
+      return null;
+    }
+
+    return (
+      <li className="nav-item">
+        <NavLink to="/register">Sign Up</NavLink>
       </li>
     );
   },
@@ -85,6 +97,7 @@ export default React.createClass({
           {this.getHistory()}
           {this.getAccount()}
           {this.getLoginLogout()}
+          {this.getRegister()}
         </ul>
       </nav>
     );

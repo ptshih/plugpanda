@@ -17,6 +17,7 @@ import History from './app/components/history';
 import Account from './app/components/account';
 import Login from './app/components/login';
 import Logout from './app/components/logout';
+import Register from './app/components/register';
 
 // App Layout
 const App = React.createClass({
@@ -40,6 +41,7 @@ const routes = (
     <Route path="account" handler={Account} />
     <Route path="login" handler={Login} />
     <Route path="logout" handler={Logout} />
+    <Route path="register" handler={Register} />
   </Route>
 );
 
