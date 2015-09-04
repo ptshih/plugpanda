@@ -6,8 +6,8 @@ import auth from '../lib/auth';
 import api from '../lib/api';
 
 // Store and Actions
-import HistoryStore from '../stores/car-store';
-import HistoryActions from '../actions/car-actions';
+import HistoryStore from '../stores/history-store';
+import HistoryActions from '../actions/history-actions';
 const historyStore = new HistoryStore();
 
 // Components
