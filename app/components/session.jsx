@@ -95,17 +95,7 @@ export default React.createClass({
   },
 
   getStatsData() {
-    const totalPower = _.reduce(this.state.update_data, (total, dataPoint) => {
-      return total + dataPoint.power_kw;
-    }, 0);
-    const totalPoints = _.reduce(this.state.update_data, (total, dataPoint) => {
-      if (dataPoint.power_kw === 0) {
-        return total;
-      }
-      return total + 1;
-    }, 0);
-
-    const averagePower = math.round(totalPower / totalPoints, 3);
+    const averagePower = this.state.average_power;
     const totalEnergy = math.round(this.state.energy_kwh, 3);
     const milesAdded = math.round(this.state.miles_added, 1);
 

@@ -5,6 +5,7 @@ const _ = require('lodash');
 const Muni = require('muni');
 const chargepoint = require('../lib/chargepoint');
 const twilio = require('../lib/twilio');
+const math = require('../lib/math');
 
 const BaseUserModel = require('./base_user');
 
@@ -83,6 +84,12 @@ module.exports = BaseUserModel.extend({
         status: 'string', // starting, on, stopping, off
       }
     );
+  },
+
+  render() {
+    const json = BaseUserModel.prototype.render.apply(this, arguments);
+    json.average_power = this._calculateAveragePower(json.update_data);
+    return json;
   },
 
   saveFromChargepoint(chargingStatus) {
@@ -281,5 +288,19 @@ module.exports = BaseUserModel.extend({
     }
 
     return attrs;
+  },
+
+  _calculateAveragePower(updateData) {
+    const totalPower = _.reduce(updateData, (total, dataPoint) => {
+      return total + dataPoint.power_kw;
+    }, 0);
+    const totalPoints = _.reduce(updateData, (total, dataPoint) => {
+      if (dataPoint.power_kw === 0) {
+        return total;
+      }
+      return total + 1;
+    }, 0);
+
+    return math.round(totalPower / totalPoints, 3);
   },
 });

@@ -54,20 +54,11 @@ export default React.createClass({
   // Render
 
   getSessionCells(session, idx) {
-    // Need to move calculation here
-    // Because can't pass `update_data` into `SessionCell`
-    // due to a Safari memory issue
-    const totalPower = _.reduce(session.update_data, (total, dataPoint) => {
-      return total + dataPoint.power_kw;
-    }, 0);
-    const totalPoints = _.reduce(session.update_data, (total, dataPoint) => {
-      if (dataPoint.power_kw === 0) {
-        return total;
-      }
-      return total + 1;
-    }, 0);
+    // Can't pass `update_data` into `SessionCell`
+    // Due to a Safari/WebKit memory issue
+    // Too many HTML properties or something
+    // https://bugs.webkit.org/show_bug.cgi?id=80797
     const sessionProps = _.omit(session, 'update_data');
-    sessionProps.average_power = math.round(totalPower / totalPoints, 3);
 
     return <SessionCell key={idx} session={sessionProps} />;
   },
