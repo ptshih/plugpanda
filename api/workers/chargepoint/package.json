@@ -1,8 +1,8 @@
 {
-  "name": "session-worker",
+  "name": "chargepoint-worker",
   "version": "0.0.5",
-  "description": "session worker",
-  "main": "session-worker.js",
+  "description": "chargepoint worker",
+  "main": "chargepoint-worker.js",
   "author": "Peter Shih <ptshih@gmail.com>",
   "license": "MIT",
   "dependencies": {

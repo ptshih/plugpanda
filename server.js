@@ -9,7 +9,8 @@ nconf.env().defaults({
   NODE_ENV: 'development',
   VERSION: new Date().getTime(),
   PORT: 9001,
-  HOST: 'http://localhost:9001',
+  HOST: 'http://ngrok.petershih.com',
+  PANDA_IRON_PROJECT_ID: '55d66dbac7cf220008000062',
 });
 global.db = require('./api/config/db');
 
@@ -31,6 +32,11 @@ if (!nconf.get('PANDA_WORKER_TOKEN')) {
 
 if (!nconf.get('PANDA_CLIENT_TOKEN')) {
   console.error('Missing ENV for PANDA_CLIENT_TOKEN.');
+  process.exit(1);
+}
+
+if (!nconf.get('PANDA_IRON_TOKEN')) {
+  console.error('Missing ENV for PANDA_IRON_TOKEN.');
   process.exit(1);
 }
 
