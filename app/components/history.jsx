@@ -51,26 +51,26 @@ export default React.createClass({
   },
 
   // Render
-
-  getSessionCells(session, idx) {
-    // Can't pass `update_data` into `SessionCell`
-    // Due to a Safari/WebKit memory issue
-    // Too many HTML properties or something
-    // https://bugs.webkit.org/show_bug.cgi?id=80797
-    const sessionProps = _.omit(session, 'update_data');
-    console.log(sessionProps);
-    return <SessionCell key={idx} session={sessionProps} />;
-  },
-
-  getSessionList() {
-    const sessions = this.state.sessions;
-
-    return (
-      <ul className="SessionList">
-        {sessions.map(this.getSessionCells)}
-      </ul>
-    );
-  },
+  //
+  // getSessionCells(session, idx) {
+  //   // Can't pass `update_data` into `SessionCell`
+  //   // Due to a Safari/WebKit memory issue
+  //   // Too many HTML properties or something
+  //   // https://bugs.webkit.org/show_bug.cgi?id=80797
+  //   const sessionProps = _.omit(session, 'update_data');
+  //   console.log(sessionProps);
+  //   return <SessionCell key={idx} session={sessionProps} />;
+  // },
+  //
+  // getSessionList() {
+  //   const sessions = this.state.sessions;
+  //
+  //   return (
+  //     <ul className="SessionList">
+  //       {sessions.map(this.getSessionCells)}
+  //     </ul>
+  //   );
+  // },
 
   render() {
     return (
