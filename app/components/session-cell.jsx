@@ -13,6 +13,20 @@ export default React.createClass({
 
   propTypes: {
     session: React.PropTypes.object.isRequired,
+
+    sessionId: React.PropTypes.string.isRequired,
+    chargingTime: React.PropTypes.string.isRequired,
+    created_date
+    energy_kwh
+    miles_added
+    average_power
+    payment_type
+    total_amount
+    address1
+    city
+    lat
+    lon
+    status
   },
 
   mixins: [Navigation],

@@ -4,7 +4,6 @@ import React from 'react';
 // Utils
 import auth from '../lib/auth';
 import api from '../lib/api';
-import math from '../lib/math';
 
 // Store and Actions
 import HistoryStore from '../stores/history-store';
@@ -20,9 +19,9 @@ export default React.createClass({
   statics: {
     fetch() {
       return api.fetchHistory().then((sessions) => {
-        HistoryActions.sync({
-          sessions: sessions,
-        });
+        // HistoryActions.sync({
+        //   sessions: sessions,
+        // });
       });
     },
 
@@ -59,7 +58,7 @@ export default React.createClass({
     // Too many HTML properties or something
     // https://bugs.webkit.org/show_bug.cgi?id=80797
     const sessionProps = _.omit(session, 'update_data');
-
+    console.log(sessionProps);
     return <SessionCell key={idx} session={sessionProps} />;
   },
 
@@ -68,7 +67,7 @@ export default React.createClass({
 
     return (
       <ul className="SessionList">
-
+        {sessions.map(this.getSessionCells)}
       </ul>
     );
   },
@@ -79,7 +78,7 @@ export default React.createClass({
         <section>
           <div className="row">
             <div className="col-xs-12">
-              {this.getSessionList()}
+              TEST
             </div>
           </div>
         </section>
