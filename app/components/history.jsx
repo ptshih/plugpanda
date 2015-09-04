@@ -18,10 +18,7 @@ export default React.createClass({
 
   statics: {
     fetch() {
-      return api.fetchHistory().then((data) => {
-        const sessions = _.map(data, (session) => {
-          return _.omit(session, 'update_data');
-        });
+      return api.fetchHistory().then((sessions) => {
         HistoryActions.sync({
           sessions: sessions,
         });

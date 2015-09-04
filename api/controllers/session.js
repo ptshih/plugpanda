@@ -112,6 +112,9 @@ module.exports = BaseController.extend({
 
     return sessions.fetch(qo).tap(() => {
       res.data = sessions.render();
+      res.data = _.map(res.data, (sessionData) => {
+        return _.omit(sessionData, 'update_data');
+      });
       next();
     }).catch(next);
   },
