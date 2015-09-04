@@ -68,7 +68,7 @@ export default React.createClass({
 
     return (
       <ul className="SessionList">
-        {sessions.map(this.getSessionCells)}
+
       </ul>
     );
   },
