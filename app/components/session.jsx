@@ -22,7 +22,7 @@ export default React.createClass({
   displayName: 'Session',
 
   statics: {
-    fetch(params, query) {
+    fetch(params) {
       console.log(params);
       return api.fetchSession(params.session_id).then((state) => {
         SessionActions.sync(state);

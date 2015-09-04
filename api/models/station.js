@@ -28,10 +28,7 @@ module.exports = BaseModel.extend({
   },
 
   _convertFromChargepoint(obj) {
-    const attrs = {
-
-    };
-
+    const attrs = _.clone(obj);
     return attrs;
   },
 });

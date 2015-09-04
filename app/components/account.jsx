@@ -18,7 +18,7 @@ export default React.createClass({
   displayName: 'Account',
 
   statics: {
-    fetch(params, query) {
+    fetch() {
       return api.fetchAccount().then((state) => {
         AccountActions.sync(state);
       });
