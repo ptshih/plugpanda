@@ -234,6 +234,7 @@ module.exports = BaseUserModel.extend({
       console.log(`-----> Stop session ack: ${stopSession.ack_id}.`);
 
       // Send SMS notification via Twilio
+      // TODO: hardcoded phone number
       return twilio.sendNotification({
         body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
       }).tap((body) => {
