@@ -5,6 +5,7 @@
 @import 'error';
 @import 'float-label';
 @import 'google-map';
+@import 'nprogress';
 
 // Bootstrap Overrides
 
@@ -19,6 +20,35 @@
   }
 }
 
+.nav-link-bordered {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.navbar-toggler {
+  padding-left: 0;
+  padding-right: 0;
+  outline: none;
+}
+
+@include media-breakpoint-down(xs) {
+  // First Item
+  .navbar-nav .nav-item {
+    display: none;
+    float: none;
+    margin-left: 0;
+  }
+
+  // Other Items
+  .navbar-nav .nav-item + .nav-item {
+    display: block;
+    float: none;
+    margin-left: 0;
+  }
+}
+
 // Medium devices (tablets, 48em and up)
 @media (min-width: 48em) {
   .col-xs-12 {
@@ -30,11 +60,6 @@
   &:last-of-type {
     margin-bottom: 0;
   }
-}
-
-// TODO: Remove Me Later
-.navbar-nav .nav-item + .nav-item {
-  margin-left: 0.5rem;
 }
 
 // Elements

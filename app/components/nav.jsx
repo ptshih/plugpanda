@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 import NavLink from './nav-link';
 
 // Utils
@@ -6,6 +7,22 @@ import auth from '../lib/auth';
 
 export default React.createClass({
   displayName: 'Nav',
+
+  getInitialState() {
+    return {
+      collapse: true,
+    };
+  },
+
+  // Handlers
+
+  onClickCollapse(e) {
+    e.preventDefault();
+
+    this.setState({
+      collapse: !this.state.collapse,
+    });
+  },
 
   // Render
 
@@ -15,9 +32,7 @@ export default React.createClass({
     }
 
     return (
-      <li className="nav-item">
-        <NavLink to="/car">Car</NavLink>
-      </li>
+      <NavLink to="/car">Car</NavLink>
     );
   },
 
@@ -27,9 +42,7 @@ export default React.createClass({
     }
 
     return (
-      <li className="nav-item">
-        <NavLink to="/sessions/current">Session</NavLink>
-      </li>
+      <NavLink to="/sessions/current">Session</NavLink>
     );
   },
 
@@ -39,9 +52,7 @@ export default React.createClass({
     }
 
     return (
-      <li className="nav-item">
-        <NavLink to="/sessions">History</NavLink>
-      </li>
+      <NavLink to="/sessions">History</NavLink>
     );
   },
 
@@ -51,55 +62,42 @@ export default React.createClass({
     }
 
     return (
-      <li className="nav-item">
-        <NavLink to="/account">Account</NavLink>
-      </li>
+      <NavLink to="/account">Account</NavLink>
     );
   },
 
-  getLoginLogout() {
-    if (!auth.isLoggedIn()) {
-      return (
-        <li className="nav-item">
-          <NavLink to="/login">Sign In</NavLink>
-        </li>
-      );
-    }
-
-    return (
-      <li className="nav-item">
-        <NavLink to="/logout">Sign Out</NavLink>
-      </li>
-    );
-  },
-
-  getRegister() {
+  getLogin() {
     if (auth.isLoggedIn()) {
       return null;
     }
 
     return (
-      <li className="nav-item">
-        <NavLink to="/register">Sign Up</NavLink>
-      </li>
+      <NavLink to="/login" className="nav-link-bordered pull-right">Sign In</NavLink>
     );
   },
 
   render() {
+    const navbarClassName = ['navbar-toggleable-xs', 'collapse', !this.state.collapse ? 'in' : ''].join(' ');
+
     return (
-      <nav className="navbar navbar-light bg-faded">
-        <ul className="nav navbar-nav">
-          <li className="nav-item">
-            <NavLink to="/">Home</NavLink>
-          </li>
-          {this.getCar()}
-          {this.getSession()}
-          {this.getHistory()}
-          {this.getAccount()}
-          {this.getLoginLogout()}
-          {this.getRegister()}
-        </ul>
-      </nav>
+      <header className="navbar navbar-light bg-faded">
+        <div className="clearfix">
+          <button className="navbar-toggler pull-right hidden-sm-up" onClick={this.onClickCollapse}>
+            ☰
+          </button>
+          <Link to="/" className="navbar-brand hidden-sm-up">PlugPanda</Link>
+        </div>
+        <div className={navbarClassName}>
+          <nav className="nav navbar-nav">
+            <NavLink to="/">PlugPanda</NavLink>
+            {this.getCar()}
+            {this.getSession()}
+            {this.getHistory()}
+            {this.getAccount()}
+            {this.getLogin()}
+          </nav>
+        </div>
+      </header>
     );
   },
 });

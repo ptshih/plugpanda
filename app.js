@@ -19,6 +19,12 @@ import Login from './app/components/login';
 import Logout from './app/components/logout';
 import Register from './app/components/register';
 
+// NProgress loading indicator
+import NProgress from 'nprogress';
+NProgress.configure({
+  showSpinner: false,
+});
+
 // App Layout
 const App = React.createClass({
   render() {
@@ -47,6 +53,8 @@ const routes = (
 
 // Run Router
 Router.run(routes, Router.HistoryLocation, (Handler, state) => {
+  NProgress.start();
+
   // create the promises hash
   const promises = state.routes.filter((route) => {
     // gather up the handlers that have a static `fetch` method
@@ -58,6 +66,8 @@ Router.run(routes, Router.HistoryLocation, (Handler, state) => {
   }, {});
 
   return Promise.props(promises).then(() => {
+    NProgress.done();
+
     React.render(<Handler />, document.getElementById('app'));
   }).catch((err) => {
     console.log(err);

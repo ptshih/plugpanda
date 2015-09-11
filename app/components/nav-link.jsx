@@ -6,6 +6,7 @@ export default React.createClass({
   displayName: 'NavLink',
 
   propTypes: {
+    className: React.PropTypes.string,
     to: React.PropTypes.string.isRequired,
     children: React.PropTypes.string.isRequired,
     params: React.PropTypes.object,
@@ -30,7 +31,7 @@ export default React.createClass({
     basePathname.shift();
     const isActive = baseTo.length === basePathname.length && _.first(baseTo) === _.first(basePathname);
 
-    const className = ['nav-link', isActive ? 'active' : ''].join(' ');
+    const className = ['nav-item', 'nav-link', this.props.className,  isActive ? 'active' : ''].join(' ');
 
     return (
       <Link {...props} className={className}>{this.props.children}</Link>

@@ -224,6 +224,8 @@ module.exports = BaseModel.extend({
     return _.first(matches);
   },
 
+  // Get the prepended country phone code
+  // For use with Twilio
   phoneCode() {
     let code;
 

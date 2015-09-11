@@ -11,8 +11,11 @@ Muni.Promise.promisifyAll(twilioClient);
 
 module.exports = {
   sendNotification: Muni.Promise.method(function(options) {
-    options.to = options.to || '+18085183808';
     options.from = options.from || '+14158861337';
+
+    if (!_.isString(options.to)) {
+      throw new Error('Missing Phone Number.');
+    }
 
     if (!_.isString(options.body)) {
       throw new Error('Missing Notification Text.');

@@ -10,7 +10,7 @@ import AccountActions from '../actions/account-actions';
 const accountStore = new AccountStore();
 
 // Components
-// import {Link} from 'react-router';
+import {Link} from 'react-router';
 import InputTextFloatLabel from './partials/input-text-float-label';
 import SelectFloatLabel from './partials/select-float-label';
 
@@ -282,6 +282,9 @@ export default React.createClass({
         <section>{this.getChargepoint()}</section>
         <section>{this.getBMW()}</section>
         <section>{this.getSubscription()}</section>
+        <section>
+          <Link to="/logout">Sign Out</Link>
+        </section>
       </article>
     );
   },

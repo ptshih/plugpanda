@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 // Utils
 import auth from '../lib/auth';
@@ -15,8 +16,6 @@ const carStore = new CarStore();
 import Table from './table';
 import GoogleMap from './google-map';
 import Highcharts from 'react-highcharts/more';
-
-import moment from 'moment';
 
 export default React.createClass({
   displayName: 'Car',
