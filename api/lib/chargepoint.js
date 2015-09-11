@@ -20,7 +20,8 @@ module.exports = {
         },
       },
     }).then((body) => {
-      return body.validate_login;
+      const json = JSON.parse(body);
+      return json.validate_login;
     });
   }),
 
@@ -84,7 +85,8 @@ module.exports = {
         },
       },
     }).then((body) => {
-      return body.stop_session;
+      const json = JSON.parse(body);
+      return json.stop_session;
     });
   }),
 
@@ -109,7 +111,8 @@ module.exports = {
         },
       },
     }).then((body) => {
-      return body.session_ack;
+      const json = JSON.parse(body);
+      return json.session_ack;
     });
   }),
 
