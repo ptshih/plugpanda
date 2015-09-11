@@ -22,12 +22,4 @@ module.exports = {
       console.log(`-----> SMS sent to: ${options.to} with SID: ${body.sid}.`);
     });
   }),
-
-  // UNUSED
-  buildTwimlString(message = '') {
-    const twiml = new twilio.TwimlResponse();
-    twiml.message(message);
-    return twiml.toString();
-  },
-
 };

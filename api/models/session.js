@@ -49,7 +49,6 @@ module.exports = BaseUserModel.extend({
     );
   },
 
-  // After unplugging, `current_charging` will become `done`
   schema() {
     return _.extend({},
       _.result(BaseUserModel.prototype, 'schema'), {
@@ -61,6 +60,7 @@ module.exports = BaseUserModel.extend({
         outlet_number: 'uinteger',
         port_level: 'uinteger',
         payment_type: 'string', // paid, free
+        // After unplugging, `current_charging` will become `done`
         current_charging: 'string', // not_charging, in_use, done, fully_charged
         charging_time: 'uinteger',
         session_time: 'uinteger',
@@ -123,7 +123,7 @@ module.exports = BaseUserModel.extend({
   },
 
   /**
-   * Send stop request to Chargepoint
+   * Send a STOP request to Chargepoint
    * Send SMS notification via Twilio (optional)
    */
   stopSession() {
@@ -164,6 +164,10 @@ module.exports = BaseUserModel.extend({
     });
   },
 
+  /**
+   * Check out the status of a STOP request to Chargepoint
+   * CURRENTLY UNUSED
+   */
   stopSessionAck() {
     const sessionId = this.get('session_id');
 
@@ -176,7 +180,10 @@ module.exports = BaseUserModel.extend({
     });
   },
 
-  // Save updated status from Chargepoint
+  /**
+   * Update a session based on a status request from Chargepoint
+   * This holds all of the LOGIC for handling session state
+   */
   saveFromChargepoint(chargingStatus) {
     return Muni.Promise.bind(this).tap(() => {
       this.set(this._convertFromChargepoint(chargingStatus));
@@ -268,6 +275,10 @@ module.exports = BaseUserModel.extend({
   },
 
 
+  /**
+   * Whitelisted properties to extract from Chargepoint API
+   * Some properties don't exist when `current_charging` is `done` (not active)
+   */
   _convertFromChargepoint(obj) {
     const attrs = {
       company_id: obj.company_id,
@@ -308,6 +319,10 @@ module.exports = BaseUserModel.extend({
     return attrs;
   },
 
+  /**
+   * Compute the average power (kw) by iterating over `update_data`
+   * This is because `power_kw` from Chargepoint is real-time
+   */
   _calculateAveragePower(updateData) {
     const totalPower = _.reduce(updateData, (total, dataPoint) => {
       return total + dataPoint.power_kw;
@@ -322,6 +337,13 @@ module.exports = BaseUserModel.extend({
     return math.round(totalPower / totalPoints, 3);
   },
 
+  /**
+   * Logic to determine when to STOP a session
+   * Only stops sessions that are `paid`
+   * Must have `power_kw > 0` so it's not warming up
+   * Must have at least charged for `CHARGING_TIME_MIN` milliseconds
+   * Must maintain at least `POWER_KW_MIN` power level during last update
+   */
   _shouldStopSession() {
     return this.get('payment_type') === 'paid' &&
       this.get('power_kw') > 0 &&

@@ -3,25 +3,19 @@ const request = require('../../lib/request');
 const Muni = require('muni');
 
 module.exports = {
-  sendLoginRequest: Muni.Promise.method(function(email, password) {
-    if (!email || !password) {
-      throw new Error('Missing email or password.');
-    }
-
+  /**
+   * Get history of all charging sessions stored in database
+   * UNUSED
+   */
+  sendHistoryRequest: Muni.Promise.method(function(chargepoint) {
     return request({
-      method: 'POST',
-      url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
-      json: {
-        version: '54',
-        validate_login: {
-          disable_token: false,
-          password: password,
-          user_name: email,
-        },
+      url: `https://mc.chargepoint.com/map-prod/v2`,
+      querystring: `{"charging_activity":{"page_size":100},"user_id":${chargepoint.user_id}}`,
+      headers: {
+        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
       },
     }).then((body) => {
-      const json = JSON.parse(body);
-      return json.validate_login;
+      return body.charging_activity;
     });
   }),
 
@@ -66,6 +60,7 @@ module.exports = {
 
   /**
    * Send a STOP request for a station/port to Chargepoint
+   * Chargepoint API responds in `text/html` but contains a JSON string
    */
   sendStopRequest: Muni.Promise.method(function(chargepoint, deviceId, outletNumber) {
     console.log(`-----> Stop Request for Device: ${deviceId}, Port: ${outletNumber}.`);
@@ -99,6 +94,7 @@ module.exports = {
 
   /**
    * Check on the status of a STOP request
+   * Chargepoint API responds in `text/html` but contains a JSON string
    */
   sendStopAckRequest: Muni.Promise.method(function(chargepoint, ackId) {
     console.log(`-----> Stop ACK Request for ACK: ${ackId}.`);
@@ -131,18 +127,28 @@ module.exports = {
   }),
 
   /**
-   * Get history of all charging sessions stored in database
-   * UNUSED
+   * Authenticate with Chargepoint using `email` and `password`
+   * Chargepoint API responds in `text/html` but contains a JSON string
    */
-  sendHistoryRequest: Muni.Promise.method(function(chargepoint) {
+  sendLoginRequest: Muni.Promise.method(function(email, password) {
+    if (!email || !password) {
+      throw new Error('Missing email or password.');
+    }
+
     return request({
-      url: `https://mc.chargepoint.com/map-prod/v2`,
-      querystring: `{"charging_activity":{"page_size":100},"user_id":${chargepoint.user_id}}`,
-      headers: {
-        Cookie: `coulomb_sess=${chargepoint.auth_token}`,
+      method: 'POST',
+      url: 'https://webservices.chargepoint.com/backend.php/mobileapi',
+      json: {
+        version: '54',
+        validate_login: {
+          disable_token: false,
+          password: password,
+          user_name: email,
+        },
       },
     }).then((body) => {
-      return body.charging_activity;
+      const json = JSON.parse(body);
+      return json.validate_login;
     });
   }),
 };
