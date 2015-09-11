@@ -1,6 +1,7 @@
 import React from 'react';
 
 // Utils
+import auth from '../lib/auth';
 import api from '../lib/api';
 
 // Components
@@ -14,6 +15,14 @@ export default React.createClass({
   },
 
   mixins: [Navigation],
+
+  statics: {
+    willTransitionTo(transition) {
+      if (auth.isLoggedIn()) {
+        transition.redirect('/');
+      }
+    },
+  },
 
   getInitialState() {
     return {

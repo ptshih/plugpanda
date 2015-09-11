@@ -2,6 +2,10 @@
 const _ = require('lodash');
 const express = require('express');
 const path = require('path');
+const Muni = require('muni');
+
+// Errors
+global.APIError = Muni.Error;
 
 // Configuration
 global.nconf = require('nconf');

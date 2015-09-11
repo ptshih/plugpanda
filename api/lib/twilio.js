@@ -10,7 +10,6 @@ const twilioClient = twilio(
 Muni.Promise.promisifyAll(twilioClient);
 
 module.exports = {
-  // TODO: hardcoded phone number
   sendNotification: Muni.Promise.method(function(options) {
     options.to = options.to || '+18085183808';
     options.from = options.from || '+14158861337';
@@ -19,7 +18,9 @@ module.exports = {
       throw new Error('Missing Notification Text.');
     }
 
-    return twilioClient.sendMessage(options);
+    return twilioClient.sendMessage(options).tap((body) => {
+      console.log(`-----> SMS sent to: ${options.to} with SID: ${body.sid}.`);
+    });
   }),
 
   // UNUSED

@@ -86,7 +86,14 @@ module.exports = {
       },
     }).then((body) => {
       const json = JSON.parse(body);
-      return json.stop_session;
+      const stopSession = json.stop_session;
+
+      // Error Handling
+      if (!stopSession.status) {
+        throw new APIError(`Stop request failed: ${stopSession.error}.`, 400);
+      }
+
+      return stopSession;
     });
   }),
 
@@ -112,7 +119,14 @@ module.exports = {
       },
     }).then((body) => {
       const json = JSON.parse(body);
-      return json.session_ack;
+      const sessionAck = json.session_ack;
+
+      // Error Handling
+      if (!sessionAck.status) {
+        throw new APIError(`Ack request failed: ${sessionAck.error}.`, 400);
+      }
+
+      return sessionAck;
     });
   }),
 

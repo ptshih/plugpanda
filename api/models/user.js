@@ -47,6 +47,8 @@ module.exports = BaseModel.extend({
         name: null,
         currency: 'usd',
         timezone: 'utc',
+        country: 'us',
+        phone: null,
 
         plan: 'free',
 
@@ -88,6 +90,8 @@ module.exports = BaseModel.extend({
         name: 'string',
         currency: 'string',
         timezone: 'string',
+        country: 'string',
+        phone: 'string',
 
         plan: 'string',
 
@@ -218,6 +222,21 @@ module.exports = BaseModel.extend({
   _usernameFromEmail(email) {
     const matches = /[(\W|^)[\w.+\-]{0,25}(?=@)/.exec(email);
     return _.first(matches);
+  },
+
+  phoneCode() {
+    let code;
+
+    switch (this.get('country')) {
+      case 'us':
+        code = '+1';
+        break;
+      default:
+        code = '+1';
+        break;
+    }
+
+    return code;
   },
 
   beforeSave: Muni.Promise.method(function() {

@@ -49,6 +49,7 @@ module.exports = BaseUserModel.extend({
     );
   },
 
+  // After unplugging, `current_charging` will become `done`
   schema() {
     return _.extend({},
       _.result(BaseUserModel.prototype, 'schema'), {
@@ -92,129 +93,42 @@ module.exports = BaseUserModel.extend({
     return json;
   },
 
-  saveFromChargepoint(chargingStatus) {
-    return Muni.Promise.bind(this).tap(() => {
-      this.set(this._convertFromChargepoint(chargingStatus));
-    }).then(() => {
-      // Session Status
-      const sessionId = this.get('session_id');
-      const status = this.get('status');
-      const currentCharging = this.get('current_charging');
 
-      // NOTES
-      // After unplugging, `current_charging` will become `done`
-
-      // This session is done and unplugged
-      // Turn off the session permanently
-      if (currentCharging === 'done') {
-        console.log(`-----> Session: ${sessionId} is done and unplugged.`);
-        this.set('status', 'off');
-        return true;
-      }
-
-      // This session is warming up and plugged in
-      if (currentCharging === 'not_charging') {
-        console.log(`-----> Session: ${sessionId} is not charging.`);
-        this.set('status', 'starting');
-        return true;
-      }
-
-      // The session is actively charging and plugged in
-      if (currentCharging === 'in_use') {
-        // This session is stopping
-        if (status === 'stopping') {
-          console.log(`-----> Session: ${sessionId} is stopping.`);
-          // Don't save
-          return false;
-        }
-
-        // This session was off
-        if (status === 'off') {
-          console.log(`-----> Session: ${sessionId} was off.`);
-          // Start the session
-          this.set('status', 'on');
-          return true;
-        }
-
-        // This session was starting
-        if (status === 'starting') {
-          console.log(`-----> Session: ${sessionId} is starting.`);
-          // Start the session
-          this.set('status', 'on');
-          return true;
-        }
-
-        // This session is actively charging and updating
-        if (status === 'on') {
-          // This session is tapering and is almost done charging
-          // Charging rate has dropped below `POWER_KW_MIN`
-          // And has been charging at least `CHARGING_TIME_MIN`
-          if (this.shouldStopSession()) {
-            console.log(`-----> Session: ${sessionId} should be stopped.`);
-            return this.stopSession().then((stopSession) => {
-              // Stop the session
-              // Save `ack_id` from Chargepoint
-              // This is used to monitor the status of a stop request
-              this.set('status', 'stopping');
-              this.set('ack_id', stopSession.ack_id);
-              return true;
-            }).catch((err) => {
-              // Ignore errors
-              console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-              return true;
-            });
-          }
-
-          // This session is charging above the minimum rate
-          console.log(`-----> Session: ${sessionId} is actively charging.`);
-          return true;
-        }
-
-        // Unknown `status`, don't save
-        return false;
-      }
-
-      // This session is fully charged and plugged in
-      if (currentCharging === 'fully_charged') {
-        console.log(`-----> Session: ${sessionId} is fully charged.`);
-
-        // Stop the session
-        return this.stopSession().then((stopSession) => {
-          // Save `ack_id` from Chargepoint
-          // This is used to monitor the status of a stop request
-          this.set('status', 'stopping');
-          this.set('ack_id', stopSession.ack_id);
-          return true;
-        }).catch((err) => {
-          // Ignore errors
-          console.error(`-----> Session: ${sessionId} failed to stop with error: ${err.message}.`);
-          return true;
-        });
-      }
-
-      // Unknown session status
-      console.log(`-----> Session: ${sessionId} has unknown charging status: ${currentCharging}.`);
-      return false;
-    }).tap((shouldSave) => {
-      // Save Session
-      if (shouldSave) {
-        return this.save();
-      }
-    }).return(this);
+  warmupSession() {
+    console.log(`-----> Warming Up Session: ${this.get('session_id')}.`);
+    this.set('status', 'starting');
+    return this;
   },
 
-  shouldStopSession() {
-    return this.get('payment_type') === 'paid' &&
-      this.get('power_kw') > 0 &&
-      this.get('power_kw') < POWER_KW_MIN &&
-      this.get('charging_time') > CHARGING_TIME_MIN;
+  startSession() {
+    console.log(`-----> Starting Session: ${this.get('session_id')}.`);
+    this.set('status', 'on');
+    return this;
+  },
+
+  stoppedSession() {
+    console.log(`-----> Stopped Session: ${this.get('session_id')}.`);
+    return this;
+  },
+
+  endSession() {
+    console.log(`-----> Ending Session: ${this.get('session_id')}.`);
+    this.set('status', 'off');
+    return this;
+  },
+
+  endedSession() {
+    console.log(`-----> Ended Session: ${this.get('session_id')}.`);
+    return this;
   },
 
   /**
    * Send stop request to Chargepoint
-   * Send SMS notification via Twilio
+   * Send SMS notification via Twilio (optional)
    */
   stopSession() {
+    console.log(`-----> Stopping Session: ${this.get('session_id')}.`);
+
     const sessionId = this.get('session_id');
     const deviceId = this.get('device_id');
     const outletNumber = this.get('outlet_number');
@@ -225,27 +139,134 @@ module.exports = BaseUserModel.extend({
       deviceId,
       outletNumber
     ).then((stopSession) => {
-      if (!stopSession.status) {
-        throw new Error(`Stop session failed with error: ${stopSession.error}.`);
-      }
+      console.log(`-----> Stop session succeeded with ack: ${stopSession.ack_id}.`);
 
-      return stopSession;
-    }).tap((stopSession) => {
-      console.log(`-----> Stop session ack: ${stopSession.ack_id}.`);
+      // Save `ack_id` from Chargepoint
+      // This is used to monitor the status of a stop request
+      this.set('status', 'stopping');
+      this.set('ack_id', stopSession.ack_id);
 
       // Send SMS notification via Twilio
-      // TODO: hardcoded phone number
+      const phoneCode = this.user.phoneCode();
+      const phoneNumber = this.user.get('phone');
+
+      if (!phoneCode || !phoneNumber) {
+        return this;
+      }
+
       return twilio.sendNotification({
+        to: `${countryCode}${phoneNumber}`,
         body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
-      }).tap((body) => {
-        console.log(`-----> Stop notification sent: ${body.sid}.`);
-      });
+      }).return(this);
+    }).catch((err) => {
+      console.error(`-----> Session: ${sessionId} failed to stop: ${err.message}.`);
+      throw err;
     });
   },
 
   stopSessionAck() {
-    return chargepoint.sendStopAckRequest(this.user.get('chargepoint'), this.get('ack_id'));
+    const sessionId = this.get('session_id');
+
+    return chargepoint.sendStopAckRequest(this.user.get('chargepoint'), this.get('ack_id')).then((sessionAck) => {
+      // TODO: update `ack_id` from `sessionAck`
+      return this;
+    }).catch((err) => {
+      console.error(`-----> Session: ${sessionId} failed to ack: ${err.message}.`);
+      throw err;
+    });
   },
+
+  // Save updated status from Chargepoint
+  saveFromChargepoint(chargingStatus) {
+    return Muni.Promise.bind(this).tap(() => {
+      this.set(this._convertFromChargepoint(chargingStatus));
+    }).then(() => {
+      // Session Status
+      const sessionId = this.get('session_id');
+      const status = this.get('status');
+      const currentCharging = this.get('current_charging');
+
+      // This session is done and unplugged
+      // Turn off the session permanently
+      if (currentCharging === 'done') {
+        if (status === 'off') {
+          this.endedSession();
+          return false;
+        }
+
+        this.endSession();
+        return true;
+      }
+
+      // This session is warming up and plugged in
+      if (currentCharging === 'not_charging') {
+        this.warmupSession();
+        return true;
+      }
+
+      // The session is actively charging and plugged in
+      if (currentCharging === 'in_use') {
+        // This session has already been stopped
+        if (status === 'stopping') {
+          this.stoppedSession();
+          return false;
+        }
+
+        // This session was off or was starting
+        if (status === 'off' || status === 'starting') {
+          this.startSession();
+          return true;
+        }
+
+        // This session is actively charging and updating
+        if (status === 'on') {
+          // This session is tapering and is almost done charging
+          // Charging rate has dropped below `POWER_KW_MIN`
+          // And has been charging at least `CHARGING_TIME_MIN`
+          if (this._shouldStopSession()) {
+            // Stop the session
+            return this.stopSession().then(() => {
+              // Successfully stopped session
+              return true;
+            }).catch(() => {
+              // Ignore errors
+              return true;
+            });
+          }
+
+          // This session is charging above the minimum rate
+          console.log(`-----> Session: ${sessionId} is actively charging.`);
+          return true;
+        }
+
+        // Unknown `status`
+        console.log(`-----> Session: ${sessionId} has status: ${status}.`);
+        return false;
+      }
+
+      // This session is fully charged and plugged in
+      if (currentCharging === 'fully_charged') {
+        // Stop the session
+        return this.stopSession().then(() => {
+          // Successfully stopped session
+          return true;
+        }).catch(() => {
+          // Ignore errors
+          return true;
+        });
+      }
+
+      // Unknown `current_charging`
+      console.log(`-----> Session: ${sessionId} has unknown charging status: ${currentCharging}.`);
+      return false;
+    }).tap((shouldSave) => {
+      // Save Session
+      if (shouldSave) {
+        return this.save();
+      }
+    }).return(this);
+  },
+
 
   _convertFromChargepoint(obj) {
     const attrs = {
@@ -299,5 +320,12 @@ module.exports = BaseUserModel.extend({
     }, 0);
 
     return math.round(totalPower / totalPoints, 3);
+  },
+
+  _shouldStopSession() {
+    return this.get('payment_type') === 'paid' &&
+      this.get('power_kw') > 0 &&
+      this.get('power_kw') < POWER_KW_MIN &&
+      this.get('charging_time') > CHARGING_TIME_MIN;
   },
 });

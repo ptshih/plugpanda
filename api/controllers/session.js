@@ -158,8 +158,8 @@ module.exports = BaseController.extend({
       },
     }).then(() => {
       return session.stopSession();
-    }).then((stopSession) => {
-      res.data = stopSession;
+    }).then(() => {
+      res.data = session.render();
       next();
     }).catch(next);
   },
@@ -174,8 +174,8 @@ module.exports = BaseController.extend({
       },
     }).then(() => {
       return session.stopSessionAck();
-    }).then((body) => {
-      res.data = body;
+    }).then(() => {
+      res.data = session.render();
       next();
     }).catch(next);
   },
