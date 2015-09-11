@@ -16,6 +16,12 @@ import Table from './table';
 import GoogleMap from './google-map';
 import Highcharts from 'react-highcharts/more';
 
+Highcharts.Highcharts.setOptions({
+  global: {
+    useUTC: false,
+  },
+});
+
 // import moment from 'moment';
 
 export default React.createClass({
