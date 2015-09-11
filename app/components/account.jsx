@@ -59,11 +59,19 @@ export default React.createClass({
     // TODO: readonly for now
   },
 
+  onChangeCountry() {
+    // TODO: readonly for now
+  },
+
   onChangeName() {
     // TODO: readonly for now
   },
 
   onChangeEmail() {
+    // TODO: readonly for now
+  },
+
+  onChangePhone() {
     // TODO: readonly for now
   },
 
@@ -108,19 +116,19 @@ export default React.createClass({
 
   getSettings() {
     const currencyOptions = [{
-      label: 'usd',
-      value: 'USD',
+      label: 'USD',
+      value: 'usd',
     }, {
-      label: 'cad',
-      value: 'CAD',
+      label: 'CAD',
+      value: 'cad',
     }];
 
     const timezoneOptions = [{
-      label: 'utc',
-      value: 'UTC',
+      label: 'UTC',
+      value: 'utc',
     }, {
-      label: 'pst',
-      value: 'PST',
+      label: 'PST',
+      value: 'pst',
     }];
 
     return (
@@ -274,11 +282,55 @@ export default React.createClass({
     );
   },
 
+  getNotifications() {
+    const countryOptions = [{
+      label: 'United States',
+      value: 'us',
+    }, {
+      label: 'Canada',
+      value: 'CA',
+    }];
+
+    const formattedPhone = this._formatPhone(this.state.phone);
+
+    return (
+      <div className="row">
+        <div className="col-xs-12">
+          <h5>Your Notifications</h5>
+
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <SelectFloatLabel
+                  label="Country"
+                  value={this.state.country}
+                  onChange={this.onChangeCountry}
+                  options={countryOptions}
+                />
+              </fieldset>
+            </div>
+            <div className="col-md-6 col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  label="Mobile Phone (SMS)"
+                  placeholder="415-555-5555"
+                  value={formattedPhone}
+                  onChange={this.onChangePhone}
+                />
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
   render() {
     return (
       <article>
         <section>{this.getInformation()}</section>
         <section>{this.getSettings()}</section>
+        <section>{this.getNotifications()}</section>
         <section>{this.getChargepoint()}</section>
         <section>{this.getBMW()}</section>
         <section>{this.getSubscription()}</section>
@@ -287,5 +339,14 @@ export default React.createClass({
         </section>
       </article>
     );
+  },
+
+  _formatPhone(str) {
+    const r = /(\D+)/g;
+    const val = str.replace(r, '');
+    const npa = val.substr(0, 3);
+    const nxx = val.substr(3, 3);
+    const last4 = val.substr(6, 4);
+    return npa + '-' + nxx + '-' + last4;
   },
 });
