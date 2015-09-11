@@ -14,6 +14,13 @@ export default React.createClass({
     };
   },
 
+  componentWillReceiveProps() {
+    // Reset collapse state when changing routes
+    this.setState({
+      collapse: true,
+    });
+  },
+
   // Handlers
 
   onClickCollapse(e) {
