@@ -151,11 +151,12 @@ module.exports = BaseUserModel.extend({
       const phoneNumber = this.user.get('phone');
 
       if (!phoneCode || !phoneNumber) {
+        console.log('-----> No phone number.');
         return this;
       }
 
       return twilio.sendNotification({
-        to: `${countryCode}${phoneNumber}`,
+        to: `${phoneCode}${phoneNumber}`,
         body: `Stopped: ${sessionId} for device: ${deviceId} on port: ${outletNumber}`,
       }).return(this);
     }).catch((err) => {

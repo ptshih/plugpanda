@@ -7,7 +7,6 @@ const twilioClient = twilio(
   nconf.get('TWILIO_ACCOUNT_SID'),
   nconf.get('TWILIO_AUTH_TOKEN')
 );
-Muni.Promise.promisifyAll(twilioClient);
 
 module.exports = {
   sendNotification: Muni.Promise.method(function(options) {
@@ -21,8 +20,9 @@ module.exports = {
       throw new Error('Missing Notification Text.');
     }
 
-    return twilioClient.sendMessage(options).tap((body) => {
-      console.log(`-----> SMS sent to: ${options.to} with SID: ${body.sid}.`);
+    return twilioClient.sendMessage(options).then((body) => {
+      console.log(`-----> SMS sent to: ${body.to} with SID: ${body.sid}.`);
+      return body;
     });
   }),
 };
