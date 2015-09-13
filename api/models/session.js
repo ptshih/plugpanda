@@ -253,15 +253,10 @@ module.exports = BaseUserModel.extend({
       }
 
       // This session is fully charged and plugged in
+      // Don't do anything
       if (currentCharging === 'fully_charged') {
-        // Stop the session
-        return this.stopSession().then(() => {
-          // Successfully stopped session
-          return true;
-        }).catch(() => {
-          // Ignore errors
-          return true;
-        });
+        console.log(`-----> Session: ${sessionId} is fully charged.`);
+        return false;
       }
 
       // Unknown `current_charging`
