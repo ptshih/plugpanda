@@ -94,31 +94,15 @@ module.exports = BaseUserModel.extend({
   },
 
 
-  warmupSession() {
-    console.log(`-----> Warming Up Session: ${this.get('session_id')}.`);
-    this.set('status', 'starting');
-    return this;
-  },
-
   startSession() {
     console.log(`-----> Starting Session: ${this.get('session_id')}.`);
     this.set('status', 'on');
     return this;
   },
 
-  stoppedSession() {
-    console.log(`-----> Stopped Session: ${this.get('session_id')}.`);
-    return this;
-  },
-
   endSession() {
     console.log(`-----> Ending Session: ${this.get('session_id')}.`);
     this.set('status', 'off');
-    return this;
-  },
-
-  endedSession() {
-    console.log(`-----> Ended Session: ${this.get('session_id')}.`);
     return this;
   },
 
@@ -198,17 +182,19 @@ module.exports = BaseUserModel.extend({
       // Turn off the session permanently
       if (currentCharging === 'done') {
         if (status === 'off') {
-          this.endedSession();
+          console.log(`-----> Session: ${sessionId} is done.`);
           return false;
         }
 
+        // For all other `status`, end the session
         this.endSession();
         return true;
       }
 
       // This session is warming up and plugged in
       if (currentCharging === 'not_charging') {
-        this.warmupSession();
+        // For all `status`
+        console.log(`-----> Session: ${sessionId} is not charging.`);
         return true;
       }
 
@@ -216,7 +202,7 @@ module.exports = BaseUserModel.extend({
       if (currentCharging === 'in_use') {
         // This session has already been stopped
         if (status === 'stopping') {
-          this.stoppedSession();
+          console.log(`-----> Session: ${sessionId} is stopped.`);
           return false;
         }
 
@@ -226,37 +212,41 @@ module.exports = BaseUserModel.extend({
           return true;
         }
 
-        // This session is actively charging and updating
-        if (status === 'on') {
+        // For all other `status`, stop the session if necessary
+        if (this._shouldStopSession()) {
           // This session is tapering and is almost done charging
           // Charging rate has dropped below `POWER_KW_MIN`
           // And has been charging at least `CHARGING_TIME_MIN`
-          if (this._shouldStopSession()) {
-            // Stop the session
-            return this.stopSession().then(() => {
-              // Successfully stopped session
-              return true;
-            }).catch(() => {
-              // Ignore errors
-              return true;
-            });
-          }
-
-          // This session is charging above the minimum rate
-          console.log(`-----> Session: ${sessionId} is actively charging.`);
-          return true;
+          return this.stopSession().then(() => {
+            // Successfully stopped session
+            return true;
+          }).catch(() => {
+            // Ignore errors
+            return true;
+          });
         }
 
-        // Unknown `status`
-        console.log(`-----> Session: ${sessionId} has status: ${status}.`);
-        return false;
+        // This session is charging above the minimum rate
+        console.log(`-----> Session: ${sessionId} is actively charging.`);
+        return true;
       }
 
       // This session is fully charged and plugged in
-      // Don't do anything
       if (currentCharging === 'fully_charged') {
-        console.log(`-----> Session: ${sessionId} is fully charged.`);
-        return false;
+        // This session has already been stopped
+        if (status === 'stopping') {
+          console.log(`-----> Session: ${sessionId} is stopped.`);
+          return false;
+        }
+
+        // For all other `status`, stop the session
+        return this.stopSession().then(() => {
+          // Successfully stopped session
+          return true;
+        }).catch(() => {
+          // Ignore errors
+          return true;
+        });
       }
 
       // Unknown `current_charging`
