@@ -203,7 +203,16 @@ export default React.createClass({
     return (
       <article>
         <section>
-          <h5>VIN: {this.state.vin}</h5>
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <div className="Section-heading">{this.state.vin}</div>
+            </div>
+            <div className="col-md-6 col-xs-12 text-right">
+            </div>
+          </div>
+        </section>
+
+        <section>
           {this.getStats()}
         </section>
       </article>

@@ -60,6 +60,13 @@ export default React.createClass({
     this.setState(sessionStore.getState());
   },
 
+  onStop(e) {
+    e.preventDefault();
+    console.log('STOP');
+
+    // TODO: Remember to disable button during async request
+  },
+
   // Render
 
   getChartConfig(name, data, options = {}) {
@@ -197,7 +204,17 @@ export default React.createClass({
     return (
       <article>
         <section>
-          <h5>Session: {this.state.session_id}</h5>
+          <div className="row">
+            <div className="col-md-6 col-xs-12">
+              <div className="Section-heading">#{this.state.session_id}</div>
+            </div>
+            <div className="col-md-6 col-xs-12 text-right">
+              <button className="btn btn-danger" onClick={this.onStop}>Stop</button>
+            </div>
+          </div>
+        </section>
+
+        <section>
           {this.getStats()}
         </section>
 

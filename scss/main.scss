@@ -82,6 +82,16 @@ section, .Section {
   max-width: 400px;
 }
 
+// Shared
+
+.Section-heading {
+  @extend h4;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+// Session
+
 .SessionList {
   list-style: none;
   padding-left: 0;
@@ -112,6 +122,8 @@ section, .Section {
   background-color: #f2dede;
 }
 
+
+// Login
 
 .Login--submit {
   margin-top: 0.5rem;
