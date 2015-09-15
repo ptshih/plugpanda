@@ -15,7 +15,7 @@ const carStore = new CarStore();
 // import {Link} from 'react-router';
 import Table from './table';
 import GoogleMap from './google-map';
-import Highcharts from 'react-highcharts/more';
+// import Highcharts from 'react-highcharts/more';
 
 export default React.createClass({
   displayName: 'Car',
@@ -55,7 +55,6 @@ export default React.createClass({
   // Render
 
   getStatsData() {
-    const fuelPercent = math.round((this.state.remainingFuel / this.state.maxFuel) * 100, 0);
     const timeDiff = moment(this.state.updateTime).diff(moment());
     const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
 
@@ -64,7 +63,7 @@ export default React.createClass({
       ['Miles', this.state.miles],
       ['Lock', this.state.doorLockState],
       ['Battery', `${this.state.chargingLevelHv}%`],
-      ['Fuel', `${fuelPercent}%`],
+      ['Fuel', `${this.state.fuelLevel}%`],
       ['Charging Status', this.state.chargingStatus],
       ['Port Status', this.state.connectionStatus],
       ['Driver Front', this.state.doorDriverFront],
@@ -201,24 +200,11 @@ export default React.createClass({
   },
 
   render() {
-    const fuelPercent = math.round((this.state.remainingFuel / this.state.maxFuel) * 100, 0);
-
     return (
       <article>
         <section>
           <h5>VIN: {this.state.vin}</h5>
           {this.getStats()}
-        </section>
-
-        <section>
-          <div className="row">
-            <div className="col-md-6 col-xs-12">
-              <Highcharts style={{height: '300px'}} config={this.getChartConfig('Battery', this.state.chargingLevelHv)} />
-            </div>
-            <div className="col-md-6 col-xs-12">
-              <Highcharts style={{height: '300px'}} config={this.getChartConfig('Fuel', fuelPercent)} />
-            </div>
-          </div>
         </section>
       </article>
     );

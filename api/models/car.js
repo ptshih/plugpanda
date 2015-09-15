@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const math = require('../../lib/math');
 
 const BaseUserModel = require('./base_user');
 
@@ -90,6 +91,12 @@ module.exports = BaseUserModel.extend({
         },
       }
     );
+  },
+
+  render() {
+    const json = BaseUserModel.prototype.render.apply(this, arguments);
+    json.fuelLevel = math.round((this.get('remainingFuel') / this.get('maxFuel')) * 100, 0);
+    return json;
   },
 
   setFromBMW(vehicleStatus) {
