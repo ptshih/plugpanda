@@ -75,11 +75,11 @@ export default React.createClass({
     return (
       <li className={className} onClick={this.onClick}>
         <div className="row">
-          <div className="col-xs-6 text-left">
-            <div>#{session.session_id}</div>
-          </div>
-          <div className="col-xs-6 text-right">
+          <div className="col-xs-8 text-left">
             <div>{displayDate}</div>
+          </div>
+          <div className="col-xs-4 text-right">
+            <div>{displayHours}h {displayMinutes}m</div>
           </div>
         </div>
 
@@ -89,15 +89,6 @@ export default React.createClass({
           </div>
           <div className="col-xs-4 text-right">
             <div>{price}</div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-8 text-left">
-            <div>{milesAdded} miles added</div>
-          </div>
-          <div className="col-xs-4 text-right">
-            <div>{displayHours}h {displayMinutes}m</div>
           </div>
         </div>
 

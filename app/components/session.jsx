@@ -200,16 +200,22 @@ export default React.createClass({
     );
   },
 
+  getStopButton() {
+    if (this.state.status !== 'on') {
+      return null;
+    }
+
+    return <button className="btn btn-danger pull-right" onClick={this.onStop}>Stop</button>;
+  },
+
   render() {
     return (
       <article>
         <section>
           <div className="row">
-            <div className="col-md-6 col-xs-12">
+            <div className="col-xs-12">
+              {this.getStopButton()}
               <div className="Section-heading">#{this.state.session_id}</div>
-            </div>
-            <div className="col-md-6 col-xs-12 text-right">
-              <button className="btn btn-danger" onClick={this.onStop}>Stop</button>
             </div>
           </div>
         </section>

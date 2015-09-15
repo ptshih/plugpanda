@@ -204,10 +204,8 @@ export default React.createClass({
       <article>
         <section>
           <div className="row">
-            <div className="col-md-6 col-xs-12">
+            <div className="col-xs-12">
               <div className="Section-heading">{this.state.vin}</div>
-            </div>
-            <div className="col-md-6 col-xs-12 text-right">
             </div>
           </div>
         </section>
