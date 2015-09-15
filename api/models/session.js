@@ -332,7 +332,6 @@ module.exports = BaseUserModel.extend({
    * Must maintain at least `POWER_KW_MIN` power level during last update
    */
   _shouldStopSession() {
-    console.log(this.get('payment_type'), this.get('power_kw'), this.get('charging_time'));
     return this.get('payment_type') === 'paid' &&
       this.get('power_kw') > 0 &&
       this.get('power_kw') < POWER_KW_MIN &&
