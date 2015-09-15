@@ -101,6 +101,7 @@ export default React.createClass({
             <div className="col-md-6 col-xs-12">
               <fieldset className="form-group">
                 <InputTextFloatLabel
+                  type="email"
                   label="Email"
                   value={this.state.email}
                   placeholder="Your Email"

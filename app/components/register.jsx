@@ -80,7 +80,7 @@ export default React.createClass({
               <div className="col-xs-12">
                 <fieldset className="form-group">
                   <InputTextFloatLabel
-                    type="text"
+                    type="email"
                     label="Email"
                     value={this.state.email}
                     placeholder="Email"
