@@ -126,6 +126,7 @@ export default React.createClass({
       ['Total Energy', `${totalEnergy.toFixed(3)} kW`],
       ['Added Distance', `${milesAdded.toFixed(1)} miles`],
       ['Total Price', `$${this.state.total_amount.toFixed(2)}`],
+      ['Payment Type', this.state.payment_type],
     ];
   },
 
