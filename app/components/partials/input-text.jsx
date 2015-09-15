@@ -38,6 +38,9 @@ export default React.createClass({
       <input
         type={this.props.type}
         className={className}
+        autoCapitalize="off"
+        autoCorrect="off"
+        autoComplete="off"
         data-prefix={this.props.prefix}
         data-property={this.props.property}
         {...props}
