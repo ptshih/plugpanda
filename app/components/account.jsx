@@ -328,7 +328,7 @@ export default React.createClass({
 
   render() {
     return (
-      <article>
+      <article className="Content">
         <section>{this.getInformation()}</section>
         <section>{this.getSettings()}</section>
         <section>{this.getNotifications()}</section>

@@ -87,7 +87,7 @@ export default React.createClass({
     const navbarClassName = ['navbar-toggleable-xs', 'collapse', !this.state.collapse ? 'in' : ''].join(' ');
 
     return (
-      <header className="navbar navbar-light bg-faded">
+      <header className="Nav navbar navbar-light bg-faded">
         <div className="clearfix">
           <button className="navbar-toggler pull-right hidden-sm-up" onClick={this.onClickCollapse}>
             ☰

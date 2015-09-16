@@ -159,3 +159,15 @@ section, .Section {
     height: 100%;
   }
 }
+
+.Nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.Content {
+  margin-top: 70px;
+}

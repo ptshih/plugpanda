@@ -10,7 +10,7 @@ export default React.createClass({
 
   render() {
     return (
-      <article>
+      <article className="Content">
       </article>
     );
   },

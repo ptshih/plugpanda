@@ -67,7 +67,7 @@ export default React.createClass({
 
   render() {
     return (
-      <article>
+      <article className="Content">
         <section>
           <div className="row">
             <div className="col-xs-12">

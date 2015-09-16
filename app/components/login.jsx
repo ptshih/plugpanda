@@ -77,7 +77,7 @@ export default React.createClass({
 
   render() {
     return (
-      <article>
+      <article className="Content">
         <form>
           <section>
             <div className="row">
