@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import {Link} from 'react-router';
 
 // Utils
 import auth from '../lib/auth';
@@ -215,7 +216,11 @@ export default React.createClass({
           <div className="row">
             <div className="col-xs-12">
               {this.getStopButton()}
-              <div className="Section-heading">#{this.state.session_id}</div>
+              <div className="Section-heading">
+                <Link to="/sessions">Sessions</Link>
+                <span> / </span>
+                <span>{this.state.session_id}</span>
+              </div>
             </div>
           </div>
         </section>
