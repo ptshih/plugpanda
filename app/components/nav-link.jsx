@@ -8,9 +8,12 @@ export default React.createClass({
   propTypes: {
     className: React.PropTypes.string,
     to: React.PropTypes.string.isRequired,
-    children: React.PropTypes.string.isRequired,
     params: React.PropTypes.object,
     query: React.PropTypes.object,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.element,
+    ]),
   },
 
   mixins: [State],

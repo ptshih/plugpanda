@@ -92,11 +92,15 @@ export default React.createClass({
           <button className="navbar-toggler pull-right hidden-sm-up" onClick={this.onClickCollapse}>
             ☰
           </button>
-          <Link to="/" className="navbar-brand hidden-sm-up">PlugPanda</Link>
+          <NavLink to="/" className="Nav-icon navbar-brand hidden-sm-up">
+            <img src="/img/banksy_panda_icon.png"></img>
+          </NavLink>
         </div>
         <div className={navbarClassName}>
           <nav className="nav navbar-nav">
-            <NavLink to="/">PlugPanda</NavLink>
+            <NavLink to="/" className="Nav-icon navbar-brand">
+              <img src="/img/banksy_panda_icon.png"></img>
+            </NavLink>
             {this.getCar()}
             {this.getSession()}
             {this.getHistory()}
