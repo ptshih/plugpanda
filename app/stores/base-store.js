@@ -32,7 +32,7 @@ class Store extends EventEmitter {
   // Used by Store to set state
   // Careful not to use this outside of Store
   setState(state) {
-    this.state = _.extend({}, this.state, state);
+    this.state = _.merge({}, this.state, state);
     return this.state;
   }
 
