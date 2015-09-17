@@ -166,7 +166,8 @@ section, .Section {
   right: 0;
   left: 0;
   z-index: 1337;
-  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+  border-bottom: 1px solid $gray-dark;
   border-radius: 0;
 }
 
