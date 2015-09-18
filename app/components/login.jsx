@@ -4,7 +4,7 @@ import React from 'react';
 import api from '../lib/api';
 
 // Components
-import {Navigation} from 'react-router';
+import {History} from 'react-router';
 import InputTextFloatLabel from './partials/input-text-float-label';
 
 export default React.createClass({
@@ -13,7 +13,7 @@ export default React.createClass({
   propTypes: {
   },
 
-  mixins: [Navigation],
+  mixins: [History],
 
   getInitialState() {
     return {
@@ -49,8 +49,8 @@ export default React.createClass({
       message: null,
     });
 
-    return api.login(this.state.email, this.state.password).then((user) => {
-      this.transitionTo('/');
+    return api.login(this.state.email, this.state.password).then(() => {
+      this.history.pushState(null, '/');
     }).catch((err) => {
       this.setState({
         disabled: false,
@@ -62,7 +62,7 @@ export default React.createClass({
 
   onRegister(e) {
     e.preventDefault();
-    this.transitionTo('/register');
+    this.history.pushState(null, '/register');
   },
 
   // Render

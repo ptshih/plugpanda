@@ -1,9 +1,12 @@
-import Promise from 'bluebird';
-
 // Router
 import React from 'react';
 import Router from 'react-router';
-import {Route, RouteHandler, DefaultRoute} from 'react-router';
+import {Route, IndexRoute} from 'react-router';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+const history = createBrowserHistory();
+
+// Utils
+import auth from './app/lib/auth';
 
 // Components
 import Nav from './app/components/nav';
@@ -27,51 +30,61 @@ NProgress.configure({
 
 // App Layout
 const App = React.createClass({
+  propTypes: {
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.element,
+    ]),
+  },
+
   render() {
     return (
       <div className="App">
         <Nav />
-        <RouteHandler />
+        {this.props.children}
       </div>
     );
   },
 });
 
+function onEnter(nextState, replaceState, callback) {
+  console.log('#onEnter', this);
+  // Check auth
+  if (this.requireAuth && !auth.isLoggedIn()) {
+    replaceState({
+      nextPathname: nextState.location.pathname,
+    }, '/login');
+  }
+
+  callback();
+}
+
+function onLeave() {
+
+}
+
+function onEnterError(nextState) {
+  nextState.params.message = 'Page Not Found';
+}
+
 // Define Routes
-const routes = (
-  <Route name="app" path="/" handler={App}>
-    <DefaultRoute handler={Root} />
-    <Route path="car" handler={Car} />
-    <Route path="sessions/:session_id" handler={Session} />
-    <Route path="sessions" handler={History} />
-    <Route path="account" handler={Account} />
-    <Route path="login" handler={Login} />
-    <Route path="logout" handler={Logout} />
-    <Route path="register" handler={Register} />
-  </Route>
-);
+React.render((
+  <Router history={history}>
+    <Route path="/" component={App}>
+      {/* Default */}
+      <IndexRoute component={Root} onEnter={onEnter} />
 
-// Run Router
-Router.run(routes, Router.HistoryLocation, (Handler, state) => {
-  NProgress.start();
+      {/* Routes */}
+      <Route path="car" component={Car} onEnter={onEnter} requireAuth={true} />
+      <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth={true} />
+      <Route path="sessions" component={History} onEnter={onEnter} requireAuth={true} />
+      <Route path="account" component={Account} onEnter={onEnter} requireAuth={true} />
+      <Route path="register" component={Register} onEnter={onEnter} />
+      <Route path="login" component={Login} onEnter={onEnter} />
+      <Route path="logout" component={Logout} onEnter={onEnter} requireAuth={true} />
 
-  // create the promises hash
-  const promises = state.routes.filter((route) => {
-    // gather up the handlers that have a static `fetch` method
-    return route.handler.fetch;
-  }).reduce((fns, route) => {
-    // reduce to a hash of `key:promise`
-    fns[route.name] = route.handler.fetch(state.params, state.query);
-    return fns;
-  }, {});
-
-  return Promise.props(promises).then(() => {
-    NProgress.done();
-
-    React.render(<Handler />, document.getElementById('app'));
-  }).catch((err) => {
-    console.log(err);
-    // Render Error
-    React.render(<Err err={err}/>, document.getElementById('app'));
-  });
-});
+      {/* Not Found */}
+      <Route path="*" component={Err} onEnter={onEnterError} />
+    </Route>
+  </Router>
+), document.getElementById('app'));

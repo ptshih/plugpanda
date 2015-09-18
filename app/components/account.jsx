@@ -1,7 +1,6 @@
 import React from 'react';
 
 // Utils
-import auth from '../lib/auth';
 import api from '../lib/api';
 
 // Store and Actions
@@ -14,22 +13,17 @@ import {Link} from 'react-router';
 import InputTextFloatLabel from './partials/input-text-float-label';
 import SelectFloatLabel from './partials/select-float-label';
 
+// Mixins
+import Fetch from '../mixins/fetch';
+
 export default React.createClass({
   displayName: 'Account',
 
-  statics: {
-    fetch() {
-      return api.fetchAccount().then((state) => {
-        AccountActions.sync(state);
-      });
-    },
-
-    willTransitionTo(transition) {
-      if (!auth.isLoggedIn()) {
-        transition.redirect('/login');
-      }
-    },
+  propTypes: {
+    params: React.PropTypes.object,
   },
+
+  mixins: [Fetch],
 
   getInitialState() {
     return accountStore.getState();
@@ -327,6 +321,10 @@ export default React.createClass({
   },
 
   render() {
+    if (!this.state.fetched) {
+      return <article className="Content"></article>;
+    }
+
     return (
       <article className="Content">
         <section>{this.getInformation()}</section>
@@ -342,7 +340,18 @@ export default React.createClass({
     );
   },
 
-  _formatPhone(str) {
+  fetch() {
+    return api.fetchAccount().then((state) => {
+      state.fetched = true;
+      AccountActions.sync(state);
+    });
+  },
+
+  reset() {
+    AccountActions.reset();
+  },
+
+  _formatPhone(str = '') {
     const r = /(\D+)/g;
     const val = str.replace(r, '');
     const npa = val.substr(0, 3);

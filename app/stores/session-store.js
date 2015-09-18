@@ -9,6 +9,8 @@ import BaseStore from './base-store';
 class SessionStore extends BaseStore {
   defaults() {
     return {
+      fetched: false,
+
       vehicle_info: {},
     };
   }

@@ -9,6 +9,8 @@ import BaseStore from './base-store';
 class AccountStore extends BaseStore {
   defaults() {
     return {
+      fetched: false,
+
       _id: null,
       access_token: null,
 

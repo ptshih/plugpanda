@@ -4,16 +4,16 @@ import React from 'react';
 import auth from '../lib/auth';
 
 // Components
-import {Navigation} from 'react-router';
+import {History} from 'react-router';
 
 export default React.createClass({
   displayName: 'Logout',
 
-  mixins: [Navigation],
+  mixins: [History],
 
   componentDidMount() {
     auth.removeAccessToken();
-    this.transitionTo('/');
+    this.history.pushState(null, '/');
   },
 
   // Handlers

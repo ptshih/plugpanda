@@ -8,7 +8,11 @@ import BaseStore from './base-store';
 // Store
 class HistoryStore extends BaseStore {
   defaults() {
-    return {};
+    return {
+      fetched: false,
+
+      sessions: [],
+    };
   }
 
   // Constructor

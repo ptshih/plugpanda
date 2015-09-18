@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import {Link, State} from 'react-router';
+import {Link} from 'react-router';
 
 export default React.createClass({
   displayName: 'NavLink',
@@ -16,8 +16,6 @@ export default React.createClass({
     ]),
   },
 
-  mixins: [State],
-
   getDefaultProps() {
     return {
     };
@@ -30,7 +28,7 @@ export default React.createClass({
 
     const baseTo = this.props.to.split('/');
     baseTo.shift();
-    const basePathname = this.getPathname().split('/');
+    const basePathname = location.pathname.split('/');
     basePathname.shift();
     const isActive = baseTo.length === basePathname.length && _.first(baseTo) === _.first(basePathname);
 

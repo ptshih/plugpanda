@@ -2,9 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 // Utils
-import auth from '../lib/auth';
 import api from '../lib/api';
-import math from '../../lib/math';
 
 // Store and Actions
 import CarStore from '../stores/car-store';
@@ -17,22 +15,17 @@ import Table from './table';
 import GoogleMap from './google-map';
 // import Highcharts from 'react-highcharts/more';
 
+// Mixins
+import Fetch from '../mixins/fetch';
+
 export default React.createClass({
   displayName: 'Car',
 
-  statics: {
-    fetch() {
-      return api.fetchCar().then((state) => {
-        CarActions.sync(state);
-      });
-    },
-
-    willTransitionTo(transition) {
-      if (!auth.isLoggedIn()) {
-        transition.redirect('/login');
-      }
-    },
+  propTypes: {
+    params: React.PropTypes.object,
   },
+
+  mixins: [Fetch],
 
   getInitialState() {
     return carStore.getState();
@@ -200,6 +193,10 @@ export default React.createClass({
   },
 
   render() {
+    if (!this.state.fetched) {
+      return <article className="Content"></article>;
+    }
+
     return (
       <article className="Content">
         <section>
@@ -215,5 +212,16 @@ export default React.createClass({
         </section>
       </article>
     );
+  },
+
+  fetch() {
+    return api.fetchCar().then((state) => {
+      state.fetched = true;
+      CarActions.sync(state);
+    });
+  },
+
+  reset() {
+    CarActions.reset();
   },
 });

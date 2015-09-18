@@ -1,12 +1,3 @@
-/**
- * Placeholder wrapper for XHR to the API
- * For now this is a simple pass-thru
- *
- * Future features:
- * - Set Authentication headers
- * - Parse response envelope
- */
-
 import _ from 'lodash';
 import Promise from 'bluebird';
 import request from '../../lib/request';

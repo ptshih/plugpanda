@@ -5,7 +5,7 @@ import moment from 'moment';
 import math from '../../lib/math';
 
 // Components
-import {Navigation} from 'react-router';
+import {History} from 'react-router';
 
 export default React.createClass({
   displayName: 'SessionCell',
@@ -14,7 +14,7 @@ export default React.createClass({
     session: React.PropTypes.object.isRequired,
   },
 
-  mixins: [Navigation],
+  mixins: [History],
 
   // Handlers
   onClick(e) {
@@ -22,7 +22,7 @@ export default React.createClass({
 
     // URL
     const url = `/sessions/${this.props.session.session_id}`;
-    this.transitionTo(url);
+    this.history.pushState(null, url);
   },
 
   // Render
@@ -52,7 +52,7 @@ export default React.createClass({
 
     // Power, Energy, Miles
     const energyAdded = math.round(session.energy_kwh, 3);
-    const milesAdded = math.round(session.miles_added, 1);
+    // const milesAdded = math.round(session.miles_added, 1);
     const averagePower = session.average_power;
 
     // Price

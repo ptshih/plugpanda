@@ -3,7 +3,6 @@ import React from 'react';
 import {Link} from 'react-router';
 
 // Utils
-import auth from '../lib/auth';
 import api from '../lib/api';
 import math from '../../lib/math';
 
@@ -17,31 +16,23 @@ import Table from './table';
 import GoogleMap from './google-map';
 import Highcharts from 'react-highcharts/more';
 
+// Mixins
+import Fetch from '../mixins/fetch';
+
 Highcharts.Highcharts.setOptions({
   global: {
     useUTC: false,
   },
 });
 
-// import moment from 'moment';
-
 export default React.createClass({
   displayName: 'Session',
 
-  statics: {
-    fetch(params) {
-      console.log(params);
-      return api.fetchSession(params.session_id).then((state) => {
-        SessionActions.sync(state);
-      });
-    },
-
-    willTransitionTo(transition) {
-      if (!auth.isLoggedIn()) {
-        transition.redirect('/login');
-      }
-    },
+  propTypes: {
+    params: React.PropTypes.object,
   },
+
+  mixins: [Fetch],
 
   getInitialState() {
     return sessionStore.getState();
@@ -210,6 +201,10 @@ export default React.createClass({
   },
 
   render() {
+    if (!this.state.fetched) {
+      return <article className="Content"></article>;
+    }
+
     return (
       <article className="Content">
         <section>
@@ -236,4 +231,14 @@ export default React.createClass({
     );
   },
 
+  fetch() {
+    return api.fetchSession(this.props.params.session_id).then((state) => {
+      state.fetched = true;
+      SessionActions.sync(state);
+    });
+  },
+
+  reset() {
+    SessionActions.reset();
+  },
 });

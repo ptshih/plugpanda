@@ -1,7 +1,6 @@
 import React from 'react';
 
 // Utils
-import auth from '../lib/auth';
 import api from '../lib/api';
 
 // Store and Actions
@@ -12,24 +11,17 @@ const historyStore = new HistoryStore();
 // Components
 import SessionCell from './session-cell';
 
+// Mixins
+import Fetch from '../mixins/fetch';
+
 export default React.createClass({
   displayName: 'History',
 
-  statics: {
-    fetch() {
-      return api.fetchHistory().then((sessions) => {
-        HistoryActions.sync({
-          sessions: sessions,
-        });
-      });
-    },
-
-    willTransitionTo(transition) {
-      if (!auth.isLoggedIn()) {
-        transition.redirect('/login');
-      }
-    },
+  propTypes: {
+    params: React.PropTypes.object,
   },
+
+  mixins: [Fetch],
 
   getInitialState() {
     return historyStore.getState();
@@ -66,6 +58,10 @@ export default React.createClass({
   },
 
   render() {
+    if (!this.state.fetched) {
+      return <article className="Content"></article>;
+    }
+
     return (
       <article className="Content">
         <section>
@@ -77,5 +73,18 @@ export default React.createClass({
         </section>
       </article>
     );
+  },
+
+  fetch() {
+    return api.fetchHistory().then((state) => {
+      HistoryActions.sync({
+        fetched: true,
+        sessions: state,
+      });
+    });
+  },
+
+  reset() {
+    HistoryActions.reset();
   },
 });

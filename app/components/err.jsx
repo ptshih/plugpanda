@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 
 // Components
@@ -6,14 +7,14 @@ export default React.createClass({
   displayName: 'Err',
 
   propTypes: {
-    err: React.PropTypes.object.isRequired,
+    params: React.PropTypes.object,
   },
 
   // Render
 
   render() {
     // const code = this.props.err.code || 500;
-    const message = this.props.err.message;
+    const message = _.get(this.props, 'params.message', 'Unknown Error');
     return (
       <article className="Content">
         <div className="Error-heading">We're sorry – something has gone wrong on our end.</div>

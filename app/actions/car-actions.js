@@ -1,9 +1,4 @@
-/**
- * All Actions for Car
- */
-
 import Dispatcher from '../dispatcher/dispatcher';
-// import api from '../lib/api';
 
 const Actions = {
   /**
@@ -12,7 +7,6 @@ const Actions = {
    * @param {String} type
    * @param {Object} data
    */
-
   dispatch(type = 'UNKNOWN', data = {}) {
     // DEBUG
     console.log('DISPATCH: %s -> TYPE: %s', 'car', type);
@@ -33,7 +27,6 @@ const Actions = {
       state: state,
     });
   },
-
 };
 
 export default Actions;
