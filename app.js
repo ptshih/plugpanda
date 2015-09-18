@@ -47,8 +47,8 @@ const App = React.createClass({
   },
 });
 
+// Lifecycle
 function onEnter(nextState, replaceState, callback) {
-  console.log('#onEnter', this);
   // Check auth
   if (this.requireAuth && !auth.isLoggedIn()) {
     replaceState({
@@ -59,13 +59,11 @@ function onEnter(nextState, replaceState, callback) {
   callback();
 }
 
-function onLeave() {
-
-}
-
 function onEnterError(nextState) {
   nextState.params.message = 'Page Not Found';
 }
+
+// function onLeave() {}
 
 // Define Routes
 React.render((
