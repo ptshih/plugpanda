@@ -36,6 +36,11 @@ class Store extends EventEmitter {
     return this.state;
   }
 
+  replaceState(state) {
+    this.state = _.extend({}, this.state, state);
+    return this.state;
+  }
+
   // Reset Store back to default state
   resetState() {
     this.state = this.defaults();
