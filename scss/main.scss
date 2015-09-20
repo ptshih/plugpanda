@@ -20,35 +20,6 @@
   }
 }
 
-.nav-link-bordered {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-.navbar-toggler {
-  padding-left: 0;
-  padding-right: 0;
-  outline: none;
-}
-
-@include media-breakpoint-down(xs) {
-  // First Item
-  .navbar-nav .nav-item {
-    display: none;
-    float: none;
-    margin-left: 0;
-  }
-
-  // Other Items
-  .navbar-nav .nav-item + .nav-item {
-    display: block;
-    float: none;
-    margin-left: 0;
-  }
-}
-
 // Medium devices (tablets, 48em and up)
 @media (min-width: 48em) {
   .col-xs-12 {
@@ -79,7 +50,7 @@ section, .Section {
 // Classes
 .BanksyPanda {
   width: 100%;
-  max-width: 400px;
+  // max-width: 400px;
 }
 
 // Shared
@@ -147,30 +118,129 @@ section, .Section {
   text-decoration: underline;
 }
 
+// Header and Navigation
 
-.Nav-icon {
-  margin: 0 !important;
-  padding: 4px 0 !important;
-  width: 30px;
-  height: 38px;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.Nav {
+.Header {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: 7;
   background-color: #fff;
-  border-bottom: 1px solid $gray-lighter;
+  border-bottom: 1px solid $body-color;
   border-radius: 0;
 }
 
+.Logo {
+  margin: 0;
+  display: block;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #000;
+  // text-indent: -9999px;
+  border-radius: 100%;
+}
+
+.Logo-home {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  background-color: #fff;
+  background-size: 100%;
+  text-indent: -9999px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #000;
+  }
+}
+
+.Logo-back {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  background-color: #fff;
+  background-size: 100%;
+
+  line-height: 18px;
+  text-align: center;
+  color: #000;
+
+  cursor: pointer;
+
+  &:before {
+    content: "\2190";
+  }
+}
+
+.Hamburger {
+  margin: 0;
+  display: block;
+  width: 30px;
+  height: 30px;
+  // text-indent: -9999px;
+  border-radius: 100%;
+  background-color: $body-color;
+  z-index: 101;
+  border: 2px solid transparent;
+  outline: none;
+  padding: 0;
+
+  .Hamburger-menu {
+    display: block;
+    color: #fff;
+    text-align: center;
+    height: 26px;
+    width: 26px;
+    font-size: 1rem;
+    line-height: 24px;
+    cursor: pointer;
+  }
+}
+
+.Nav {
+  position: relative;
+  @extend .clearfix;
+  @extend .container;
+  margin: 1rem auto;
+}
+
+.Nav-title {
+  @extend .text-center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+
+  font-size: 1.5rem;
+  line-height: 30px;
+}
+
+.Navbar {
+  @extend .container;
+  margin: 1rem auto;
+}
+
+.Navbar-link {
+  @extend .lead;
+  display: block;
+  padding: 0.1rem 0;
+  color: $body-color;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+// Content and Body
+
 .Content {
-  margin-top: 70px;
+  margin-top: 83px;
 }

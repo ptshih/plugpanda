@@ -32,7 +32,7 @@ export default React.createClass({
     basePathname.shift();
     const isActive = baseTo.length === basePathname.length && _.first(baseTo) === _.first(basePathname);
 
-    const className = ['nav-item', 'nav-link', this.props.className,  isActive ? 'active' : ''].join(' ');
+    const className = [this.props.className,  isActive ? 'active' : ''].join(' ');
 
     return (
       <Link {...props} className={className}>{this.props.children}</Link>

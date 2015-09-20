@@ -73,7 +73,7 @@
     "build:js": "mkdir -p assets/js && browserify --extension=.jsx app.js | uglifyjs -m -o assets/js/main.min.js",
     "build:css": "mkdir -p assets/css && node-sass --output-style compressed scss/main.scss assets/css/main.min.css",
     "watch": "parallelshell 'npm run watch:js' 'npm run watch:css' 'npm run live-reload'",
-    "watch:js": "mkdir -p assets/js && watchify --extension=.jsx app.js -o assets/js/main.js -v",
+    "watch:js": "mkdir -p assets/js && watchify --extension=.jsx app.js -o assets/js/main.js -dv",
     "watch:css": "mkdir -p assets/css && watch 'node-sass scss/main.scss assets/css/main.css' scss/"
   },
   "browserify": {

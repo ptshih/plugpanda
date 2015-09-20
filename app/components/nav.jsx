@@ -1,5 +1,5 @@
 import React from 'react';
-import NavLink from './nav-link';
+import {Link, History} from 'react-router';
 
 // Utils
 import auth from '../lib/auth';
@@ -7,15 +7,34 @@ import auth from '../lib/auth';
 export default React.createClass({
   displayName: 'Nav',
 
+  propTypes: {
+    title: React.PropTypes.string,
+    enableBack: React.PropTypes.bool,
+  },
+
+  mixins: [History],
+
   getInitialState() {
     return {
+      title: 'Plug Panda',
+      enableBack: false,
       collapse: true,
     };
   },
 
-  componentWillReceiveProps() {
+  componentWillMount() {
+    this.setState({
+      title: this.props.title,
+      enableBack: this.props.enableBack,
+      collapse: true,
+    });
+  },
+
+  componentWillReceiveProps(nextProps) {
     // Reset collapse state when changing routes
     this.setState({
+      title: nextProps.title,
+      enableBack: nextProps.enableBack,
       collapse: true,
     });
   },
@@ -38,7 +57,7 @@ export default React.createClass({
     }
 
     return (
-      <NavLink to="/car">Car</NavLink>
+      <Link className="Navbar-link" to="/car">Car</Link>
     );
   },
 
@@ -48,7 +67,7 @@ export default React.createClass({
     }
 
     return (
-      <NavLink to="/sessions/current">Session</NavLink>
+      <Link className="Navbar-link" to="/sessions/current">Session</Link>
     );
   },
 
@@ -58,7 +77,7 @@ export default React.createClass({
     }
 
     return (
-      <NavLink to="/sessions">History</NavLink>
+      <Link className="Navbar-link" to="/sessions">History</Link>
     );
   },
 
@@ -68,7 +87,7 @@ export default React.createClass({
     }
 
     return (
-      <NavLink to="/account">Account</NavLink>
+      <Link className="Navbar-link" to="/account">Account</Link>
     );
   },
 
@@ -78,34 +97,41 @@ export default React.createClass({
     }
 
     return (
-      <NavLink to="/login" className="nav-link-bordered pull-right">Sign In</NavLink>
+      <Link className="Navbar-link" to="/login">Sign In</Link>
     );
   },
 
+  getLogo() {
+    if (this.state.enableBack) {
+      return <div className="Logo-back" onClick={() => this.history.goBack()} />;
+    }
+
+    return <Link className="Logo-home" to="/" />;
+  },
+
   render() {
-    const navbarClassName = ['navbar-toggleable-xs', 'collapse', !this.state.collapse ? 'in' : ''].join(' ');
+    const navbarClassName = ['Navbar', 'collapse', !this.state.collapse ? 'in' : ''].join(' ');
 
     return (
-      <header className="Nav navbar navbar-light">
-        <div className="clearfix">
-          <button className="navbar-toggler pull-right hidden-sm-up" onClick={this.onClickCollapse}>
-            ☰
-          </button>
-          <NavLink to="/" className="Nav-icon navbar-brand hidden-sm-up">
-            <img src="/img/banksy_panda_icon.png"></img>
-          </NavLink>
+      <header className="Header">
+        <div className="Nav">
+          <figure className="Logo pull-left">
+            {this.getLogo()}
+          </figure>
+
+          <div className="Nav-title">{this.state.title}</div>
+
+          <figure className="Hamburger navbar-toggler pull-right" onClick={this.onClickCollapse}>
+            <div className="Hamburger-menu">☰</div>
+          </figure>
         </div>
+
         <div className={navbarClassName}>
-          <nav className="nav navbar-nav">
-            <NavLink to="/" className="Nav-icon navbar-brand">
-              <img src="/img/banksy_panda_icon.png"></img>
-            </NavLink>
-            {this.getCar()}
-            {this.getSession()}
-            {this.getHistory()}
-            {this.getAccount()}
-            {this.getLogin()}
-          </nav>
+          {this.getCar()}
+          {this.getSession()}
+          {this.getHistory()}
+          {this.getAccount()}
+          {this.getLogin()}
         </div>
       </header>
     );

@@ -1,4 +1,5 @@
 // Router
+import _ from 'lodash';
 import React from 'react';
 import Router from 'react-router';
 import {Route, IndexRoute} from 'react-router';
@@ -31,6 +32,8 @@ NProgress.configure({
 // App Layout
 const App = React.createClass({
   propTypes: {
+    routes: React.PropTypes.array,
+    params: React.PropTypes.object,
     children: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.element,
@@ -38,9 +41,14 @@ const App = React.createClass({
   },
 
   render() {
+    const routes = this.props.routes;
+    const activeRoute = _.last(routes);
+    const title = activeRoute.component.displayName;
+    const enableBack = !_.isEmpty(this.props.params);
+
     return (
       <div className="App">
-        <Nav />
+        <Nav title={title} enableBack={enableBack}/>
         {this.props.children}
       </div>
     );
@@ -73,13 +81,13 @@ React.render((
       <IndexRoute component={Root} onEnter={onEnter} />
 
       {/* Routes */}
-      <Route path="car" component={Car} onEnter={onEnter} requireAuth={true} />
-      <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth={true} />
-      <Route path="sessions" component={History} onEnter={onEnter} requireAuth={true} />
-      <Route path="account" component={Account} onEnter={onEnter} requireAuth={true} />
+      <Route path="car" component={Car} onEnter={onEnter} requireAuth />
+      <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth />
+      <Route path="sessions" component={History} onEnter={onEnter} requireAuth />
+      <Route path="account" component={Account} onEnter={onEnter} requireAuth />
       <Route path="register" component={Register} onEnter={onEnter} />
       <Route path="login" component={Login} onEnter={onEnter} />
-      <Route path="logout" component={Logout} onEnter={onEnter} requireAuth={true} />
+      <Route path="logout" component={Logout} onEnter={onEnter} requireAuth />
 
       {/* Not Found */}
       <Route path="*" component={Err} onEnter={onEnterError} />
