@@ -1,10 +1,11 @@
 import React from 'react';
+import {History} from 'react-router';
 
 // Utils
 import api from '../lib/api';
 
 // Components
-import {History} from 'react-router';
+import Nav from './nav';
 import InputTextFloatLabel from './partials/input-text-float-label';
 
 export default React.createClass({
@@ -64,38 +65,41 @@ export default React.createClass({
 
   render() {
     return (
-      <article className="Content">
-        <form>
-          <section>
-            <div className="row">
-              <div className="col-xs-12">
-                <fieldset className="form-group">
-                  <InputTextFloatLabel
-                    type="email"
-                    label="Email"
-                    value={this.state.email}
-                    placeholder="Email"
-                    onChange={this.onChangeEmail}
-                    disabled={this.state.disabled}
-                  />
-                </fieldset>
+      <div className="Component">
+        <Nav title="Plug Panda" />
+        <main className="Content">
+          <form>
+            <section>
+              <div className="row">
+                <div className="col-xs-12">
+                  <fieldset className="form-group">
+                    <InputTextFloatLabel
+                      type="email"
+                      label="Email"
+                      value={this.state.email}
+                      placeholder="Email"
+                      onChange={this.onChangeEmail}
+                      disabled={this.state.disabled}
+                    />
+                  </fieldset>
+                </div>
               </div>
-            </div>
 
-            <div className="Login--submit row">
-              <div className="col-xs-12">
-                {this.getMessage()}
-                <button
-                  type="submit"
-                  className="btn btn-success"
-                  onClick={this.onRegister}
-                  disabled={this.state.disabled}
-                >Sign Up</button>
+              <div className="Login--submit row">
+                <div className="col-xs-12">
+                  {this.getMessage()}
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    onClick={this.onRegister}
+                    disabled={this.state.disabled}
+                  >Sign Up</button>
+                </div>
               </div>
-            </div>
-          </section>
-        </form>
-      </article>
+            </section>
+          </form>
+        </main>
+      </div>
     );
   },
 });

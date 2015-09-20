@@ -12,6 +12,7 @@ import SessionActions from '../actions/session-actions';
 const sessionStore = new SessionStore();
 
 // Components
+import Nav from './nav';
 import Table from './table';
 import GoogleMap from './google-map';
 import Highcharts from 'react-highcharts/more';
@@ -200,13 +201,13 @@ export default React.createClass({
     return <button className="btn btn-danger pull-right" onClick={this.onStop}>Stop</button>;
   },
 
-  render() {
+  getContent() {
     if (!this.state.fetched) {
-      return <article className="Content"></article>;
+      return null;
     }
 
     return (
-      <article className="Content">
+      <main className="Content">
         <section>
           <div className="row">
             <div className="col-xs-12">
@@ -227,7 +228,16 @@ export default React.createClass({
         <section>
           {this.getChart()}
         </section>
-      </article>
+      </main>
+    );
+  },
+
+  render() {
+    return (
+      <div className="Component">
+        <Nav title="Session" enableBack />
+        {this.getContent()}
+      </div>
     );
   },
 

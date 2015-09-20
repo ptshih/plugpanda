@@ -1,10 +1,11 @@
 import React from 'react';
+import {History} from 'react-router';
 
 // Utils
 import api from '../lib/api';
 
 // Components
-import {History} from 'react-router';
+import Nav from './nav';
 import InputTextFloatLabel from './partials/input-text-float-label';
 
 export default React.createClass({
@@ -77,55 +78,58 @@ export default React.createClass({
 
   render() {
     return (
-      <article className="Content">
-        <form>
-          <section>
-            <div className="row">
-              <div className="col-xs-12">
-                <fieldset className="form-group">
-                  <InputTextFloatLabel
-                    type="email"
-                    label="Email"
-                    value={this.state.email}
-                    placeholder="Email"
-                    onChange={this.onChangeEmail}
-                    disabled={this.state.disabled}
-                  />
-                </fieldset>
+      <div className="Component">
+        <Nav title="Sign In" />
+        <main className="Content">
+          <form>
+            <section>
+              <div className="row">
+                <div className="col-xs-12">
+                  <fieldset className="form-group">
+                    <InputTextFloatLabel
+                      type="email"
+                      label="Email"
+                      value={this.state.email}
+                      placeholder="Email"
+                      onChange={this.onChangeEmail}
+                      disabled={this.state.disabled}
+                    />
+                  </fieldset>
+                </div>
               </div>
-            </div>
 
-            <div className="row">
-              <div className="col-xs-12">
-                <fieldset className="form-group">
-                  <InputTextFloatLabel
-                    type="password"
-                    label="Password"
-                    value={this.state.password}
-                    placeholder="Password"
-                    onChange={this.onChangePassword}
-                    disabled={this.state.disabled}
-                  />
-                </fieldset>
+              <div className="row">
+                <div className="col-xs-12">
+                  <fieldset className="form-group">
+                    <InputTextFloatLabel
+                      type="password"
+                      label="Password"
+                      value={this.state.password}
+                      placeholder="Password"
+                      onChange={this.onChangePassword}
+                      disabled={this.state.disabled}
+                    />
+                  </fieldset>
+                </div>
               </div>
-            </div>
 
-            <div className="Login--submit row">
-              <div className="col-xs-12">
-                {this.getMessage()}
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  onClick={this.onLogin}
-                  disabled={this.state.disabled}
-                >Sign In</button>
-                &nbsp;&nbsp;or&nbsp;&nbsp;
-                <span className="Login-register" onClick={this.onRegister}>Sign up for a new account</span>
+              <div className="Login--submit row">
+                <div className="col-xs-12">
+                  {this.getMessage()}
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={this.onLogin}
+                    disabled={this.state.disabled}
+                  >Sign In</button>
+                  &nbsp;&nbsp;or&nbsp;&nbsp;
+                  <span className="Login-register" onClick={this.onRegister}>Sign up for a new account</span>
+                </div>
               </div>
-            </div>
-          </section>
-        </form>
-      </article>
+            </section>
+          </form>
+        </main>
+      </div>
     );
   },
 });

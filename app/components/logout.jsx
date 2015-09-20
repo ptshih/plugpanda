@@ -22,8 +22,8 @@ export default React.createClass({
 
   render() {
     return (
-      <article className="Content">
-      </article>
+      <div className="Component">
+      </div>
     );
   },
 });

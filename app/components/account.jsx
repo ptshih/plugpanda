@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 // Utils
 import api from '../lib/api';
@@ -9,7 +10,7 @@ import AccountActions from '../actions/account-actions';
 const accountStore = new AccountStore();
 
 // Components
-import {Link} from 'react-router';
+import Nav from './nav';
 import InputTextFloatLabel from './partials/input-text-float-label';
 import SelectFloatLabel from './partials/select-float-label';
 
@@ -320,13 +321,13 @@ export default React.createClass({
     );
   },
 
-  render() {
+  getContent() {
     if (!this.state.fetched) {
-      return <article className="Content"></article>;
+      return null;
     }
 
     return (
-      <article className="Content">
+      <main className="Content">
         <section>{this.getInformation()}</section>
         <section>{this.getSettings()}</section>
         <section>{this.getNotifications()}</section>
@@ -336,7 +337,16 @@ export default React.createClass({
         <section>
           <Link to="/logout">Sign Out</Link>
         </section>
-      </article>
+      </main>
+    );
+  },
+
+  render() {
+    return (
+      <div className="Component">
+        <Nav title="Account" />
+        {this.getContent()}
+      </div>
     );
   },
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-// import {Link} from 'react-router';
+import Nav from './nav';
 
 export default React.createClass({
   displayName: 'Plug Panda',
@@ -10,9 +10,12 @@ export default React.createClass({
 
   render() {
     return (
-      <article className="Content">
-        <img src="/img/banksy_panda.png" className="BanksyPanda" />
-      </article>
+      <div className="Component">
+        <Nav title="Plug Panda" />
+        <main className="Content">
+          <img src="/img/banksy_panda.png" className="BanksyPanda" />
+        </main>
+      </div>
     );
   },
 

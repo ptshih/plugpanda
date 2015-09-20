@@ -9,6 +9,7 @@ import HistoryActions from '../actions/history-actions';
 const historyStore = new HistoryStore();
 
 // Components
+import Nav from './nav';
 import SessionCell from './session-cell';
 
 // Mixins
@@ -57,13 +58,13 @@ export default React.createClass({
     );
   },
 
-  render() {
+  getContent() {
     if (!this.state.fetched) {
-      return <article className="Content"></article>;
+      return null;
     }
 
     return (
-      <article className="Content">
+      <main className="Content">
         <section>
           <div className="row">
             <div className="col-xs-12">
@@ -71,7 +72,16 @@ export default React.createClass({
             </div>
           </div>
         </section>
-      </article>
+      </main>
+    );
+  },
+
+  render() {
+    return (
+      <div className="Component">
+        <Nav title="History" />
+        {this.getContent()}
+      </div>
     );
   },
 

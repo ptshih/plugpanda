@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Components
-// import {Link} from 'react-router';
+import Nav from './nav';
 
 export default React.createClass({
   displayName: 'Station',
@@ -10,8 +10,11 @@ export default React.createClass({
 
   render() {
     return (
-      <article className="Content">
-      </article>
+      <div className="Component">
+        <Nav title="Stations" />
+        <main className="Content">
+        </main>
+      </div>
     );
   },
 });

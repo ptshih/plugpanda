@@ -10,7 +10,7 @@ import CarActions from '../actions/car-actions';
 const carStore = new CarStore();
 
 // Components
-// import {Link} from 'react-router';
+import Nav from './nav';
 import Table from './table';
 import GoogleMap from './google-map';
 // import Highcharts from 'react-highcharts/more';
@@ -192,13 +192,13 @@ export default React.createClass({
     };
   },
 
-  render() {
+  getContent() {
     if (!this.state.fetched) {
-      return <article className="Content"></article>;
+      return null;
     }
 
     return (
-      <article className="Content">
+      <main className="Content">
         <section>
           <div className="row">
             <div className="col-xs-12">
@@ -210,7 +210,16 @@ export default React.createClass({
         <section>
           {this.getStats()}
         </section>
-      </article>
+      </main>
+    );
+  },
+
+  render() {
+    return (
+      <div className="Component">
+        <Nav title="BMW" />
+        {this.getContent()}
+      </div>
     );
   },
 

@@ -1,5 +1,4 @@
 // Router
-import _ from 'lodash';
 import React from 'react';
 import Router from 'react-router';
 import {Route, IndexRoute} from 'react-router';
@@ -10,7 +9,6 @@ const history = createBrowserHistory();
 import auth from './app/lib/auth';
 
 // Components
-import Nav from './app/components/nav';
 import Err from './app/components/err';
 
 // Components (containers)
@@ -32,8 +30,6 @@ NProgress.configure({
 // App Layout
 const App = React.createClass({
   propTypes: {
-    routes: React.PropTypes.array,
-    params: React.PropTypes.object,
     children: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.element,
@@ -41,17 +37,7 @@ const App = React.createClass({
   },
 
   render() {
-    const routes = this.props.routes;
-    const activeRoute = _.last(routes);
-    const title = activeRoute.component.displayName;
-    const enableBack = !_.isEmpty(this.props.params);
-
-    return (
-      <div className="App">
-        <Nav title={title} enableBack={enableBack}/>
-        {this.props.children}
-      </div>
-    );
+    return this.props.children;
   },
 });
 

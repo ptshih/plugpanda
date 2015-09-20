@@ -34,11 +34,6 @@
 }
 
 // Elements
-article, .Article {
-  @extend .container;
-  margin: 1rem auto;
-}
-
 section, .Section {
   margin-bottom: 2rem;
 
@@ -147,15 +142,15 @@ section, .Section {
   height: 26px;
   border: 2px solid #fff;
   border-radius: 100%;
-  background-color: #fff;
+  background-color: #000;
   background-size: 100%;
   text-indent: -9999px;
 
   cursor: pointer;
 
-  &:hover {
-    background-color: #000;
-  }
+  // &:hover {
+  //   background-color: #000;
+  // }
 }
 
 .Logo-back {
@@ -243,4 +238,6 @@ section, .Section {
 
 .Content {
   margin-top: 83px;
+  @extend .container;
+  margin: 83px auto 1rem;
 }

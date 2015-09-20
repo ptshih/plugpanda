@@ -114,7 +114,7 @@ export default React.createClass({
 
     return (
       <header className="Header">
-        <div className="Nav">
+        <nav className="Nav">
           <figure className="Logo pull-left">
             {this.getLogo()}
           </figure>
@@ -124,7 +124,7 @@ export default React.createClass({
           <figure className="Hamburger navbar-toggler pull-right" onClick={this.onClickCollapse}>
             <div className="Hamburger-menu">☰</div>
           </figure>
-        </div>
+        </nav>
 
         <div className={navbarClassName}>
           {this.getCar()}
