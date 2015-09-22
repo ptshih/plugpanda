@@ -3,6 +3,11 @@ import React from 'react';
 // Components
 import Nav from './nav';
 
+// Notes
+// Show estimated trickle savings from last charging session
+// Show estimated trickle savings from last week/month
+// Show total $ for last session and last week/month
+
 export default React.createClass({
   displayName: 'Dashboard',
 
