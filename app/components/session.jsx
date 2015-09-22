@@ -209,19 +209,6 @@ export default React.createClass({
     return (
       <main className="Content">
         <section>
-          <div className="row">
-            <div className="col-xs-12">
-              {this.getStopButton()}
-              <div className="Section-heading">
-                <Link to="/sessions">Sessions</Link>
-                <span> / </span>
-                <span>{this.state.session_id}</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section>
           {this.getStats()}
         </section>
 
@@ -233,9 +220,19 @@ export default React.createClass({
   },
 
   render() {
+    let sessionId = this.props.params.session_id;
+    if (sessionId === 'current') {
+      if (this.state.session_id) {
+        sessionId = this.state.session_id;
+      } else {
+        sessionId = 'Loading...';
+      }
+    }
+
+    const title = `Session: ${sessionId}`;
     return (
       <div className="Component">
-        <Nav title="Session" parentPath="/sessions" />
+        <Nav title={title} parentPath="/sessions" />
         {this.getContent()}
       </div>
     );

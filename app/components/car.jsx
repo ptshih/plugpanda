@@ -52,6 +52,7 @@ export default React.createClass({
     const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
 
     return [
+      ['VIN', this.state.vin],
       ['Last Updated', lastUpdated],
       ['Miles', this.state.miles],
       ['Lock', this.state.doorLockState],
@@ -199,14 +200,6 @@ export default React.createClass({
 
     return (
       <main className="Content">
-        <section>
-          <div className="row">
-            <div className="col-xs-12">
-              <div className="Section-heading">{this.state.vin}</div>
-            </div>
-          </div>
-        </section>
-
         <section>
           {this.getStats()}
         </section>
