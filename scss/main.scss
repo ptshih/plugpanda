@@ -1,11 +1,16 @@
 @charset 'UTF-8';
 
+// External Imports
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+
+// Internal Imports
 @import 'bootstrap/bootstrap';
 @import 'inputs';
 @import 'error';
 @import 'float-label';
 @import 'google-map';
 @import 'nprogress';
+@import 'spinner';
 
 // Bootstrap Overrides
 
@@ -34,6 +39,7 @@
 }
 
 // Elements
+
 section, .Section {
   margin-bottom: 2rem;
 
@@ -42,18 +48,17 @@ section, .Section {
   }
 }
 
-// Classes
-.BanksyPanda {
-  width: 100%;
-  // max-width: 400px;
-}
-
-// Shared
-
 .Section-heading {
   @extend h4;
   margin-bottom: 0;
   line-height: 1.6;
+}
+
+// Classes
+
+.BanksyPanda {
+  width: 100%;
+  // max-width: 400px;
 }
 
 // Session
@@ -126,32 +131,43 @@ section, .Section {
   border-radius: 0;
 }
 
-.Circle {
-  margin: 0;
-  display: block;
-  width: 30px;
-  height: 30px;
-  border: 2px solid #000;
-  // text-indent: -9999px;
-  border-radius: 100%;
+.Nav {
+  position: relative;
+  @extend .clearfix;
+  @extend .container;
+  margin: 1rem auto;
 }
 
-.Circle-home {
-  display: block;
-  width: 26px;
-  height: 26px;
-  border: 2px solid #fff;
-  border-radius: 100%;
-  background-color: #000;
-  background-size: 100%;
-  text-indent: -9999px;
+.Nav-title {
+  @extend .text-center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
 
-  cursor: pointer;
-
-  // &:hover {
-  //   background-color: #000;
-  // }
+  font-size: 1.5rem;
+  line-height: 30px;
 }
+
+.Navbar {
+  @extend .container;
+  margin: 1rem auto;
+}
+
+.Navbar-link {
+  @extend .lead;
+  display: block;
+  padding: 0.1rem 0;
+  color: $body-color;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+// Navigation Hamburger Button
 
 .Hamburger {
   display: block;
@@ -192,17 +208,16 @@ section, .Section {
 
   .Hamburger-back {
     @extend .Hamburger-button;
-    top: -8px;
+    top: -6px;
     right: 0;
     bottom: 0;
-    left: -7px;
+    left: -6px;
 
     &:before {
       content: "\2190";
     }
   }
 
-  // TODO
   // http://lea.verou.me/2013/11/cleanest-css-spinner-ever/
   .Hamburger-spinner {
     @extend .Hamburger-button;
@@ -211,42 +226,9 @@ section, .Section {
     right: 0;
     bottom: 0;
     left: -2px;
-  }
-}
 
-.Nav {
-  position: relative;
-  @extend .clearfix;
-  @extend .container;
-  margin: 1rem auto;
-}
-
-.Nav-title {
-  @extend .text-center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-
-  font-size: 1.5rem;
-  line-height: 30px;
-}
-
-.Navbar {
-  @extend .container;
-  margin: 1rem auto;
-}
-
-.Navbar-link {
-  @extend .lead;
-  display: block;
-  padding: 0.1rem 0;
-  color: $body-color;
-
-  &:hover {
-    text-decoration: none;
+    height: 34px;
+    width: 34px;
   }
 }
 
@@ -256,61 +238,4 @@ section, .Section {
   margin-top: 83px;
   @extend .container;
   margin: 83px auto 1rem;
-}
-
-
-
-
-.spinner {
-  $color-1: $body-color;
-  $color-2: #fff;
-  height: 34px;
-  width: 34px;
-  margin: 0 auto;
-  position: relative;
-  -webkit-animation: rotation .6s infinite linear;
-  -moz-animation: rotation .6s infinite linear;
-  -o-animation: rotation .6s infinite linear;
-  animation: rotation .6s infinite linear;
-  border-left: 3px solid $color-1;
-  border-right: 3px solid $color-1;
-  border-bottom: 3px solid $color-1;
-  border-top: 3px solid $color-2;
-  border-radius: 100%;
-}
-
-@-webkit-keyframes rotation {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(359deg);
-  }
-}
-
-@-moz-keyframes rotation {
-  from {
-    -moz-transform: rotate(0deg);
-  }
-  to {
-    -moz-transform: rotate(359deg);
-  }
-}
-
-@-o-keyframes rotation {
-  from {
-    -o-transform: rotate(0deg);
-  }
-  to {
-    -o-transform: rotate(359deg);
-  }
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
 }

@@ -10,6 +10,7 @@ export default React.createClass({
   propTypes: {
     title: React.PropTypes.string,
     parentPath: React.PropTypes.string,
+    loading: React.PropTypes.bool,
   },
 
   mixins: [History],
