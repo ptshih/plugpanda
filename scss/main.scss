@@ -192,6 +192,17 @@ section, .Section {
       content: "\2190";
     }
   }
+
+  // TODO
+  .Hamburger-spinner {
+    display: block;
+    color: #fff;
+    text-align: center;
+    height: 26px;
+    width: 26px;
+    font-size: 1rem;
+    line-height: 24px;
+  }
 }
 
 .Nav {

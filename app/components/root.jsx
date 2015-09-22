@@ -8,13 +8,21 @@ export default React.createClass({
 
   // Render
 
+  getContent() {
+    return (
+      <main className="Content">
+        <section>
+          Nothing to see here yet...
+        </section>
+      </main>
+    );
+  },
+
   render() {
     return (
       <div className="Component">
         <Nav title="Dashboard" />
-        <main className="Content">
-          <img src="/img/banksy_panda.png" className="BanksyPanda" />
-        </main>
+        {this.getContent()}
       </div>
     );
   },
