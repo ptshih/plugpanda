@@ -19,6 +19,7 @@ export default React.createClass({
       title: 'Plug Panda',
       parentPath: null,
       collapse: true,
+      loading: false,
     };
   },
 
@@ -27,6 +28,7 @@ export default React.createClass({
       title: this.props.title,
       parentPath: this.props.parentPath,
       collapse: true,
+      loading: !!this.props.loading ? true : false,
     });
   },
 
@@ -36,6 +38,7 @@ export default React.createClass({
       title: nextProps.title,
       parentPath: nextProps.parentPath,
       collapse: true,
+      loading: !!nextProps.loading ? true : false,
     });
   },
 
@@ -116,6 +119,10 @@ export default React.createClass({
   },
 
   getHamburger() {
+    if (this.state.loading) {
+      return <div className="Hamburger-spinner" />;
+    }
+
     if (this.state.parentPath) {
       return <div className="Hamburger-back" onClick={this.getBack} />;
     }

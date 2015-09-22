@@ -232,7 +232,7 @@ export default React.createClass({
     const title = `Session: ${sessionId}`;
     return (
       <div className="Component">
-        <Nav title={title} parentPath="/sessions" />
+        <Nav title={title} loading={!this.state.fetched} parentPath="/sessions" />
         {this.getContent()}
       </div>
     );

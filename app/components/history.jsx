@@ -79,7 +79,7 @@ export default React.createClass({
   render() {
     return (
       <div className="Component">
-        <Nav title="History" />
+        <Nav title="History" loading={!this.state.fetched} />
         {this.getContent()}
       </div>
     );

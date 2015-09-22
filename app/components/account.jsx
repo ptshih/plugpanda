@@ -344,7 +344,7 @@ export default React.createClass({
   render() {
     return (
       <div className="Component">
-        <Nav title="Account" />
+        <Nav title="Account" loading={!this.state.fetched} />
         {this.getContent()}
       </div>
     );

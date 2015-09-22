@@ -210,7 +210,7 @@ export default React.createClass({
   render() {
     return (
       <div className="Component">
-        <Nav title="BMW" />
+        <Nav title="BMW" loading={!this.state.fetched} />
         {this.getContent()}
       </div>
     );

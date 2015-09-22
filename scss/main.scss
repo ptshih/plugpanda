@@ -205,13 +205,12 @@ section, .Section {
   // TODO
   // http://lea.verou.me/2013/11/cleanest-css-spinner-ever/
   .Hamburger-spinner {
-    display: block;
-    color: #fff;
-    text-align: center;
-    height: 26px;
-    width: 26px;
-    font-size: 1rem;
-    line-height: 24px;
+    @extend .Hamburger-button;
+    @extend .spinner;
+    top: -2px;
+    right: 0;
+    bottom: 0;
+    left: -2px;
   }
 }
 
@@ -264,7 +263,7 @@ section, .Section {
 
 .spinner {
   $color-1: $body-color;
-  $color-2: #ccc;
+  $color-2: #fff;
   height: 30px;
   width: 30px;
   margin: 0 auto;
