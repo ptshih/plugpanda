@@ -154,8 +154,9 @@ section, .Section {
 }
 
 .Hamburger {
-  margin: 0;
   display: block;
+  position: relative;
+  margin: 0;
   width: 30px;
   height: 30px;
   // text-indent: -9999px;
@@ -166,26 +167,35 @@ section, .Section {
   outline: none;
   padding: 0;
 
-  cursor: pointer;
+  .Hamburger-button {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+
+    font-size: 1.2rem;
+    line-height: 22px;
+    width: 44px;
+    height: 44px;
+    padding-top: 10px;
+
+    color: #fff;
+  }
 
   .Hamburger-menu {
-    display: block;
-    color: #fff;
-    text-align: center;
-    height: 26px;
-    width: 26px;
-    font-size: 1rem;
-    line-height: 24px;
+    @extend .Hamburger-button;
+    top: -9px;
+    right: 0;
+    bottom: 0;
+    left: -9px;
   }
 
   .Hamburger-back {
-    display: block;
-    color: #fff;
-    width: 26px;
-    height: 26px;
-    font-size: 1rem;
-    line-height: 22px;
-    text-align: center;
+    @extend .Hamburger-button;
+    top: -10px;
+    right: 0;
+    bottom: 0;
+    left: -8px;
 
     &:before {
       content: "\2190";

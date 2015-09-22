@@ -120,7 +120,7 @@ export default React.createClass({
       return <div className="Hamburger-back" onClick={this.getBack} />;
     }
 
-    return <div className="Hamburger-menu">☰</div>;
+    return <div className="Hamburger-menu" onClick={this.onClickCollapse}>☰</div>;
   },
 
   render() {
@@ -129,7 +129,7 @@ export default React.createClass({
     return (
       <header className="Header">
         <nav className="Nav">
-          <figure className="Hamburger navbar-toggler pull-left" onClick={this.onClickCollapse}>
+          <figure className="Hamburger navbar-toggler pull-left">
             {this.getHamburger()}
           </figure>
 
