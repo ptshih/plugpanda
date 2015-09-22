@@ -233,9 +233,13 @@ export default React.createClass({
   },
 
   render() {
+    let parentPath = location.pathname.split('/');
+    parentPath.shift();
+    parentPath = '/' + _.first(parentPath) || '';
+
     return (
       <div className="Component">
-        <Nav title="Session" enableBack />
+        <Nav title="Session" parentPath={parentPath} />
         {this.getContent()}
       </div>
     );

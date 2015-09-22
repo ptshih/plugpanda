@@ -4,14 +4,14 @@ import React from 'react';
 import Nav from './nav';
 
 export default React.createClass({
-  displayName: 'Plug Panda',
+  displayName: 'Dashboard',
 
   // Render
 
   render() {
     return (
       <div className="Component">
-        <Nav title="Plug Panda" />
+        <Nav title="Dashboard" />
         <main className="Content">
           <img src="/img/banksy_panda.png" className="BanksyPanda" />
         </main>

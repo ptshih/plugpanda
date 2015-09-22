@@ -126,7 +126,7 @@ section, .Section {
   border-radius: 0;
 }
 
-.Logo {
+.Circle {
   margin: 0;
   display: block;
   width: 30px;
@@ -136,7 +136,7 @@ section, .Section {
   border-radius: 100%;
 }
 
-.Logo-home {
+.Circle-home {
   display: block;
   width: 26px;
   height: 26px;
@@ -153,25 +153,6 @@ section, .Section {
   // }
 }
 
-.Logo-back {
-  display: block;
-  width: 26px;
-  height: 26px;
-  border: 2px solid #fff;
-  border-radius: 100%;
-  background-color: #fff;
-  background-size: 100%;
-
-  line-height: 18px;
-  text-align: center;
-  color: #000;
-
-  cursor: pointer;
-
-  &:before {
-    content: "\2190";
-  }
-}
 
 .Hamburger {
   margin: 0;
@@ -186,6 +167,8 @@ section, .Section {
   outline: none;
   padding: 0;
 
+  cursor: pointer;
+
   .Hamburger-menu {
     display: block;
     color: #fff;
@@ -194,7 +177,20 @@ section, .Section {
     width: 26px;
     font-size: 1rem;
     line-height: 24px;
-    cursor: pointer;
+  }
+
+  .Hamburger-back {
+    display: block;
+    color: #fff;
+    width: 26px;
+    height: 26px;
+    font-size: 1rem;
+    line-height: 22px;
+    text-align: center;
+
+    &:before {
+      content: "\2190";
+    }
   }
 }
 

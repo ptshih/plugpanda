@@ -23,7 +23,7 @@ export default React.createClass({
 
   render() {
     return (
-      <a href={this._buildLink()}><img className="GoogleMap" src={this._buildStaticMap()} /></a>
+      <img className="GoogleMap" src={this._buildStaticMap()} />
     );
   },
 

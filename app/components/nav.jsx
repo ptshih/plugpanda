@@ -9,7 +9,7 @@ export default React.createClass({
 
   propTypes: {
     title: React.PropTypes.string,
-    enableBack: React.PropTypes.bool,
+    parentPath: React.PropTypes.string,
   },
 
   mixins: [History],
@@ -17,7 +17,7 @@ export default React.createClass({
   getInitialState() {
     return {
       title: 'Plug Panda',
-      enableBack: false,
+      parentPath: null,
       collapse: true,
     };
   },
@@ -25,7 +25,7 @@ export default React.createClass({
   componentWillMount() {
     this.setState({
       title: this.props.title,
-      enableBack: this.props.enableBack,
+      parentPath: this.props.parentPath,
       collapse: true,
     });
   },
@@ -34,7 +34,7 @@ export default React.createClass({
     // Reset collapse state when changing routes
     this.setState({
       title: nextProps.title,
-      enableBack: nextProps.enableBack,
+      parentPath: nextProps.parentPath,
       collapse: true,
     });
   },
@@ -50,6 +50,16 @@ export default React.createClass({
   },
 
   // Render
+
+  getDashboard() {
+    if (!auth.isLoggedIn()) {
+      return null;
+    }
+
+    return (
+      <Link className="Navbar-link" to="/">Dashboard</Link>
+    );
+  },
 
   getCar() {
     if (!auth.isLoggedIn()) {
@@ -101,12 +111,16 @@ export default React.createClass({
     );
   },
 
-  getLogo() {
-    if (this.state.enableBack) {
-      return <div className="Logo-back" onClick={() => this.history.goBack()} />;
+  goBack() {
+    this.history.pushState(null, this.props.parentPath)
+  },
+
+  getHamburger() {
+    if (this.state.parentPath) {
+      return <div className="Hamburger-back" onClick={this.goBack} />;
     }
 
-    return <Link className="Logo-home" to="/" />;
+    return <div className="Hamburger-menu">☰</div>;
   },
 
   render() {
@@ -115,18 +129,15 @@ export default React.createClass({
     return (
       <header className="Header">
         <nav className="Nav">
-          <figure className="Logo pull-left">
-            {this.getLogo()}
+          <figure className="Hamburger navbar-toggler pull-left" onClick={this.onClickCollapse}>
+            {this.getHamburger()}
           </figure>
 
           <div className="Nav-title">{this.state.title}</div>
-
-          <figure className="Hamburger navbar-toggler pull-right" onClick={this.onClickCollapse}>
-            <div className="Hamburger-menu">☰</div>
-          </figure>
         </nav>
 
         <div className={navbarClassName}>
+          {this.getDashboard()}
           {this.getCar()}
           {this.getSession()}
           {this.getHistory()}
