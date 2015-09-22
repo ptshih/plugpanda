@@ -157,8 +157,8 @@ section, .Section {
   display: block;
   position: relative;
   margin: 0;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   // text-indent: -9999px;
   border-radius: 100%;
   background-color: $body-color;
@@ -173,7 +173,7 @@ section, .Section {
     cursor: pointer;
     text-align: center;
 
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     line-height: 22px;
     width: 44px;
     height: 44px;
@@ -184,18 +184,18 @@ section, .Section {
 
   .Hamburger-menu {
     @extend .Hamburger-button;
-    top: -9px;
+    top: -7px;
     right: 0;
     bottom: 0;
-    left: -9px;
+    left: -7px;
   }
 
   .Hamburger-back {
     @extend .Hamburger-button;
-    top: -10px;
+    top: -8px;
     right: 0;
     bottom: 0;
-    left: -8px;
+    left: -7px;
 
     &:before {
       content: "\2190";
@@ -264,8 +264,8 @@ section, .Section {
 .spinner {
   $color-1: $body-color;
   $color-2: #fff;
-  height: 30px;
-  width: 30px;
+  height: 34px;
+  width: 34px;
   margin: 0 auto;
   position: relative;
   -webkit-animation: rotation .6s infinite linear;
