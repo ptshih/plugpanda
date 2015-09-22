@@ -111,13 +111,13 @@ export default React.createClass({
     );
   },
 
-  goBack() {
-    this.history.pushState(null, this.props.parentPath)
+  getBack() {
+    this.history.pushState(null, this.props.parentPath);
   },
 
   getHamburger() {
     if (this.state.parentPath) {
-      return <div className="Hamburger-back" onClick={this.goBack} />;
+      return <div className="Hamburger-back" onClick={this.getBack} />;
     }
 
     return <div className="Hamburger-menu">☰</div>;

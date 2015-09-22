@@ -153,7 +153,6 @@ section, .Section {
   // }
 }
 
-
 .Hamburger {
   margin: 0;
   display: block;
@@ -194,6 +193,7 @@ section, .Section {
   }
 
   // TODO
+  // http://lea.verou.me/2013/11/cleanest-css-spinner-ever/
   .Hamburger-spinner {
     display: block;
     color: #fff;
@@ -247,4 +247,61 @@ section, .Section {
   margin-top: 83px;
   @extend .container;
   margin: 83px auto 1rem;
+}
+
+
+
+
+.spinner {
+  $color-1: $body-color;
+  $color-2: #ccc;
+  height: 30px;
+  width: 30px;
+  margin: 0 auto;
+  position: relative;
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear;
+  border-left: 3px solid $color-1;
+  border-right: 3px solid $color-1;
+  border-bottom: 3px solid $color-1;
+  border-top: 3px solid $color-2;
+  border-radius: 100%;
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
+}
+
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
