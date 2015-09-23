@@ -18,7 +18,22 @@ export default React.createClass({
     return (
       <main className="Content">
         <section>
-          Nothing to see here yet...
+          <h5>Active Charging Sessions</h5>
+          <div>701 China Basin St, San Francisco</div>
+        </section>
+
+        <section>
+          <h5>Savings</h5>
+          <div>You saved $0.87 today.</div>
+          <div>You saved $5.68 this week.</div>
+          <div>You saved $13.37 this month.</div>
+        </section>
+
+        <section>
+          <h5>Frequently Used Stations</h5>
+          <div>701 China Basin St, San Francisco</div>
+          <div>444 Stockton St, San Francisco</div>
+          <div>329 Miller Ave, South San Francisco</div>
         </section>
       </main>
     );
