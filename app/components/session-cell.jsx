@@ -73,7 +73,7 @@ export default React.createClass({
     const className = ['SessionCell', statusClass].join(' ');
 
     return (
-      <li className={className} onClick={this.onClick}>
+      <li className={className} onTouchTap={this.onClick}>
         <div className="row">
           <div className="col-xs-8 text-left">
             <div>{displayDate}</div>
