@@ -48,9 +48,18 @@ export default React.createClass({
   onClickCollapse(e) {
     e.preventDefault();
 
+    const collapse = !this.state.collapse;
+
+    // Update collapse state
     this.setState({
-      collapse: !this.state.collapse,
+      collapse: collapse,
     });
+
+    // if (!collapse) {
+    //   document.body.classList.add('overflow-hidden');
+    // } else {
+    //   document.body.classList.remove('overflow-hidden');
+    // }
   },
 
   // Render
@@ -122,10 +131,10 @@ export default React.createClass({
   },
 
   render() {
-    const navbarClassName = ['Navbar', !this.state.collapse ? 'Navbar-expand' : ''].join(' ');
+    const headerClassName = ['Header', !this.state.collapse ? 'Header-expand' : ''].join(' ');
 
     return (
-      <header className="Header">
+      <header className={headerClassName}>
         <nav className="Nav">
           <figure className="Hamburger navbar-toggler pull-left">
             {this.getHamburger()}
@@ -134,7 +143,7 @@ export default React.createClass({
           <div className="Nav-title">{this.state.title}</div>
         </nav>
 
-        <div className={navbarClassName}>
+        <div className="Navbar">
           {this.getDashboard()}
           {this.getCar()}
           {this.getSessions()}

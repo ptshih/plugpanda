@@ -131,6 +131,17 @@ section, .Section {
   background-color: #fff;
   border-bottom: 1px solid $body-color;
   border-radius: 0;
+
+  overflow: hidden;
+
+  height: 64px;
+  transition: all 0.35s ease-in-out;
+}
+
+.Header-expand {
+  height: 100%;
+  border-bottom: 1px solid #fff;
+  // overflow: auto;
 }
 
 .Nav {
@@ -159,11 +170,14 @@ section, .Section {
 
 .Navbar {
   @extend .container;
+  position: relative;
   margin: 0 auto;
+  padding: 0.9375rem;
   overflow: hidden;
-  height: 0;
+}
 
-  transition: height 0.2s ease-in-out;
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .Navbar-link {
@@ -171,16 +185,14 @@ section, .Section {
   display: block;
   padding: 0.5rem 0;
   color: $body-color;
-  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 
   &:hover {
     text-decoration: none;
   }
 }
 
-.Navbar-expand {
-  height: 188px;
-}
+
 
 // Navigation Hamburger Button
 

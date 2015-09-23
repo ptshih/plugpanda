@@ -27,6 +27,9 @@ NProgress.configure({
   showSpinner: false,
 });
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 // App Layout
 const App = React.createClass({
   propTypes: {
