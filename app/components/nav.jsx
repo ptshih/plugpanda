@@ -1,6 +1,5 @@
 import React from 'react';
-import {History} from 'react-router';
-import Link from './link';
+import {Link, History} from 'react-router';
 
 // Utils
 import auth from '../lib/auth';
