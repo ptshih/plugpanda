@@ -4,6 +4,7 @@ import React from 'react';
 import Nav from './nav';
 
 // Notes
+// If there is an active session, show summary and link to it here
 // Show estimated trickle savings from last charging session
 // Show estimated trickle savings from last week/month
 // Show total $ for last session and last week/month

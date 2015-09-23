@@ -12,7 +12,7 @@ import auth from './app/lib/auth';
 import Err from './app/components/err';
 
 // Components (containers)
-import Root from './app/components/root';
+import Dashboard from './app/components/dashboard';
 import Car from './app/components/car';
 import Session from './app/components/session';
 import Sessions from './app/components/sessions';
@@ -64,7 +64,7 @@ React.render((
   <Router history={history}>
     <Route path="/" component={App}>
       {/* Default */}
-      <IndexRoute component={Root} onEnter={onEnter} />
+      <IndexRoute component={Dashboard} onEnter={onEnter} />
 
       {/* Routes */}
       <Route path="car" component={Car} onEnter={onEnter} requireAuth />

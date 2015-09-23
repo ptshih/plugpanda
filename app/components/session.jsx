@@ -219,16 +219,7 @@ export default React.createClass({
   },
 
   render() {
-    let sessionId = this.props.params.session_id;
-    if (sessionId === 'current') {
-      if (this.state.session_id) {
-        sessionId = this.state.session_id;
-      } else {
-        sessionId = 'Loading...';
-      }
-    }
-
-    const title = `Session: ${sessionId}`;
+    const title = `Session / ${this.props.params.session_id}`;
     return (
       <div className="Component">
         <Nav title={title} loading={!this.state.fetched} parentPath="/sessions" />
