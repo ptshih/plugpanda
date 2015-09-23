@@ -44,7 +44,7 @@ const api = {
     });
   }),
 
-  fetchHistory: Promise.method(function() {
+  fetchSessions: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/sessions',
       headers: auth.getHeaders(),

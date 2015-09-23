@@ -9,10 +9,10 @@ const Actions = {
    */
   dispatch(type = 'UNKNOWN', data = {}) {
     // DEBUG
-    console.log('DISPATCH: %s -> TYPE: %s', 'history', type);
+    console.log('DISPATCH: %s -> TYPE: %s', 'sessions', type);
 
     Dispatcher.dispatch({
-      store: 'history',
+      store: 'sessions',
       type: type,
       data: data,
     });

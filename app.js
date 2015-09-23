@@ -15,7 +15,7 @@ import Err from './app/components/err';
 import Root from './app/components/root';
 import Car from './app/components/car';
 import Session from './app/components/session';
-import History from './app/components/history';
+import Sessions from './app/components/sessions';
 import Account from './app/components/account';
 import Login from './app/components/login';
 import Logout from './app/components/logout';
@@ -69,7 +69,7 @@ React.render((
       {/* Routes */}
       <Route path="car" component={Car} onEnter={onEnter} requireAuth />
       <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth />
-      <Route path="sessions" component={History} onEnter={onEnter} requireAuth />
+      <Route path="sessions" component={Sessions} onEnter={onEnter} requireAuth />
       <Route path="account" component={Account} onEnter={onEnter} requireAuth />
       <Route path="register" component={Register} onEnter={onEnter} />
       <Route path="login" component={Login} onEnter={onEnter} />

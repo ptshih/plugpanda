@@ -6,7 +6,7 @@
 import BaseStore from './base-store';
 
 // Store
-class HistoryStore extends BaseStore {
+class SessionsStore extends BaseStore {
   defaults() {
     return {
       fetched: false,
@@ -19,9 +19,9 @@ class HistoryStore extends BaseStore {
   constructor() {
     super();
 
-    this.storeName = 'history';
+    this.storeName = 'sessions';
   }
 }
 
 // EXPORT
-export default HistoryStore;
+export default SessionsStore;

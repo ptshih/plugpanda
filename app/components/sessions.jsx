@@ -4,9 +4,9 @@ import React from 'react';
 import api from '../lib/api';
 
 // Store and Actions
-import HistoryStore from '../stores/history-store';
-import HistoryActions from '../actions/history-actions';
-const historyStore = new HistoryStore();
+import SessionsStore from '../stores/sessions-store';
+import SessionsActions from '../actions/sessions-actions';
+const sessionsStore = new SessionsStore();
 
 // Components
 import Nav from './nav';
@@ -16,7 +16,7 @@ import SessionCell from './session-cell';
 import Fetch from '../mixins/fetch';
 
 export default React.createClass({
-  displayName: 'History',
+  displayName: 'Sessions',
 
   propTypes: {
     params: React.PropTypes.object,
@@ -25,21 +25,21 @@ export default React.createClass({
   mixins: [Fetch],
 
   getInitialState() {
-    return historyStore.getState();
+    return sessionsStore.getState();
   },
 
   componentDidMount() {
-    historyStore.addChangeListener(this.onChange);
+    sessionsStore.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    historyStore.removeChangeListener(this.onChange);
+    sessionsStore.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(historyStore.getState());
+    this.setState(sessionsStore.getState());
   },
 
   // Render
@@ -79,15 +79,15 @@ export default React.createClass({
   render() {
     return (
       <div className="Component">
-        <Nav title="History" loading={!this.state.fetched} />
+        <Nav title="Sessions" loading={!this.state.fetched} />
         {this.getContent()}
       </div>
     );
   },
 
   fetch() {
-    return api.fetchHistory().then((state) => {
-      HistoryActions.sync({
+    return api.fetchSessions().then((state) => {
+      SessionsActions.sync({
         fetched: true,
         sessions: state,
       });
@@ -95,6 +95,6 @@ export default React.createClass({
   },
 
   reset() {
-    HistoryActions.reset();
+    SessionsActions.reset();
   },
 });

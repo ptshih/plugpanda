@@ -75,23 +75,13 @@ export default React.createClass({
     );
   },
 
-  getSession() {
+  getSessions() {
     if (!auth.isLoggedIn()) {
       return null;
     }
 
     return (
-      <Link className="Navbar-link" to="/sessions/current">Session</Link>
-    );
-  },
-
-  getHistory() {
-    if (!auth.isLoggedIn()) {
-      return null;
-    }
-
-    return (
-      <Link className="Navbar-link" to="/sessions">History</Link>
+      <Link className="Navbar-link" to="/sessions">Sessions</Link>
     );
   },
 
@@ -147,8 +137,7 @@ export default React.createClass({
         <div className={navbarClassName}>
           {this.getDashboard()}
           {this.getCar()}
-          {this.getSession()}
-          {this.getHistory()}
+          {this.getSessions()}
           {this.getAccount()}
           {this.getLogin()}
         </div>
