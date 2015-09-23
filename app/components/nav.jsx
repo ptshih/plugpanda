@@ -124,10 +124,10 @@ export default React.createClass({
     }
 
     if (this.state.parentPath) {
-      return <div className="Hamburger-back" onClick={this.getBack} />;
+      return <div className="Hamburger-back" onTouchTap={this.getBack} />;
     }
 
-    return <div className="Hamburger-menu" onClick={this.onClickCollapse} />;
+    return <div className="Hamburger-menu" onTouchTap={this.onClickCollapse} />;
   },
 
   render() {
