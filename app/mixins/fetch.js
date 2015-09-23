@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import NProgress from 'nprogress';
+// import NProgress from 'nprogress';
 
 export default {
   componentDidMount() {
@@ -18,9 +18,9 @@ export default {
 
   _fetch() {
     if (_.isFunction(this.fetch)) {
-      NProgress.start();
+      // NProgress.start();
       this.fetch().then(() => {
-        NProgress.done();
+        // NProgress.done();
       });
     }
   },

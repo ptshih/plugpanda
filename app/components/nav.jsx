@@ -122,7 +122,7 @@ export default React.createClass({
   },
 
   render() {
-    const navbarClassName = ['Navbar', 'collapse', !this.state.collapse ? 'in' : ''].join(' ');
+    const navbarClassName = ['Navbar', !this.state.collapse ? 'Navbar-expand' : ''].join(' ');
 
     return (
       <header className="Header">

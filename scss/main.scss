@@ -154,7 +154,11 @@ section, .Section {
 
 .Navbar {
   @extend .container;
-  margin: 1rem auto;
+  margin: 0 auto;
+  overflow: hidden;
+  height: 0;
+
+  transition: height 0.2s ease-in-out;
 }
 
 .Navbar-link {
@@ -167,10 +171,10 @@ section, .Section {
   &:hover {
     text-decoration: none;
   }
+}
 
-  &:last-of-type {
-    padding-bottom: 0;
-  }
+.Navbar-expand {
+  height: 188px;
 }
 
 // Navigation Hamburger Button
@@ -241,7 +245,10 @@ section, .Section {
 // Content and Body
 
 .Content {
-  margin-top: 83px;
   @extend .container;
-  margin: 83px auto 1rem;
+  position: absolute;
+  margin: 0.9375rem auto;
+  top: 67px;
+  right: 0;
+  left: 0;
 }
