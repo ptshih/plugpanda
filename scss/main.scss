@@ -247,7 +247,8 @@ section, .Section {
 .Content {
   @extend .container;
   position: absolute;
-  margin: 0.9375rem auto;
+  margin: 0 auto;
+  padding: 0.9375rem;
   top: 67px;
   right: 0;
   left: 0;
