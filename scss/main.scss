@@ -215,10 +215,15 @@ section, .Section {
 
   .Hamburger-menu {
     @extend .Hamburger-button;
-    top: -8px;
+    top: -7px;
     right: 0;
     bottom: 0;
     left: -7px;
+
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAVCAYAAADID4fUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NjQ1NjhiMS01MTU3LTRhNGMtYjVjNS1mNTM4M2ZmYjIwMTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QjE5RDdBNzQwMDU3MTFFNDhCOTVDQTM2NTY4QTQ5RDYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QjE5RDdBNzMwMDU3MTFFNDhCOTVDQTM2NTY4QTQ5RDYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1YmJmMWEyZC0yMTk1LTQwN2MtODFjYS1jZTMzYjAwNThmYmMiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDplMmU2NTc0MC00ODcwLTExNzctOWQwZi1lYTRlZTViZTc1NDMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz57tFh6AAAAQklEQVR42mL8DwQMAwyYGAYBGBSOYAFioYF2BOMgSBKjaWLUEVhzx2hhNVpYjRZWo44glDAFB0PCHC2sBo0jAAIMAMLXD1V9r1XiAAAAAElFTkSuQmCC);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 14px 14px;
   }
 
   .Hamburger-back {
@@ -228,9 +233,14 @@ section, .Section {
     bottom: 0;
     left: -7px;
 
-    &:before {
-      content: "\2190";
-    }
+    background-image: url(https://dtu1xr3i3b2a1.cloudfront.net/cargo/icons/arrow_left_white-9cdd1ab2f84f3116f6d272dd70db2a1ceabbca7760f7a24188cc6ac28341022d.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 14px 14px;
+
+    // &:before {
+    //   content: "\2190";
+    // }
   }
 
   // http://lea.verou.me/2013/11/cleanest-css-spinner-ever/

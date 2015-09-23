@@ -118,7 +118,7 @@ export default React.createClass({
       return <div className="Hamburger-back" onClick={this.getBack} />;
     }
 
-    return <div className="Hamburger-menu" onClick={this.onClickCollapse}>☰</div>;
+    return <div className="Hamburger-menu" onClick={this.onClickCollapse} />;
   },
 
   render() {
