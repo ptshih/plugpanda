@@ -17,8 +17,13 @@ export default React.createClass({
   mixins: [History],
 
   // Handlers
-  onClick(e) {
-    e.preventDefault();
+  onClick(event) {
+    const nativeEvent = event.nativeEvent;
+    if (!!(nativeEvent.metaKey || nativeEvent.altKey || nativeEvent.ctrlKey || nativeEvent.shiftKey)) {
+      return;
+    }
+
+    event.preventDefault();
 
     // URL
     const url = `/sessions/${this.props.session.session_id}`;
@@ -73,30 +78,32 @@ export default React.createClass({
     const className = ['SessionCell', statusClass].join(' ');
 
     return (
-      <li className={className} onTouchTap={this.onClick}>
-        <div className="row">
-          <div className="col-xs-8 text-left">
-            <div>{displayDate}</div>
+      <li className={className}>
+        <a href={`/sessions/${session.session_id}`} onTouchTap={this.onClick}>
+          <div className="row">
+            <div className="col-xs-8 text-left">
+              <div>{displayDate}</div>
+            </div>
+            <div className="col-xs-4 text-right">
+              <div>{displayHours}h {displayMinutes}m</div>
+            </div>
           </div>
-          <div className="col-xs-4 text-right">
-            <div>{displayHours}h {displayMinutes}m</div>
-          </div>
-        </div>
 
-        <div className="row">
-          <div className="col-xs-8 text-left">
-            <div>{energyAdded} kWh @ {averagePower} kW</div>
+          <div className="row">
+            <div className="col-xs-8 text-left">
+              <div>{energyAdded} kWh @ {averagePower} kW</div>
+            </div>
+            <div className="col-xs-4 text-right">
+              <div>{price}</div>
+            </div>
           </div>
-          <div className="col-xs-4 text-right">
-            <div>{price}</div>
-          </div>
-        </div>
 
-        <div className="row">
-          <div className="col-xs-12">
-            <div>{location}</div>
+          <div className="row">
+            <div className="col-xs-12">
+              <div>{location}</div>
+            </div>
           </div>
-        </div>
+        </a>
       </li>
     );
   },

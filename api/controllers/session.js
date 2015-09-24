@@ -44,32 +44,6 @@ module.exports = BaseController.extend({
   },
 
 
-  session(req, res, next) {
-    const session = new SessionModel();
-    session.db = this.get('db');
-
-    const query = {};
-    if (req.params.session_id && req.params.session_id !== 'current') {
-      query.session_id = _.parseInt(req.params.session_id);
-    }
-
-    return session.fetch({
-      query: query,
-      require: true,
-      sort: [['created', 'desc']],
-    }).tap(() => {
-      if (query.session_id) {
-        return chargepoint.sendStatusRequest(req.user.get('chargepoint'), query.session_id).then((chargingStatus) => {
-          // Update from Chargepoint
-          return session.saveFromChargepoint(chargingStatus);
-        });
-      }
-    }).then(() => {
-      res.data = session.render();
-      next();
-    }).catch(next);
-  },
-
   status(req, res, next) {
     const session = new SessionModel();
     session.db = this.get('db');
@@ -95,6 +69,34 @@ module.exports = BaseController.extend({
     }).catch(next);
   },
 
+  session(req, res, next) {
+    const session = new SessionModel();
+    session.db = this.get('db');
+
+    const query = {};
+    if (req.params.session_id && req.params.session_id !== 'current') {
+      query.session_id = _.parseInt(req.params.session_id);
+    }
+
+    return session.fetch({
+      query: query,
+      require: true,
+      sort: [['created', 'desc']],
+    }).tap(() => {
+      if (session.get('status') === 'off') {
+        return session;
+      }
+
+      return chargepoint.sendStatusRequest(req.user.get('chargepoint'), query.session_id).then((chargingStatus) => {
+        // Update from Chargepoint
+        return session.saveFromChargepoint(chargingStatus);
+      });
+    }).then(() => {
+      res.data = session.render();
+      next();
+    }).catch(next);
+  },
+
   history(req, res, next) {
     const qo = this.parseQueryString(req, {
       queryParams: {
@@ -106,6 +108,40 @@ module.exports = BaseController.extend({
       sortParam: 'created',
       sortOrder: 'desc',
     });
+
+    // Omit `update_data` and `vehicle_info`
+    qo.fields = {
+      user_id: 1,
+      created: 1,
+      created_date: 1,
+      updated: 1,
+      updated_date: 1,
+
+      ack_id: 1,
+      address1: 1,
+      average_power: 1,
+      charging_time: 1,
+      city: 1,
+      company_id: 1,
+      company_name: 1,
+      currency_iso_code: 1,
+      current_charging: 1,
+      device_id: 1,
+      enable_stop_charging: 1,
+      energy_kwh: 1,
+      lat: 1,
+      lon: 1,
+      miles_added: 1,
+      outlet_number: 1,
+      payment_type: 1,
+      port_level: 1,
+      power_kw: 1,
+      session_id: 1,
+      session_time: 1,
+      state_name: 1,
+      status: 1,
+      total_amount: 1,
+    };
 
     const sessions = new SessionCollection();
     sessions.db = this.get('db');

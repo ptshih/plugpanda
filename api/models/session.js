@@ -30,6 +30,7 @@ module.exports = BaseUserModel.extend({
         end_time: 0,
         energy_kwh: 0.0,
         power_kw: 0.0,
+        average_power: 0.0,
         miles_added: 0.0,
         total_amount: 0.0,
         lat: 0,
@@ -68,6 +69,7 @@ module.exports = BaseUserModel.extend({
         end_time: 'timestamp',
         energy_kwh: 'ufloat',
         power_kw: 'ufloat',
+        average_power: 'ufloat',
         miles_added: 'ufloat',
         total_amount: 'ufloat',
         lat: 'float',
@@ -87,11 +89,18 @@ module.exports = BaseUserModel.extend({
     );
   },
 
-  render() {
-    const json = BaseUserModel.prototype.render.apply(this, arguments);
-    json.average_power = this._calculateAveragePower(json.update_data);
-    return json;
-  },
+  // render() {
+  //   const json = BaseUserModel.prototype.render.apply(this, arguments);
+  //   json.average_power = this._calculateAveragePower(json.update_data);
+  //   return json;
+  // },
+
+  beforeSave: Muni.Promise.method(function() {
+    const averagePower = this._calculateAveragePower(this.get('update_data'));
+    this.set('average_power', averagePower);
+
+    return BaseUserModel.prototype.beforeSave.apply(this, arguments);
+  }),
 
 
   startSession() {
