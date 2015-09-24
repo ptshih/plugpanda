@@ -311,6 +311,10 @@ module.exports = BaseUserModel.extend({
    * This is because `power_kw` from Chargepoint is real-time
    */
   _calculateAveragePower(updateData) {
+    if (!updateData.length) {
+      return 0;
+    }
+
     const totalPower = _.reduce(updateData, (total, dataPoint) => {
       return total + dataPoint.power_kw;
     }, 0);
