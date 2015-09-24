@@ -11,6 +11,7 @@ const accountStore = new AccountStore();
 
 // Components
 import Nav from './nav';
+import Err from './err';
 import InputTextFloatLabel from './partials/input-text-float-label';
 import SelectFloatLabel from './partials/select-float-label';
 
@@ -326,6 +327,17 @@ export default React.createClass({
       return null;
     }
 
+    if (this.state.error) {
+      const params = {
+        message: this.state.error,
+      };
+      return (
+        <main className="Content">
+          <Err params={params} />
+        </main>
+      );
+    }
+
     return (
       <main className="Content">
         <section>{this.getInformation()}</section>
@@ -354,6 +366,11 @@ export default React.createClass({
     return api.fetchAccount().then((state) => {
       state.fetched = true;
       AccountActions.sync(state);
+    }).catch((err) => {
+      AccountActions.sync({
+        fetched: true,
+        error: err.message,
+      });
     });
   },
 

@@ -9,6 +9,9 @@ import BaseStore from './base-store';
 class CarStore extends BaseStore {
   defaults() {
     return {
+      fetched: false,
+      error: null,
+
       position: {
         lat: 37.7833,
         lon: -122.4167,

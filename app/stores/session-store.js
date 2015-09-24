@@ -10,6 +10,7 @@ class SessionStore extends BaseStore {
   defaults() {
     return {
       fetched: false,
+      error: null,
 
       vehicle_info: {},
     };

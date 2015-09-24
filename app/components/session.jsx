@@ -232,6 +232,11 @@ export default React.createClass({
     return api.fetchSession(this.props.params.session_id).then((state) => {
       state.fetched = true;
       SessionActions.sync(state);
+    }).catch((err) => {
+      SessionActions.sync({
+        fetched: true,
+        error: err.message,
+      });
     });
   },
 

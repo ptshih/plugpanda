@@ -1,5 +1,9 @@
+.Error-lead {
+  @extend .lead;
+}
+
 .Error-heading {
-  @extend h4;
+  @extend h5;
 }
 
 .Error-reason {
@@ -10,4 +14,8 @@
 .Error-list {
   list-style: none;
   padding-left: 0;
+
+  li {
+    // font-weight: 300;
+  }
 }

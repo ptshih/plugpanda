@@ -10,6 +10,7 @@ class AccountStore extends BaseStore {
   defaults() {
     return {
       fetched: false,
+      error: null,
 
       _id: null,
       access_token: null,

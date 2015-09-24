@@ -90,6 +90,11 @@ export default React.createClass({
       SessionsActions.sync({
         fetched: true,
         sessions: state,
+      }).catch((err) => {
+        SessionsActions.sync({
+          fetched: true,
+          error: err.message,
+        });
       });
     });
   },

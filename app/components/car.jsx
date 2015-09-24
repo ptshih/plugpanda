@@ -220,6 +220,11 @@ export default React.createClass({
     return api.fetchCar().then((state) => {
       state.fetched = true;
       CarActions.sync(state);
+    }).catch((err) => {
+      CarActions.sync({
+        fetched: true,
+        error: err.message,
+      });
     });
   },
 

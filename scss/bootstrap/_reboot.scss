@@ -68,6 +68,7 @@ body {
   // Make the `body` use the `font-size-root`
   font-family: $font-family-base;
   font-size: $font-size-base;
+  font-weight: 300;
   line-height: $line-height;
   // Go easy on the eyes and use something other than `#000` for text
   color: $body-color;

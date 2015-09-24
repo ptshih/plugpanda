@@ -10,6 +10,7 @@ class SessionsStore extends BaseStore {
   defaults() {
     return {
       fetched: false,
+      error: null,
 
       sessions: [],
     };
