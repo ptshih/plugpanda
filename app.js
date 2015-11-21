@@ -1,9 +1,9 @@
 // Router
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Router from 'react-router';
 import {Route, IndexRoute} from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
-const history = createBrowserHistory();
+import {createHistory} from 'history';
 
 // Utils
 import auth from './app/lib/auth';
@@ -64,8 +64,8 @@ function onEnterNotFound(nextState) {
 // function onLeave() {}
 
 // Define Routes
-React.render((
-  <Router history={history}>
+ReactDOM.render((
+  <Router history={createHistory()}>
     <Route path="/" component={App}>
       {/* Default */}
       <IndexRoute component={Dashboard} onEnter={onEnter} />

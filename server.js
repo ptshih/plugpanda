@@ -45,7 +45,7 @@ if (!nconf.get('PANDA_IRON_TOKEN')) {
 }
 
 // Transparently support JSX
-require('babel/register');
+require('babel-core/register');
 
 // Middleware
 const cors = require('cors');
