@@ -7,7 +7,6 @@ export default React.createClass({
   displayName: 'SelectFloatLabel',
 
   propTypes: {
-    id: React.PropTypes.string,
     label: React.PropTypes.string.isRequired,
     className: React.PropTypes.string,
     disabled: React.PropTypes.bool,
@@ -19,18 +18,20 @@ export default React.createClass({
     const className = ['FloatLabel', this.props.className].join(' ').trim();
     const props = _.omit(this.props, ['className']);
 
+    // Label Class
     const labelClasses = ['FloatLabel-label', 'FloatLabel-label--on'];
-    if (this.props.disabled) {
-      labelClasses.push('FloatLabel-label--disabled');
-    }
     const labelClassName = labelClasses.join(' ').trim();
+
+    // Border Class
+    const borderClasses = ['FloatLabel-border', 'FloatLabel-border--on'];
+    const borderClassName = borderClasses.join(' ').trim();
 
     return (
       <div className={className}>
         <label
-          htmlFor={props.id}
           className={labelClassName}
         >
+          <div className={borderClassName} />
           {props.label}
         </label>
         <Select {...props} />

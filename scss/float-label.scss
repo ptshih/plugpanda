@@ -3,13 +3,33 @@
   margin-top: 9px;
 }
 
+.FloatLabel-border {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background-color: #fff;
+  opacity: 0;
+  transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+}
+
+.FloatLabel-border--on {
+  top: 9px;
+  right: 0;
+  bottom: 7px;
+  left: 0;
+  opacity: 1;
+}
+
 .FloatLabel-label {
   position: absolute;
   margin: 0;
   top: 7px;
   left: 13px;
-  color: #999;
-  transition: 0.3s ease-in-out;
+  color: @gray;
+  transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
   pointer-events: none;
   z-index: 2;
 }
@@ -18,13 +38,8 @@
   position: absolute;
   padding:0 2px;
   top: -9px;
-  left: 15px;
-  background-color: #fff;
+  left: 11px;
   font-size: 12px;
-}
-
-.FloatLabel-label--disabled {
-  display: none;
 }
 
 // Unused

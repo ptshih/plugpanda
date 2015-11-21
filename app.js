@@ -30,7 +30,7 @@ NProgress.configure({
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-// App Layout
+// App Component
 const App = React.createClass({
   propTypes: {
     children: React.PropTypes.oneOfType([
@@ -44,7 +44,8 @@ const App = React.createClass({
   },
 });
 
-// Lifecycle
+// Router Lifecycle Hooks
+
 function onEnter(nextState, replaceState, callback) {
   // Check auth
   if (this.requireAuth && !auth.isLoggedIn()) {
@@ -56,7 +57,7 @@ function onEnter(nextState, replaceState, callback) {
   callback();
 }
 
-function onEnterError(nextState) {
+function onEnterNotFound(nextState) {
   nextState.params.message = 'Page Not Found';
 }
 
@@ -79,7 +80,7 @@ React.render((
       <Route path="logout" component={Logout} onEnter={onEnter} requireAuth />
 
       {/* Not Found */}
-      <Route path="*" component={Err} onEnter={onEnterError} />
+      <Route path="*" component={Err} onEnter={onEnterNotFound} />
     </Route>
   </Router>
 ), document.getElementById('app'));

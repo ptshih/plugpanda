@@ -7,12 +7,13 @@ export default React.createClass({
   displayName: 'InputTextFloatLabel',
 
   propTypes: {
-    id: React.PropTypes.string,
+    type: React.PropTypes.string,
     label: React.PropTypes.string.isRequired,
     className: React.PropTypes.string,
     value: React.PropTypes.string,
     prefix: React.PropTypes.string,
     property: React.PropTypes.string,
+    alwaysOn: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
     onChange: React.PropTypes.func,
     onFocus: React.PropTypes.func,
@@ -20,20 +21,23 @@ export default React.createClass({
   },
 
   getInitialState() {
-    return {};
+    return {
+      on: false,
+      alwaysOn: false,
+    };
   },
 
   // Initial props (called once on initial render)
   componentWillMount() {
     this.setState({
-      className: this.props.value ? 'FloatLabel-label--on' : '',
+      on: this.props.alwaysOn || !!this.props.value,
     });
   },
 
   // Updated props (not called on initial render)
   componentWillReceiveProps(nextProps) {
     this.setState({
-      className: nextProps.value ? 'FloatLabel-label--on' : '',
+      on: nextProps.alwaysOn || !!nextProps.value,
     });
   },
 
@@ -44,14 +48,6 @@ export default React.createClass({
     if (this.props.onChange) {
       this.props.onChange(e);
     }
-
-    if (e.target === document.activeElement) {
-      this.setState({className: 'FloatLabel-label--on'});
-    } else if (e.target.value !== '') {
-      this.setState({className: 'FloatLabel-label--on'});
-    } else {
-      this.setState({className: ''});
-    }
   },
 
   onFocus(e) {
@@ -60,7 +56,9 @@ export default React.createClass({
       this.props.onFocus(e);
     }
 
-    this.setState({className: 'FloatLabel-label--on'});
+    this.setState({
+      on: true,
+    });
   },
 
   onBlur(e) {
@@ -69,11 +67,9 @@ export default React.createClass({
       this.props.onBlur(e);
     }
 
-    if (e.target.value !== '') {
-      this.setState({className: 'FloatLabel-label--on'});
-    } else {
-      this.setState({className: ''});
-    }
+    this.setState({
+      on: this.props.alwaysOn || !!e.target.value,
+    });
   },
 
   // Render
@@ -82,18 +78,26 @@ export default React.createClass({
     const className = ['FloatLabel', this.props.className].join(' ').trim();
     const props = _.omit(this.props, ['placeholder', 'className']);
 
-    const labelClasses = ['FloatLabel-label', this.state.className];
-    if (this.props.disabled) {
-      labelClasses.push('FloatLabel-label--disabled');
+    // Label Class
+    const labelClasses = ['FloatLabel-label'];
+    if (this.state.on) {
+      labelClasses.push('FloatLabel-label--on');
     }
     const labelClassName = labelClasses.join(' ').trim();
+
+    // Border Class
+    const borderClasses = ['FloatLabel-border'];
+    if (this.state.on) {
+      borderClasses.push('FloatLabel-border--on');
+    }
+    const borderClassName = borderClasses.join(' ').trim();
 
     return (
       <div className={className}>
         <label
-          htmlFor={props.id}
           className={labelClassName}
         >
+          <div className={borderClassName} />
           {props.label}
         </label>
         <InputText
