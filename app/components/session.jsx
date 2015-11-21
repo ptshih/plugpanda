@@ -14,7 +14,8 @@ const sessionStore = new SessionStore();
 import Nav from './nav';
 import Table from './table';
 import GoogleMap from './google-map';
-import Highcharts from 'react-highcharts/more';
+import Highcharts from 'react-highcharts/bundle/highcharts';
+import HighchartsMore from 'react-highcharts/dist/modules/more';
 
 // Mixins
 import Fetch from '../mixins/fetch';

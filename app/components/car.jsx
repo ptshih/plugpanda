@@ -13,7 +13,6 @@ const carStore = new CarStore();
 import Nav from './nav';
 import Table from './table';
 import GoogleMap from './google-map';
-// import Highcharts from 'react-highcharts/more';
 
 // Mixins
 import Fetch from '../mixins/fetch';
