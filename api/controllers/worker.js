@@ -9,7 +9,9 @@ const ironWorker = new IronWorker.Client({
   project_id: nconf.get('PANDA_IRON_PROJECT_ID'),
   token: nconf.get('PANDA_IRON_TOKEN'),
 });
-const createTask = Muni.Promise.promisify(ironWorker.tasksCreate, ironWorker);
+const createTask = Muni.Promise.promisify(ironWorker.tasksCreate, {
+  context: ironWorker,
+});
 
 module.exports = BaseController.extend({
   setupRoutes() {
