@@ -3,10 +3,8 @@ import React from 'react';
 // Utils
 import api from '../lib/api';
 
-// Store and Actions
-import SessionsStore from '../stores/sessions-store';
-import SessionsActions from '../actions/sessions-actions';
-const sessionsStore = new SessionsStore();
+// Store
+import Store from '../stores/store';
 
 // Components
 import Nav from './nav';
@@ -25,21 +23,21 @@ export default React.createClass({
   mixins: [Fetch],
 
   getInitialState() {
-    return sessionsStore.getState();
+    return Store.getState('sessions');
   },
 
   componentDidMount() {
-    sessionsStore.addChangeListener(this.onChange);
+    Store.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    sessionsStore.removeChangeListener(this.onChange);
+    Store.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(sessionsStore.getState());
+    this.setState(Store.getState('sessions'));
   },
 
   // Render
@@ -49,7 +47,7 @@ export default React.createClass({
   },
 
   getSessionList() {
-    const sessions = this.state.sessions;
+    const sessions = this.state.data;
 
     return (
       <ul className="SessionList">
@@ -86,20 +84,33 @@ export default React.createClass({
   },
 
   fetch() {
-    return api.fetchSessions().then((state) => {
-      SessionsActions.sync({
-        fetched: true,
-        sessions: state,
+    return api.fetchSessions().then((data) => {
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'sessions',
+        state: {
+          fetched: true,
+          error: null,
+          data: data,
+        },
       });
     }).catch((err) => {
-      SessionsActions.sync({
-        fetched: true,
-        error: err.message,
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'sessions',
+        state: {
+          fetched: true,
+          error: err.message,
+          data: [],
+        },
       });
     });
   },
 
   reset() {
-    SessionsActions.reset();
+    Store.dispatch({
+      type: 'RESET',
+      property: 'sessions',
+    });
   },
 });

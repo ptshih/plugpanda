@@ -4,10 +4,8 @@ import {Link} from 'react-router';
 // Utils
 import api from '../lib/api';
 
-// Store and Actions
-import AccountStore from '../stores/account-store';
-import AccountActions from '../actions/account-actions';
-const accountStore = new AccountStore();
+// Store
+import Store from '../stores/store';
 
 // Components
 import Nav from './nav';
@@ -28,21 +26,21 @@ export default React.createClass({
   mixins: [Fetch],
 
   getInitialState() {
-    return accountStore.getState();
+    return Store.getState('account');
   },
 
   componentDidMount() {
-    accountStore.addChangeListener(this.onChange);
+    Store.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    accountStore.removeChangeListener(this.onChange);
+    Store.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(accountStore.getState());
+    this.setState(Store.getState('account'));
   },
 
   // Render
@@ -88,7 +86,7 @@ export default React.createClass({
               <fieldset className="form-group">
                 <InputTextFloatLabel
                   label="Name"
-                  value={this.state.name}
+                  value={this.state.data.name}
                   placeholder="Your Name"
                   onChange={this.onChangeName}
                 />
@@ -99,7 +97,7 @@ export default React.createClass({
                 <InputTextFloatLabel
                   type="email"
                   label="Email"
-                  value={this.state.email}
+                  value={this.state.data.email}
                   placeholder="Your Email"
                   onChange={this.onChangeEmail}
                 />
@@ -142,7 +140,7 @@ export default React.createClass({
               <fieldset className="form-group">
                 <SelectFloatLabel
                   label="Currency"
-                  value={this.state.currency}
+                  value={this.state.data.currency}
                   onChange={this.onChangeCurrency}
                   options={currencyOptions}
                 />
@@ -152,7 +150,7 @@ export default React.createClass({
               <fieldset className="form-group">
                 <SelectFloatLabel
                   label="Timezone"
-                  value={this.state.timezone}
+                  value={this.state.data.timezone}
                   onChange={this.onChangeTimezone}
                   options={timezoneOptions}
                 />
@@ -165,15 +163,15 @@ export default React.createClass({
   },
 
   getChargepoint() {
-    if (this.state.chargepoint.user_id && this.state.chargepoint.auth_token) {
+    if (this.state.data.chargepoint.user_id && this.state.data.chargepoint.auth_token) {
       return (
         <div className="row">
           <div className="col-xs-12">
             <h5>Chargepoint Account</h5>
 
             <div>Already Authenticated</div>
-            <div>User ID: {this.state.chargepoint.user_id}</div>
-            <div>Auth Token: {this.state.chargepoint.auth_token}</div>
+            <div>User ID: {this.state.data.chargepoint.user_id}</div>
+            <div>Auth Token: {this.state.data.chargepoint.auth_token}</div>
           </div>
         </div>
       );
@@ -219,15 +217,15 @@ export default React.createClass({
   },
 
   getBMW() {
-    if (this.state.bmw.vin && this.state.bmw.access_token) {
+    if (this.state.data.bmw.vin && this.state.data.bmw.access_token) {
       return (
         <div className="row">
           <div className="col-xs-12">
             <h5>BMW Account</h5>
 
             <div>Already Authenticated</div>
-            <div>VIN: {this.state.bmw.vin}</div>
-            <div>Access Token: {this.state.bmw.access_token}</div>
+            <div>VIN: {this.state.data.bmw.vin}</div>
+            <div>Access Token: {this.state.data.bmw.access_token}</div>
           </div>
         </div>
       );
@@ -238,7 +236,7 @@ export default React.createClass({
 
   getSubscription() {
     // Free plans
-    if (this.state.plan === 'free') {
+    if (this.state.data.plan === 'free') {
       return (
         <div className="row">
           <div className="col-xs-12">
@@ -250,15 +248,15 @@ export default React.createClass({
     }
 
     // Has active subscription
-    if (this.state.stripe.customer && this.state.stripe.subscription) {
+    if (this.state.data.stripe.customer && this.state.data.stripe.subscription) {
       return (
         <div className="row">
           <div className="col-xs-12">
             <h5>Your Subscription</h5>
 
             <div>Subscription Active</div>
-            <div>Customer: {this.state.stripe.customer}</div>
-            <div>Subscription: {this.state.stripe.subscription}</div>
+            <div>Customer: {this.state.data.stripe.customer}</div>
+            <div>Subscription: {this.state.data.stripe.subscription}</div>
           </div>
         </div>
       );
@@ -288,7 +286,7 @@ export default React.createClass({
       value: 'CA',
     }];
 
-    const formattedPhone = this._formatPhone(this.state.phone);
+    const formattedPhone = this._formatPhone(this.state.data.phone);
 
     return (
       <div className="row">
@@ -300,7 +298,7 @@ export default React.createClass({
               <fieldset className="form-group">
                 <SelectFloatLabel
                   label="Country"
-                  value={this.state.country}
+                  value={this.state.data.country}
                   onChange={this.onChangeCountry}
                   options={countryOptions}
                 />
@@ -363,19 +361,34 @@ export default React.createClass({
   },
 
   fetch() {
-    return api.fetchAccount().then((state) => {
-      state.fetched = true;
-      AccountActions.sync(state);
+    return api.fetchAccount().then((data) => {
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'account',
+        state: {
+          fetched: true,
+          error: null,
+          data: data,
+        },
+      });
     }).catch((err) => {
-      AccountActions.sync({
-        fetched: true,
-        error: err.message,
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'account',
+        state: {
+          fetched: true,
+          error: err.message,
+          data: {},
+        },
       });
     });
   },
 
   reset() {
-    AccountActions.reset();
+    Store.dispatch({
+      type: 'RESET',
+      property: 'account',
+    });
   },
 
   _formatPhone(str = '') {

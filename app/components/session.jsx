@@ -5,10 +5,8 @@ import React from 'react';
 import api from '../lib/api';
 import math from '../../lib/math';
 
-// Store and Actions
-import SessionStore from '../stores/session-store';
-import SessionActions from '../actions/session-actions';
-const sessionStore = new SessionStore();
+// Store
+import Store from '../stores/store';
 
 // Components
 import Nav from './nav';
@@ -35,21 +33,21 @@ export default React.createClass({
   mixins: [Fetch],
 
   getInitialState() {
-    return sessionStore.getState();
+    return Store.getState('session');
   },
 
   componentDidMount() {
-    sessionStore.addChangeListener(this.onChange);
+    Store.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    sessionStore.removeChangeListener(this.onChange);
+    Store.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(sessionStore.getState());
+    this.setState(Store.getState('session'));
   },
 
   onStop(e) {
@@ -100,13 +98,13 @@ export default React.createClass({
   },
 
   getStatsData() {
-    const averagePower = this.state.average_power;
-    const totalEnergy = math.round(this.state.energy_kwh, 3);
-    const milesAdded = math.round(this.state.miles_added, 1);
+    const averagePower = this.state.data.average_power;
+    const totalEnergy = math.round(this.state.data.energy_kwh, 3);
+    const milesAdded = math.round(this.state.data.miles_added, 1);
 
     let displayHours;
     let displayMinutes;
-    const chargingTime = math.round(this.state.charging_time / 1000 / 60, 0);
+    const chargingTime = math.round(this.state.data.charging_time / 1000 / 60, 0);
     if (chargingTime >= 60) {
       displayHours = Math.floor(chargingTime / 60);
       displayMinutes = chargingTime % 60;
@@ -116,16 +114,16 @@ export default React.createClass({
     }
 
     return [
-      ['Session Status', this.state.status],
-      ['Charging Status', this.state.current_charging],
-      ['Station', this.state.device_id],
-      ['Port', this.state.outlet_number],
+      ['Session Status', this.state.data.status],
+      ['Charging Status', this.state.data.current_charging],
+      ['Station', this.state.data.device_id],
+      ['Port', this.state.data.outlet_number],
       ['Charging Time', `${displayHours}h ${displayMinutes}m`],
       ['Average Power', `${averagePower.toFixed(3)} kWh`],
       ['Total Energy', `${totalEnergy.toFixed(3)} kW`],
       ['Added Distance', `${milesAdded.toFixed(1)} miles`],
-      ['Total Price', `$${this.state.total_amount.toFixed(2)}`],
-      ['Payment Type', this.state.payment_type],
+      ['Total Price', `$${this.state.data.total_amount.toFixed(2)}`],
+      ['Payment Type', this.state.data.payment_type],
     ];
   },
 
@@ -133,7 +131,7 @@ export default React.createClass({
     const power = [];
     const energy = [];
 
-    _.each(this.state.update_data, function(dataPoint) {
+    _.each(this.state.data.update_data, function(dataPoint) {
       if (dataPoint.power_kw === 0) {
         return;
       }
@@ -168,8 +166,8 @@ export default React.createClass({
         </div>
         <div className="col-md-6 col-xs-12">
           <GoogleMap
-            lat={this.state.lat}
-            lon={this.state.lon}
+            lat={this.state.data.lat}
+            lon={this.state.data.lon}
           />
         </div>
       </div>
@@ -193,7 +191,7 @@ export default React.createClass({
   },
 
   getStopButton() {
-    if (this.state.status !== 'on') {
+    if (this.state.data.status !== 'on') {
       return null;
     }
 
@@ -229,18 +227,33 @@ export default React.createClass({
   },
 
   fetch() {
-    return api.fetchSession(this.props.params.session_id).then((state) => {
-      state.fetched = true;
-      SessionActions.sync(state);
+    return api.fetchSession(this.props.params.session_id).then((data) => {
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'session',
+        state: {
+          fetched: true,
+          error: null,
+          data: data,
+        },
+      });
     }).catch((err) => {
-      SessionActions.sync({
-        fetched: true,
-        error: err.message,
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'session',
+        state: {
+          fetched: true,
+          error: err.message,
+          data: {},
+        },
       });
     });
   },
 
   reset() {
-    SessionActions.reset();
+    Store.dispatch({
+      type: 'RESET',
+      property: 'session',
+    });
   },
 });

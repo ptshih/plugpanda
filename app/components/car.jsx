@@ -4,10 +4,8 @@ import moment from 'moment';
 // Utils
 import api from '../lib/api';
 
-// Store and Actions
-import CarStore from '../stores/car-store';
-import CarActions from '../actions/car-actions';
-const carStore = new CarStore();
+// Store
+import Store from '../stores/store';
 
 // Components
 import Nav from './nav';
@@ -27,44 +25,44 @@ export default React.createClass({
   mixins: [Fetch],
 
   getInitialState() {
-    return carStore.getState();
+    return Store.getState('car');
   },
 
   componentDidMount() {
-    carStore.addChangeListener(this.onChange);
+    Store.addChangeListener(this.onChange);
   },
 
   componentWillUnmount() {
-    carStore.removeChangeListener(this.onChange);
+    Store.removeChangeListener(this.onChange);
   },
 
   // Handlers
 
   onChange() {
-    this.setState(carStore.getState());
+    this.setState(Store.getState('car'));
   },
 
   // Render
 
   getStatsData() {
-    const timeDiff = moment(this.state.updateTime).diff(moment());
-    const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.updateTime).fromNow();
+    const timeDiff = moment(this.state.data.updateTime).diff(moment());
+    const lastUpdated = timeDiff >= 0 ? 'just now' : moment(this.state.data.updateTime).fromNow();
 
     return [
-      ['VIN', this.state.vin],
+      ['VIN', this.state.data.vin],
       ['Last Updated', lastUpdated],
-      ['Miles', this.state.miles],
-      ['Lock', this.state.doorLockState],
-      ['Battery', `${this.state.chargingLevelHv}%`],
-      ['Fuel', `${this.state.fuelLevel}%`],
-      ['Charging Status', this.state.chargingStatus],
-      ['Port Status', this.state.connectionStatus],
-      ['Driver Front', this.state.doorDriverFront],
-      ['Driver Rear', this.state.doorDriverRear],
-      ['Passenger Front', this.state.doorPassengerFront],
-      ['Passenger Rear', this.state.doorPassengerRear],
-      ['Trunk', this.state.trunk],
-      ['Frunk', this.state.hood],
+      ['Miles', this.state.data.miles],
+      ['Lock', this.state.data.doorLockState],
+      ['Battery', `${this.state.data.chargingLevelHv}%`],
+      ['Fuel', `${this.state.data.fuelLevel}%`],
+      ['Charging Status', this.state.data.chargingStatus],
+      ['Port Status', this.state.data.connectionStatus],
+      ['Driver Front', this.state.data.doorDriverFront],
+      ['Driver Rear', this.state.data.doorDriverRear],
+      ['Passenger Front', this.state.data.doorPassengerFront],
+      ['Passenger Rear', this.state.data.doorPassengerRear],
+      ['Trunk', this.state.data.trunk],
+      ['Frunk', this.state.data.hood],
     ];
   },
 
@@ -81,8 +79,8 @@ export default React.createClass({
         </div>
         <div className="col-md-6 col-xs-12">
           <GoogleMap
-          lat={this.state.position.lat}
-          lon={this.state.position.lon}
+          lat={this.state.data.position.lat}
+          lon={this.state.data.position.lon}
           />
         </div>
       </div>
@@ -216,18 +214,33 @@ export default React.createClass({
   },
 
   fetch() {
-    return api.fetchCar().then((state) => {
-      state.fetched = true;
-      CarActions.sync(state);
+    return api.fetchCar().then((data) => {
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'car',
+        state: {
+          fetched: true,
+          error: null,
+          data: data,
+        },
+      });
     }).catch((err) => {
-      CarActions.sync({
-        fetched: true,
-        error: err.message,
+      Store.dispatch({
+        type: 'FETCH',
+        property: 'car',
+        state: {
+          fetched: true,
+          error: err.message,
+          data: {},
+        },
       });
     });
   },
 
   reset() {
-    CarActions.reset();
+    Store.dispatch({
+      type: 'RESET',
+      property: 'car',
+    });
   },
 });
