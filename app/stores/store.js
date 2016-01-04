@@ -2,8 +2,11 @@ import _ from 'lodash';
 import Dispatcher from '../dispatcher/dispatcher';
 import {EventEmitter} from 'events';
 
-// Principles
+// The Data Store
+//
+// Principles borrowed from Redux
 // http://redux.js.org/docs/introduction/ThreePrinciples.html
+//
 // 1. Single source of truth - The state of your whole application is stored in an object tree within a single store.
 // 2. State is read-only - The only way to mutate the state is to emit an action, an object describing what happened.
 // 3. Changes are made with pure functions - To specify how the state tree is transformed by actions, you write pure reducers.
@@ -56,6 +59,7 @@ class Store extends EventEmitter {
   }
 
   // Used by Components to retrieve state
+  // @param {String} [property]
   getState(property) {
     if (_.isString(property) && !_.isEmpty(property)) {
       return this.state[property];
@@ -73,18 +77,20 @@ class Store extends EventEmitter {
    * Dispatch Wrapper
    *
    * @param {Object} action
-   * Required property `type`
-   * Optional property `data`
+   * @param {String} action.type
+   * @param {Object} [action.data]
    */
   dispatch(action) {
     Dispatcher.dispatch(action);
   }
 
-  // Private
-
   // Dispatch Action Handler
   _dispatchHandler(action) {
-    console.log('DISPATCH ACTION -> %s [%s]', action.type, action.property);
+    if (!action.type) {
+      return;
+    }
+
+    console.log('DISPATCH ACTION -> %s DATA -> %s', action.type, action.data);
 
     // Assign reducer function for action type
     let reducer;
@@ -92,12 +98,12 @@ class Store extends EventEmitter {
     const newState = {};
     switch (action.type) {
       case 'RESET':
-        reducer = this._reset;
-        newState[action.property] = this.defaults();
+        reducer = this._set;
+        newState[action.data] = this.defaults()[action.data];
         break;
       case 'FETCH':
-        reducer = this._fetch;
-        newState[action.property] = action.state;
+        reducer = this._set;
+        _.assign(newState, action.data);
         break;
 
       default:
@@ -107,7 +113,7 @@ class Store extends EventEmitter {
 
     // If a reducer is defined...
     // Replace existing state with reduced state and emit change
-    if (reducer && action.property) {
+    if (reducer) {
       this.state = reducer.call(this, oldState, newState);
       this.emit('change');
     }
@@ -115,11 +121,8 @@ class Store extends EventEmitter {
 
   // Reducers
 
-  _reset(oldState, newState) {
-    return _.assign({}, oldState, newState);
-  }
-
-  _fetch(oldState, newState) {
+  // Generic `set` reducer that object assigns existing state with a new state
+  _set(oldState, newState) {
     return _.assign({}, oldState, newState);
   }
 }

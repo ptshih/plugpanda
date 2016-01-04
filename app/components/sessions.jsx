@@ -91,21 +91,23 @@ export default React.createClass({
     return api.fetchSessions().then((data) => {
       Store.dispatch({
         type: 'FETCH',
-        property: 'sessions',
-        state: {
-          fetched: true,
-          error: null,
-          data: data,
+        data: {
+          sessions: {
+            fetched: true,
+            error: null,
+            data: data,
+          },
         },
       });
     }).catch((err) => {
       Store.dispatch({
         type: 'FETCH',
-        property: 'sessions',
-        state: {
-          fetched: true,
-          error: err.message,
-          data: [],
+        data: {
+          sessions: {
+            fetched: true,
+            error: err.message,
+            data: [],
+          },
         },
       });
     });
@@ -114,7 +116,7 @@ export default React.createClass({
   reset() {
     Store.dispatch({
       type: 'RESET',
-      property: 'sessions',
+      data: 'sessions',
     });
   },
 });

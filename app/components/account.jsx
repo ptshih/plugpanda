@@ -417,21 +417,23 @@ export default React.createClass({
     api.fetchAccount().then((data) => {
       Store.dispatch({
         type: 'FETCH',
-        property: 'account',
-        state: {
-          fetched: true,
-          error: null,
-          data: data,
+        data: {
+          account: {
+            fetched: true,
+            error: null,
+            data: data,
+          },
         },
       });
     }).catch((err) => {
       Store.dispatch({
         type: 'FETCH',
-        property: 'account',
-        state: {
-          fetched: true,
-          error: err.message,
-          data: {},
+        data: {
+          account: {
+            fetched: true,
+            error: err.message,
+            data: {},
+          },
         },
       });
     });
@@ -440,7 +442,7 @@ export default React.createClass({
   reset() {
     Store.dispatch({
       type: 'RESET',
-      property: 'account',
+      data: 'account',
     });
   },
 

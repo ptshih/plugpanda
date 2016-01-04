@@ -219,21 +219,23 @@ export default React.createClass({
     api.fetchCar().then((data) => {
       Store.dispatch({
         type: 'FETCH',
-        property: 'car',
-        state: {
-          fetched: true,
-          error: null,
-          data: data,
+        data: {
+          car: {
+            fetched: true,
+            error: null,
+            data: data,
+          },
         },
       });
     }).catch((err) => {
       Store.dispatch({
         type: 'FETCH',
-        property: 'car',
-        state: {
-          fetched: true,
-          error: err.message,
-          data: {},
+        data: {
+          car: {
+            fetched: true,
+            error: err.message,
+            data: {},
+          },
         },
       });
     });
@@ -242,7 +244,7 @@ export default React.createClass({
   reset() {
     Store.dispatch({
       type: 'RESET',
-      property: 'car',
+      data: 'car',
     });
   },
 });
