@@ -411,8 +411,10 @@ export default React.createClass({
     );
   },
 
+  // Fetch
+
   fetch() {
-    return api.fetchAccount().then((data) => {
+    api.fetchAccount().then((data) => {
       Store.dispatch({
         type: 'FETCH',
         property: 'account',
@@ -441,6 +443,8 @@ export default React.createClass({
       property: 'account',
     });
   },
+
+  // Private
 
   _formatPhone(str = '') {
     const r = /(\D+)/g;

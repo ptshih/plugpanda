@@ -24,6 +24,8 @@ export default React.createClass({
     };
   },
 
+  // Lifecycle
+
   componentWillMount() {
     this.setState({
       title: this.props.title,
@@ -54,12 +56,6 @@ export default React.createClass({
     this.setState({
       collapse: collapse,
     });
-
-    // if (!collapse) {
-    //   document.body.classList.add('overflow-hidden');
-    // } else {
-    //   document.body.classList.remove('overflow-hidden');
-    // }
   },
 
   // Render
@@ -124,10 +120,10 @@ export default React.createClass({
     }
 
     if (this.state.parentPath) {
-      return <div className="Hamburger-back" onTouchTap={this.getBack} />;
+      return <div className="Hamburger-back" onClick={this.getBack} />;
     }
 
-    return <div className="Hamburger-menu" onTouchTap={this.onClickCollapse} />;
+    return <div className="Hamburger-menu" onClick={this.onClickCollapse} />;
   },
 
   render() {

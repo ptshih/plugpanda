@@ -9,8 +9,8 @@ import Store from '../stores/store';
 
 // Components
 import Nav from './nav';
-import Table from './table';
-import GoogleMap from './google-map';
+import Table from './partials/table';
+import GoogleMap from './partials/google-map';
 
 // Mixins
 import Fetch from '../mixins/fetch';
@@ -213,8 +213,10 @@ export default React.createClass({
     );
   },
 
+  // Fetch
+
   fetch() {
-    return api.fetchCar().then((data) => {
+    api.fetchCar().then((data) => {
       Store.dispatch({
         type: 'FETCH',
         property: 'car',

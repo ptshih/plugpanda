@@ -11,6 +11,8 @@ export default React.createClass({
 
   mixins: [History],
 
+  // Lifecycle
+
   componentDidMount() {
     auth.removeAccessToken();
     this.history.pushState(null, '/');

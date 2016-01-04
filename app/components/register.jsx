@@ -11,9 +11,6 @@ import InputTextFloatLabel from './partials/input-text-float-label';
 export default React.createClass({
   displayName: 'Register',
 
-  propTypes: {
-  },
-
   mixins: [History],
 
   getInitialState() {

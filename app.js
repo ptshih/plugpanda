@@ -1,14 +1,13 @@
-// Router
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from 'react-router';
-import {Route, IndexRoute} from 'react-router';
 import {createHistory} from 'history';
 
 // Utils
 import auth from './app/lib/auth';
 
 // Components
+import Router from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 import Err from './app/components/err';
 
 // Components (containers)
@@ -27,9 +26,6 @@ NProgress.configure({
   showSpinner: false,
 });
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 // App Component
 const App = React.createClass({
   propTypes: {
@@ -43,8 +39,6 @@ const App = React.createClass({
     return this.props.children;
   },
 });
-
-// Router Lifecycle Hooks
 
 function onEnter(nextState, replaceState, callback) {
   // Check auth
@@ -61,9 +55,8 @@ function onEnterNotFound(nextState) {
   nextState.params.message = 'Page Not Found';
 }
 
-// function onLeave() {}
-
 // Define Routes
+// https://github.com/rackt/react-router/blob/master/docs/API.md#route
 ReactDOM.render((
   <Router history={createHistory()}>
     <Route path="/" component={App}>

@@ -16,11 +16,6 @@ export default React.createClass({
     ]),
   },
 
-  getDefaultProps() {
-    return {
-    };
-  },
-
   // Render
 
   render() {

@@ -79,7 +79,7 @@ export default React.createClass({
 
     return (
       <li className={className}>
-        <a href={`/sessions/${session.session_id}`} onTouchTap={this.onClick}>
+        <a href={`/sessions/${session.session_id}`} onClick={this.onClick}>
           <div className="row">
             <div className="col-xs-8 text-left">
               <div>{displayDate}</div>

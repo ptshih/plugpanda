@@ -26,6 +26,8 @@ export default React.createClass({
     return Store.getState('sessions');
   },
 
+  // Lifecycle
+
   componentDidMount() {
     Store.addChangeListener(this.onChange);
   },
@@ -82,6 +84,8 @@ export default React.createClass({
       </div>
     );
   },
+
+  // Fetch
 
   fetch() {
     return api.fetchSessions().then((data) => {

@@ -10,8 +10,8 @@ import Store from '../stores/store';
 
 // Components
 import Nav from './nav';
-import Table from './table';
-import GoogleMap from './google-map';
+import Table from './partials/table';
+import GoogleMap from './partials/google-map';
 import Highcharts from 'react-highcharts/bundle/highcharts';
 
 // Mixins
@@ -35,6 +35,8 @@ export default React.createClass({
   getInitialState() {
     return Store.getState('session');
   },
+
+  // Lifecycle
 
   componentDidMount() {
     Store.addChangeListener(this.onChange);
@@ -225,6 +227,8 @@ export default React.createClass({
       </div>
     );
   },
+
+  // Fetch
 
   fetch() {
     return api.fetchSession(this.props.params.session_id).then((data) => {

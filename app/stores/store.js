@@ -47,10 +47,6 @@ class Store extends EventEmitter {
     this.dispatchToken = Dispatcher.register(this._dispatchHandler.bind(this));
   }
 
-
-  // PUBLIC
-  // ---
-
   addChangeListener(callback) {
     this.on('change', callback);
   }
@@ -84,8 +80,7 @@ class Store extends EventEmitter {
     Dispatcher.dispatch(action);
   }
 
-  // PRIVATE
-  // ---
+  // Private
 
   // Dispatch Action Handler
   _dispatchHandler(action) {
@@ -118,8 +113,7 @@ class Store extends EventEmitter {
     }
   }
 
-  // REDUCERS
-  // ---
+  // Reducers
 
   _reset(oldState, newState) {
     return _.assign({}, oldState, newState);

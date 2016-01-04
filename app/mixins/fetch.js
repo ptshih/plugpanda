@@ -1,33 +1,27 @@
 import _ from 'lodash';
-// import NProgress from 'nprogress';
 
 export default {
   componentDidMount() {
-    this._fetch();
+    if (!_.isFunction(this.fetch)) {
+      return;
+    }
+
+    this.fetch();
   },
 
   componentDidUpdate(prevProps) {
-    if (!_.isEqual(prevProps.params, this.props.params)) {
-      this._fetch();
+    if (!_.isFunction(this.fetch) || _.isEqual(prevProps.params, this.props.params)) {
+      return;
     }
+
+    this.fetch();
   },
 
   componentWillUnmount() {
-    this._reset();
-  },
-
-  _fetch() {
-    if (_.isFunction(this.fetch)) {
-      // NProgress.start();
-      this.fetch().then(() => {
-        // NProgress.done();
-      });
+    if (!_.isFunction(this.reset)) {
+      return;
     }
-  },
 
-  _reset() {
-    if (_.isFunction(this.reset)) {
-      this.reset();
-    }
+    this.reset();
   },
 };

@@ -63,7 +63,4 @@ export default React.createClass({
       </table>
     );
   },
-
-  // Private
-
 });
