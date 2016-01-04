@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router';
 
@@ -73,39 +74,41 @@ export default React.createClass({
 
   getInformation() {
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <div className="row">
-            <div className="col-xs-12">
-              <h5>Your Information</h5>
+      <section>
+        <div className="row">
+          <div className="col-xs-12">
+            <div className="row">
+              <div className="col-xs-12">
+                <h5>Your Information</h5>
+              </div>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  label="Name"
-                  value={this.state.data.name}
-                  placeholder="Your Name"
-                  onChange={this.onChangeName}
-                />
-              </fieldset>
-            </div>
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  type="email"
-                  label="Email"
-                  value={this.state.data.email}
-                  placeholder="Your Email"
-                  onChange={this.onChangeEmail}
-                />
-              </fieldset>
+            <div className="row">
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <InputTextFloatLabel
+                    label="Name"
+                    value={this.state.data.name}
+                    placeholder="Your Name"
+                    onChange={this.onChangeName}
+                  />
+                </fieldset>
+              </div>
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <InputTextFloatLabel
+                    type="email"
+                    label="Email"
+                    value={this.state.data.email}
+                    placeholder="Your Email"
+                    onChange={this.onChangeEmail}
+                  />
+                </fieldset>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   },
 
@@ -127,110 +130,149 @@ export default React.createClass({
     }];
 
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <div className="row">
-            <div className="col-xs-12">
-              <h5>Your Settings</h5>
+      <section>
+        <div className="row">
+          <div className="col-xs-12">
+            <div className="row">
+              <div className="col-xs-12">
+                <h5>Your Settings</h5>
+              </div>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <SelectFloatLabel
-                  label="Currency"
-                  value={this.state.data.currency}
-                  onChange={this.onChangeCurrency}
-                  options={currencyOptions}
-                />
-              </fieldset>
-            </div>
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <SelectFloatLabel
-                  label="Timezone"
-                  value={this.state.data.timezone}
-                  onChange={this.onChangeTimezone}
-                  options={timezoneOptions}
-                />
-              </fieldset>
+            <div className="row">
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <SelectFloatLabel
+                    label="Currency"
+                    value={this.state.data.currency}
+                    onChange={this.onChangeCurrency}
+                    options={currencyOptions}
+                  />
+                </fieldset>
+              </div>
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <SelectFloatLabel
+                    label="Timezone"
+                    value={_.get(this.state.data, 'timezone')}
+                    onChange={this.onChangeTimezone}
+                    options={timezoneOptions}
+                  />
+                </fieldset>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   },
 
   getChargepoint() {
-    if (this.state.data.chargepoint.user_id && this.state.data.chargepoint.auth_token) {
-      return (
-        <div className="row">
-          <div className="col-xs-12">
-            <h5>Chargepoint Account</h5>
+    const userId = _.get(this.state.data, 'chargepoint.user_id');
+    const authToken = _.get(this.state.data, 'chargepoint.auth_token');
 
-            <div>Already Authenticated</div>
-            <div>User ID: {this.state.data.chargepoint.user_id}</div>
-            <div>Auth Token: {this.state.data.chargepoint.auth_token}</div>
+    if (userId && authToken) {
+      return (
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Chargepoint Account</h5>
+
+              <div>Already Authenticated</div>
+              <div>User ID: {userId}</div>
+              <div>Auth Token: {authToken}</div>
+            </div>
           </div>
-        </div>
+        </section>
       );
     }
 
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <div className="row">
-            <div className="col-xs-12">
-              <h5>Chargepoint Account</h5>
+      <section>
+        <div className="row">
+          <div className="col-xs-12">
+            <div className="row">
+              <div className="col-xs-12">
+                <h5>Chargepoint Account</h5>
+              </div>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  label="Email"
-                  placeholder="your@email.com"
-                />
-              </fieldset>
+            <div className="row">
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <InputTextFloatLabel
+                    label="Email"
+                    placeholder="your@email.com"
+                  />
+                </fieldset>
+              </div>
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <InputTextFloatLabel
+                    label="Password"
+                    type="password"
+                    placeholder="password"
+                  />
+                </fieldset>
+              </div>
             </div>
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  label="Password"
-                  type="password"
-                  placeholder="password"
-                />
-              </fieldset>
-            </div>
-          </div>
 
-          <div className="row">
-            <div className="col-xs-12">
-              <button className="btn btn-primary">Authenticate</button>
+            <div className="row">
+              <div className="col-xs-12">
+                <button className="btn btn-primary">Authenticate</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   },
 
   getBMW() {
-    if (this.state.data.bmw.vin && this.state.data.bmw.access_token) {
-      return (
-        <div className="row">
-          <div className="col-xs-12">
-            <h5>BMW Account</h5>
+    const vin = _.get(this.state.data, 'bmw.vin');
+    const accessToken = _.get(this.state.data, 'bmw.access_token');
 
-            <div>Already Authenticated</div>
-            <div>VIN: {this.state.data.bmw.vin}</div>
-            <div>Access Token: {this.state.data.bmw.access_token}</div>
+    if (vin && accessToken) {
+      return (
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>BMW Account</h5>
+
+              <div>Already Authenticated</div>
+              <div>VIN: {vin}</div>
+              <div>Access Token: {accessToken}</div>
+            </div>
           </div>
-        </div>
+        </section>
       );
     }
 
+    // TODO
+    return null;
+  },
+
+  getGetaround() {
+    const deviceTrackingId = _.get(this.state.data, 'getaround.device_tracking_id');
+    const sessionId = _.get(this.state.data, 'getaround.session_id');
+
+    if (deviceTrackingId && sessionId) {
+      return (
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Getaround Account</h5>
+
+              <div>Already Authenticated</div>
+              <div>Device Tracking ID: {deviceTrackingId}</div>
+              <div>Session ID: {sessionId}</div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // TODO
     return null;
   },
 
@@ -238,42 +280,48 @@ export default React.createClass({
     // Free plans
     if (this.state.data.plan === 'free') {
       return (
-        <div className="row">
-          <div className="col-xs-12">
-            <h5>Your Subscription</h5>
-            <div>Hurray! You are on a <strong>FREE</strong> plan!</div>
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Your Subscription</h5>
+              <div>Hurray! You are on a <strong>FREE</strong> plan!</div>
+            </div>
           </div>
-        </div>
+        </section>
       );
     }
 
     // Has active subscription
     if (this.state.data.stripe.customer && this.state.data.stripe.subscription) {
       return (
-        <div className="row">
-          <div className="col-xs-12">
-            <h5>Your Subscription</h5>
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              <h5>Your Subscription</h5>
 
-            <div>Subscription Active</div>
-            <div>Customer: {this.state.data.stripe.customer}</div>
-            <div>Subscription: {this.state.data.stripe.subscription}</div>
+              <div>Subscription Active</div>
+              <div>Customer: {this.state.data.stripe.customer}</div>
+              <div>Subscription: {this.state.data.stripe.subscription}</div>
+            </div>
           </div>
-        </div>
+        </section>
       );
     }
 
     // No active subscription
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <h5>Your Subscription</h5>
+      <section>
+        <div className="row">
+          <div className="col-xs-12">
+            <h5>Your Subscription</h5>
 
-          <p>Subscription is not active.</p>
-          <div>
-            <button className="btn btn-primary">Start Subscription</button>
+            <p>Subscription is not active.</p>
+            <div>
+              <button className="btn btn-primary">Start Subscription</button>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   },
 
@@ -289,34 +337,36 @@ export default React.createClass({
     const formattedPhone = this._formatPhone(this.state.data.phone);
 
     return (
-      <div className="row">
-        <div className="col-xs-12">
-          <h5>Your Notifications</h5>
+      <section>
+        <div className="row">
+          <div className="col-xs-12">
+            <h5>Your Notifications</h5>
 
-          <div className="row">
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <SelectFloatLabel
-                  label="Country"
-                  value={this.state.data.country}
-                  onChange={this.onChangeCountry}
-                  options={countryOptions}
-                />
-              </fieldset>
-            </div>
-            <div className="col-md-6 col-xs-12">
-              <fieldset className="form-group">
-                <InputTextFloatLabel
-                  label="Mobile Phone (SMS)"
-                  placeholder="415-555-5555"
-                  value={formattedPhone}
-                  onChange={this.onChangePhone}
-                />
-              </fieldset>
+            <div className="row">
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <SelectFloatLabel
+                    label="Country"
+                    value={this.state.data.country}
+                    onChange={this.onChangeCountry}
+                    options={countryOptions}
+                  />
+                </fieldset>
+              </div>
+              <div className="col-md-6 col-xs-12">
+                <fieldset className="form-group">
+                  <InputTextFloatLabel
+                    label="Mobile Phone (SMS)"
+                    placeholder="415-555-5555"
+                    value={formattedPhone}
+                    onChange={this.onChangePhone}
+                  />
+                </fieldset>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   },
 
@@ -338,12 +388,13 @@ export default React.createClass({
 
     return (
       <main className="Content">
-        <section>{this.getInformation()}</section>
-        <section>{this.getSettings()}</section>
-        <section>{this.getNotifications()}</section>
-        <section>{this.getChargepoint()}</section>
-        <section>{this.getBMW()}</section>
-        <section>{this.getSubscription()}</section>
+        {this.getInformation()}
+        {this.getSettings()}
+        {this.getNotifications()}
+        {this.getChargepoint()}
+        {this.getBMW()}
+        {this.getGetaround()}
+        {this.getSubscription()}
         <section>
           <Link to="/logout">Sign Out</Link>
         </section>

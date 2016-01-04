@@ -67,6 +67,11 @@ module.exports = BaseModel.extend({
           vin: null,
         },
 
+        getaround: {
+          device_tracking_id: null,
+          session_id: null,
+        },
+
         chargepoint: {
           user_id: 0,
           auth_token: null,
@@ -108,6 +113,11 @@ module.exports = BaseModel.extend({
           scope: 'string',
           expires_at: 'timestamp',
           vin: 'string',
+        },
+
+        getaround: {
+          device_tracking_id: 'string',
+          session_id: 'string',
         },
 
         chargepoint: {
