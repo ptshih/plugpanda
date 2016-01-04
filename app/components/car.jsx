@@ -29,11 +29,11 @@ export default React.createClass({
   },
 
   componentDidMount() {
-    Store.addChangeListener(this.onChange);
+    Store.subscribe(this.onChange);
   },
 
   componentWillUnmount() {
-    Store.removeChangeListener(this.onChange);
+    Store.unsubscribe(this.onChange);
   },
 
   // Handlers

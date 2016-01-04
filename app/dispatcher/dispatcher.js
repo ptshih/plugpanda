@@ -1,6 +1,7 @@
 /**
  * Dispatcher
- * There should only be ONE dispatcher instance (singleton) per application
+ *
+ * This is a singleton
  */
 
 import {Dispatcher} from 'flux';

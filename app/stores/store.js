@@ -8,7 +8,7 @@
  * 2. State is read-only - The only way to mutate the state is to emit an action, an object describing what happened.
  * 3. Changes are made with pure functions - To specify how the state tree is transformed by actions, you write pure reducers.
  *
- * There should only be ONE store instance (singleton) per application
+ * This is a singleton
  */
 
 import _ from 'lodash';
@@ -51,12 +51,18 @@ class Store extends EventEmitter {
     this.dispatchToken = Dispatcher.register(this._dispatchHandler.bind(this));
   }
 
-  addChangeListener(callback) {
-    this.on('change', callback);
+  /**
+   * Registers a listener to state change events
+   */
+  subscribe(listener) {
+    this.on('change', listener);
   }
 
-  removeChangeListener(callback) {
-    this.removeListener('change', callback);
+  /**
+   * Deregisters a listener to state change events
+   */
+  unsubscribe(listener) {
+    this.removeListener('change', listener);
   }
 
   /**
