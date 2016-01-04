@@ -1,3 +1,7 @@
+/**
+ * This mixin helps fetching data from a remote data source
+ */
+
 import _ from 'lodash';
 
 export default {

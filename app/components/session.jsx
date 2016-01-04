@@ -231,7 +231,7 @@ export default React.createClass({
   // Fetch
 
   fetch() {
-    return api.fetchSession(this.props.params.session_id).then((data) => {
+    api.fetchSession(this.props.params.session_id).then((data) => {
       Store.dispatch({
         type: 'FETCH',
         data: {

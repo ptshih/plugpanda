@@ -88,7 +88,7 @@ export default React.createClass({
   // Fetch
 
   fetch() {
-    return api.fetchSessions().then((data) => {
+    api.fetchSessions().then((data) => {
       Store.dispatch({
         type: 'FETCH',
         data: {

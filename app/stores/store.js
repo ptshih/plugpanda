@@ -1,19 +1,21 @@
+/**
+ * The Data Store
+ *
+ * Principles borrowed from Redux
+ * http://redux.js.org/docs/introduction/ThreePrinciples.html
+ *
+ * 1. Single source of truth - The state of your whole application is stored in an object tree within a single store.
+ * 2. State is read-only - The only way to mutate the state is to emit an action, an object describing what happened.
+ * 3. Changes are made with pure functions - To specify how the state tree is transformed by actions, you write pure reducers.
+ *
+ * There should only be ONE store instance (singleton) per application
+ */
+
 import _ from 'lodash';
 import Dispatcher from '../dispatcher/dispatcher';
 import {EventEmitter} from 'events';
 
-// The Data Store
-//
-// Principles borrowed from Redux
-// http://redux.js.org/docs/introduction/ThreePrinciples.html
-//
-// 1. Single source of truth - The state of your whole application is stored in an object tree within a single store.
-// 2. State is read-only - The only way to mutate the state is to emit an action, an object describing what happened.
-// 3. Changes are made with pure functions - To specify how the state tree is transformed by actions, you write pure reducers.
-
-// Store
 class Store extends EventEmitter {
-  // State Defaults
   defaults() {
     return {
       account: {
@@ -39,7 +41,6 @@ class Store extends EventEmitter {
     };
   }
 
-  // Constructor
   constructor() {
     super();
 
@@ -58,8 +59,11 @@ class Store extends EventEmitter {
     this.removeListener('change', callback);
   }
 
-  // Used by Components to retrieve state
-  // @param {String} [property]
+  /**
+   * Used by Components to retrieve state
+   * @param {String} [property] Optionally only return a portion of the State
+   * @return {Object} Current state or portion thereof
+   */
   getState(property) {
     if (_.isString(property) && !_.isEmpty(property)) {
       return this.state[property];
@@ -68,23 +72,29 @@ class Store extends EventEmitter {
     return this.state;
   }
 
-  // Reset Store back to default state
+  /**
+   * Reset Store back to default state
+   */
   resetState() {
     this.state = this.defaults();
   }
 
   /**
    * Dispatch Wrapper
-   *
-   * @param {Object} action
-   * @param {String} action.type
-   * @param {Object} [action.data]
+   * @param {Object} action Describes how the state should change
+   * @param {String} action.type What type of change
+   * @param {Object} [action.data] What is actually changing
    */
   dispatch(action) {
     Dispatcher.dispatch(action);
   }
 
-  // Dispatch Action Handler
+  /**
+   * Dispatch Action Handler
+   * @param {Object} action Describes how the state should change
+   * @param {String} action.type What type of change
+   * @param {Object} [action.data] What is actually changing
+   */
   _dispatchHandler(action) {
     if (!action.type) {
       return;
@@ -96,6 +106,7 @@ class Store extends EventEmitter {
     let reducer;
     const oldState = this.state;
     const newState = {};
+
     switch (action.type) {
       case 'RESET':
         reducer = this._set;
@@ -121,11 +132,14 @@ class Store extends EventEmitter {
 
   // Reducers
 
-  // Generic `set` reducer that object assigns existing state with a new state
+  /**
+   * Generic `set` reducer that object assigns existing state with a new state
+   * @param {Object} oldState
+   * @param {Object} newState
+   */
   _set(oldState, newState) {
     return _.assign({}, oldState, newState);
   }
 }
 
-// EXPORT
 export default new Store();

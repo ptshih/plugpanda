@@ -1,5 +1,9 @@
-// LocalStorage
-// https://github.com/marcuswestin/store.js
+/**
+ * Local Storage wrapper
+ *
+ * https://github.com/marcuswestin/store.js
+ */
+
 import store from 'store';
 
 export default {
@@ -10,6 +14,7 @@ export default {
       time: new Date().getTime(),
     });
   },
+
   get: function(key) {
     const info = store.get(key);
     if (!info) {
