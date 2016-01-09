@@ -1,0 +1,13 @@
+{
+  "poi": {
+    "street": "2208 Princeton St",
+    "city": "Palo Alto",
+    "country": "United States",
+    "subject": "SID_MYBMW_MAP_DROPPED_PIN_TITLE",
+    "lon": -122.1507,
+    "additionalInfo": "Sent from the BMW i Remote App.",
+    "lat": 37.42205,
+    "useAsDestination": "true",
+    "name": "2208 Princeton St"
+  }
+}

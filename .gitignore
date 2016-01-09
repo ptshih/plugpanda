@@ -1,0 +1,24 @@
+lib-cov
+*.seed
+*.log
+# *.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+*.sublime-workspace
+*.project
+
+pids
+logs
+results
+
+.DS_Store
+.migrate
+npm-debug.log
+newrelic_agent.log
+node_modules
+bower_components
+notes
+assets
