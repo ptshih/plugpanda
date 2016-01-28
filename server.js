@@ -1,6 +1,7 @@
 // Dependencies
 const _ = require('lodash');
 const express = require('express');
+const helmet = require('helmet');
 const path = require('path');
 const Muni = require('muni');
 
@@ -91,6 +92,9 @@ app.set('view engine', 'hbs');
 app.set('view options', {
   layout: false,
 });
+
+// Helmet HTTP headers
+app.use(helmet());
 
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({

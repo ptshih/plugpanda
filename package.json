@@ -25,6 +25,7 @@
     "fieldkit": "0.1.9",
     "flux": "2.1.1",
     "hbs": "4.0.0",
+    "helmet": "1.1.0",
     "history": "1.17.0",
     "iron_worker": "0.1.6",
     "lodash": "3.10.1",
