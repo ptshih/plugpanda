@@ -6,88 +6,110 @@ const BaseUserModel = require('./base_user');
 module.exports = BaseUserModel.extend({
   urlRoot: 'cars',
 
-  defaults() {
+  definition: function() {
     return _.extend({},
-      _.result(BaseUserModel.prototype, 'defaults'), {
-        // From BMW
-        vin: null,
-        miles: 0,
-        updateReason: null,
-        updateTime: new Date(),
+      _.result(BaseUserModel.prototype, 'definition'), {
+        // BMW
+        vin: {
+          type: 'string',
+        },
+        updateReason: {
+          type: 'string',
+        },
+        miles: {
+          type: 'uinteger',
+        },
+        updateTime: {
+          type: 'date',
+        },
 
         // Charging Status
-        connectionStatus: null,
-        chargingStatus: null,
-        chargingTimeRemaining: 0,
+        connectionStatus: {
+          type: 'string',
+        },
+        chargingStatus: {
+          type: 'string',
+        },
+        chargingTimeRemaining: {
+          type: 'uinteger',
+        },
 
         // Range
-        chargingLevelHv: 0,
-        remainingFuel: 0.0,
-        maxFuel: 9.0, // CODED
-        remainingRangeElectricMls: 0,
-        remainingRangeFuelMls: 0,
+        chargingLevelHv: {
+          type: 'uinteger',
+        },
+        remainingFuel: {
+          type: 'ufloat',
+        },
+        maxFuel: {
+          type: 'ufloat',
+          default: 9.0,
+        },
+        remainingRangeElectricMls: {
+          type: 'uinteger',
+        },
+        remainingRangeFuelMls: {
+          type: 'uinteger',
+        },
 
         // Physical Status
-        doorLockState: null,
-        doorDriverFront: null,
-        doorDriverRear: null,
-        doorPassengerFront: null,
-        doorPassengerRear: null,
-        windowDriverFront: null,
-        windowDriverRear: null,
-        windowPassengerFront: null,
-        windowPassengerRear: null,
-        trunk: null,
-        hood: null,
-        parkingLight: null,
-        positionLight: null,
+        doorLockState: {
+          type: 'string',
+        },
+        doorDriverFront: {
+          type: 'string',
+        },
+        doorDriverRear: {
+          type: 'string',
+        },
+        doorPassengerFront: {
+          type: 'string',
+        },
+        doorPassengerRear: {
+          type: 'string',
+        },
+        windowDriverFront: {
+          type: 'string',
+        },
+        windowDriverRear: {
+          type: 'string',
+        },
+        windowPassengerFront: {
+          type: 'string',
+        },
+        windowPassengerRear: {
+          type: 'string',
+        },
+        trunk: {
+          type: 'string',
+        },
+        hood: {
+          type: 'string',
+        },
+        parkingLight: {
+          type: 'string',
+        },
+        positionLight: {
+          type: 'string',
+        },
 
-        position: {},
-      }
-    );
-  },
-
-  schema() {
-    return _.extend({},
-      _.result(BaseUserModel.prototype, 'schema'), {
-        // From BMW
-        vin: 'string',
-        miles: 'uinteger',
-        updateReason: 'string',
-        updateTime: 'date',
-
-        // Charging Status
-        connectionStatus: 'string', // CONNECTED, DISCONNECTED
-        chargingStatus: 'string', // FINISHED_FULLY_CHARGED, INVALID
-        chargingTimeRemaining: 'uinteger',
-
-        // Range
-        chargingLevelHv: 'uinteger',
-        remainingFuel: 'ufloat',
-        maxFuel: 'ufloat', // CODED
-        remainingRangeElectricMls: 'uinteger',
-        remainingRangeFuelMls: 'uinteger',
-
-        // Physical Status
-        doorLockState: 'string',
-        doorDriverFront: 'string',
-        doorDriverRear: 'string',
-        doorPassengerFront: 'string',
-        doorPassengerRear: 'string',
-        windowDriverFront: 'string',
-        windowDriverRear: 'string',
-        windowPassengerFront: 'string',
-        windowPassengerRear: 'string',
-        trunk: 'string',
-        hood: 'string',
-        parkingLight: 'string',
-        positionLight: 'string',
-
+        // GPS Coordinates
         position: {
-          lat: 'float',
-          lon: 'float',
-          heading: 'uinteger',
-          status: 'string',
+          type: 'object',
+          fields: {
+            lat: {
+              type: 'float',
+            },
+            lon: {
+              type: 'float',
+            },
+            heading: {
+              type: 'uinteger',
+            },
+            status: {
+              type: 'string',
+            },
+          },
         },
       }
     );

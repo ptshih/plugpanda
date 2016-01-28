@@ -5,21 +5,9 @@ const BaseModel = require('./base');
 module.exports = BaseModel.extend({
   urlRoot: 'stations',
 
-  defaults() {
+  definition: function() {
     return _.extend({},
-      _.result(BaseModel.prototype, 'defaults'), {
-        // From Chargepoint
-
-      }
-    );
-  },
-
-  schema() {
-    return _.extend({},
-      _.result(BaseModel.prototype, 'schema'), {
-        // From Chargepoint
-
-      }
+      _.result(BaseModel.prototype, 'definition'), {}
     );
   },
 

@@ -12,79 +12,116 @@ const BaseUserModel = require('./base_user');
 module.exports = BaseUserModel.extend({
   urlRoot: 'sessions',
 
-  defaults() {
+  definition: function() {
     return _.extend({},
-      _.result(BaseUserModel.prototype, 'defaults'), {
-        // From Chargepoint
-        company_id: 0,
-        session_id: 0,
-        device_id: 0,
-        ack_id: 0,
-        outlet_number: 0,
-        port_level: 0,
-        payment_type: null,
-        current_charging: null,
-        charging_time: 0,
-        session_time: 0,
-        start_time: 0,
-        end_time: 0,
-        energy_kwh: 0.0,
-        power_kw: 0.0,
-        average_power: 0.0,
-        miles_added: 0.0,
-        total_amount: 0.0,
-        lat: 0,
-        lon: 0,
-        company_name: null,
-        address1: null,
-        state_name: null,
-        city: null,
-        currency_iso_code: 'USD',
-        enable_stop_charging: true,
-        update_data: [],
-        vehicle_info: {},
-
+      _.result(BaseUserModel.prototype, 'definition'), {
         // Session Status
-        status: 'starting',
-      }
-    );
-  },
+        status: {
+          type: 'string',
+          default: 'starting',
+        },
 
-  schema() {
-    return _.extend({},
-      _.result(BaseUserModel.prototype, 'schema'), {
         // From Chargepoint
-        company_id: 'uinteger',
-        session_id: 'uinteger',
-        device_id: 'uinteger',
-        ack_id: 'uinteger',
-        outlet_number: 'uinteger',
-        port_level: 'uinteger',
-        payment_type: 'string', // paid, free
-        // After unplugging, `current_charging` will become `done`
-        current_charging: 'string', // not_charging, in_use, done, fully_charged
-        charging_time: 'uinteger',
-        session_time: 'uinteger',
-        start_time: 'timestamp',
-        end_time: 'timestamp',
-        energy_kwh: 'ufloat',
-        power_kw: 'ufloat',
-        average_power: 'ufloat',
-        miles_added: 'ufloat',
-        total_amount: 'ufloat',
-        lat: 'float',
-        lon: 'float',
-        company_name: 'string',
-        address1: 'string',
-        state_name: 'string',
-        city: 'string',
-        currency_iso_code: 'string',
-        enable_stop_charging: 'boolean',
-        update_data: [],
-        vehicle_info: {},
+        payment_type: {
+          type: 'string',
+        },
+        current_charging: {
+          type: 'string',
+        },
+        company_name: {
+          type: 'string',
+        },
+        address1: {
+          type: 'string',
+        },
+        state_name: {
+          type: 'string',
+        },
+        city: {
+          type: 'string',
+        },
+        currency_iso_code: {
+          type: 'string',
+          default: 'USD',
+        },
 
-        // Session Status
-        status: 'string', // starting, on, stopping, off
+        company_id: {
+          type: 'uinteger',
+        },
+        session_id: {
+          type: 'uinteger',
+        },
+        device_id: {
+          type: 'uinteger',
+        },
+        ack_id: {
+          type: 'uinteger',
+        },
+        outlet_number: {
+          type: 'uinteger',
+        },
+        port_level: {
+          type: 'uinteger',
+        },
+        charging_time: {
+          type: 'uinteger',
+        },
+        session_time: {
+          type: 'uinteger',
+        },
+        start_time: {
+          type: 'uinteger',
+        },
+        end_time: {
+          type: 'uinteger',
+        },
+
+        lat: {
+          type: 'float',
+        },
+        lon: {
+          type: 'float',
+        },
+        energy_kwh: {
+          type: 'ufloat',
+        },
+        power_kw: {
+          type: 'ufloat',
+        },
+        average_power: {
+          type: 'ufloat',
+        },
+        miles_added: {
+          type: 'ufloat',
+        },
+        total_amount: {
+          type: 'ufloat',
+        },
+
+        enable_stop_charging: {
+          type: 'boolean',
+          default: true,
+        },
+
+        update_data: {
+          type: 'array',
+          value_type: 'object',
+          fields: {
+            timestamp: {
+              type: 'timestamp',
+            },
+            power_kw: {
+              type: 'ufloat',
+            },
+            energy_kwh: {
+              type: 'ufloat',
+            },
+          },
+        },
+
+        vehicle_info: {
+          type: 'object',
+        },
       }
     );
   },

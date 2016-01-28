@@ -10,119 +10,130 @@ const BaseModel = require('./base');
 module.exports = BaseModel.extend({
   urlRoot: 'users',
 
-  readOnlyAttributes() {
-    return {
-      salt: true,
-      secret: true,
-      hash: true,
-
-      access_token: true,
-      admin: true,
-      beta: true,
-    };
-  },
-
-  hiddenAttributes() {
-    return {
-      salt: true,
-      secret: true,
-      hash: true,
-      admin: true,
-      beta: true,
-    };
-  },
-
-  defaults() {
+  definition: function() {
     return _.extend({},
-      _.result(BaseModel.prototype, 'defaults'), {
-        secret: Muni.randomHash(),
-        salt: bcrypt.genSaltSync(10),
-        hash: null,
+      _.result(BaseModel.prototype, 'definition'), {
+        // Reserved fields
+        access_token: {
+          type: 'string',
+          readonly: true,
+        },
+        secret: {
+          type: 'string',
+          readonly: true,
+          hidden: true,
+          default: function() {
+            return Muni.randomHash();
+          },
+        },
+        salt: {
+          type: 'string',
+          readonly: true,
+          hidden: true,
+          default: function() {
+            return bcrypt.genSaltSync(10);
+          },
+        },
+        hash: {
+          type: 'string',
+          readonly: true,
+          hidden: true,
+        },
 
-        access_token: null,
-        admin: false,
-        beta: false,
+        // Basic
+        email: {
+          type: 'string',
+        },
+        name: {
+          type: 'string',
+        },
+        currency: {
+          type: 'string',
+          default: 'usd',
+        },
+        timezone: {
+          type: 'string',
+          default: 'utc',
+        },
+        country: {
+          type: 'string',
+          default: 'us',
+        },
+        phone: {
+          type: 'string',
+        },
 
-        email: null,
-        name: null,
-        currency: 'usd',
-        timezone: 'utc',
-        country: 'us',
-        phone: null,
-
-        plan: 'free',
-
+        // Billing
+        plan: {
+          type: 'string',
+          default: 'free',
+        },
         stripe: {
-          customer: null,
-          subscription: null,
+          type: 'object',
+          fields: {
+            customer: {
+              type: 'string',
+            },
+            subscription: {
+              type: 'string',
+            },
+          },
         },
 
+        // BMW
         bmw: {
-          access_token: null,
-          token_type: 'Bearer',
-          expires_in: 28800,
-          refresh_token: null,
-          scope: null,
-          expires_at: 0,
-          vin: null,
+          type: 'object',
+          fields: {
+            access_token: {
+              type: 'string',
+            },
+            token_type: {
+              type: 'string',
+              default: 'Bearer',
+            },
+            refresh_token: {
+              type: 'string',
+            },
+            scope: {
+              type: 'string',
+            },
+            vin: {
+              type: 'string',
+            },
+            expires_in: {
+              type: 'uinteger',
+              default: 28800,
+            },
+            expires_at: {
+              type: 'uinteger',
+            },
+          },
         },
 
-        getaround: {
-          device_tracking_id: null,
-          session_id: null,
-        },
-
+        // Chargepoint
         chargepoint: {
-          user_id: 0,
-          auth_token: null,
-        },
-      }
-    );
-  },
-
-  schema() {
-    return _.extend({},
-      _.result(BaseModel.prototype, 'schema'), {
-        secret: 'string',
-        salt: 'string',
-        hash: 'string',
-
-        access_token: 'string',
-        admin: 'boolean',
-        beta: 'boolean',
-
-        email: 'string',
-        name: 'string',
-        currency: 'string',
-        timezone: 'string',
-        country: 'string',
-        phone: 'string',
-
-        plan: 'string',
-
-        stripe: {
-          customer: 'string',
-          subscription: 'string',
+          type: 'object',
+          fields: {
+            user_id: {
+              type: 'uinteger',
+            },
+            auth_token: {
+              type: 'string',
+            },
+          },
         },
 
-        bmw: {
-          access_token: 'string',
-          token_type: 'Bearer',
-          expires_in: 'uinteger',
-          refresh_token: 'string',
-          scope: 'string',
-          expires_at: 'timestamp',
-          vin: 'string',
-        },
-
+        // Getaround
         getaround: {
-          device_tracking_id: 'string',
-          session_id: 'string',
-        },
-
-        chargepoint: {
-          user_id: 'uinteger',
-          auth_token: 'string',
+          type: 'object',
+          fields: {
+            device_tracking_id: {
+              type: 'string',
+            },
+            session_id: {
+              type: 'string',
+            },
+          },
         },
       }
     );

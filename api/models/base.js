@@ -2,23 +2,23 @@ const _ = require('lodash');
 const Muni = require('muni');
 
 module.exports = Muni.Model.extend({
-  defaults() {
+  definition: function() {
     return {
-      _id: null,
-      created: new Date().getTime(), // ms
-      updated: new Date().getTime(), // ms
-      created_date: new Date(), // iso
-      updated_date: new Date(), // iso
-    };
-  },
-
-  schema() {
-    return {
-      _id: 'id',
-      created: 'timestamp',
-      updated: 'timestamp',
-      created_date: 'date',
-      updated_date: 'date',
+      _id: {
+        type: 'id',
+      },
+      created: {
+        type: 'timestamp',
+      },
+      updated: {
+        type: 'timestamp',
+      },
+      created_date: {
+        type: 'date',
+      },
+      updated_date: {
+        type: 'date',
+      },
     };
   },
 

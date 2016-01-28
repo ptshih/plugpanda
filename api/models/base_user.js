@@ -4,18 +4,12 @@ const UserModel = require('./user');
 const BaseModel = require('./base');
 
 module.exports = BaseModel.extend({
-  defaults: function() {
+  definition: function() {
     return _.defaults({},
-      _.result(BaseModel.prototype, 'defaults'), {
-        user_id: null,
-      }
-    );
-  },
-
-  schema: function() {
-    return _.defaults({},
-      _.result(BaseModel.prototype, 'schema'), {
-        user_id: 'id',
+      _.result(BaseModel.prototype, 'definition'), {
+        user_id: {
+          type: 'id',
+        },
       }
     );
   },
