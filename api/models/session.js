@@ -13,7 +13,7 @@ module.exports = BaseUserModel.extend({
   urlRoot: 'sessions',
 
   definition: function() {
-    return _.extend({},
+    return _.assign({},
       _.result(BaseUserModel.prototype, 'definition'), {
         // Session Status
         status: {

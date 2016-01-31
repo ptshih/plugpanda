@@ -109,7 +109,7 @@ export default createContainer(React.createClass({
     const power = [];
     const energy = [];
 
-    _.each(this.props.session.update_data, function(dataPoint) {
+    _.forEach(this.props.session.update_data, function(dataPoint) {
       if (dataPoint.power_kw === 0) {
         return;
       }

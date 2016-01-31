@@ -25,7 +25,7 @@ export default React.createClass({
     baseTo.shift();
     const basePathname = location.pathname.split('/');
     basePathname.shift();
-    const isActive = baseTo.length === basePathname.length && _.first(baseTo) === _.first(basePathname);
+    const isActive = baseTo.length === basePathname.length && _.head(baseTo) === _.head(basePathname);
 
     const className = [this.props.className,  isActive ? 'active' : ''].join(' ');
 

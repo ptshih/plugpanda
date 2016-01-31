@@ -146,7 +146,7 @@ app.use('/', express.static(path.join(__dirname, '/public'), {
 
 // Configure Environment Locals
 app.use((req, res, next) => {
-  _.extend(res.locals, app.get('props'));
+  _.assign(res.locals, app.get('props'));
   next();
 });
 

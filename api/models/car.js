@@ -7,7 +7,7 @@ module.exports = BaseUserModel.extend({
   urlRoot: 'cars',
 
   definition: function() {
-    return _.extend({},
+    return _.assign({},
       _.result(BaseUserModel.prototype, 'definition'), {
         // BMW
         vin: {

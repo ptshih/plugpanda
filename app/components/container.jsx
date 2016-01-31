@@ -121,7 +121,7 @@ export default (Component, options) => {
       const args = [{}];
 
       // Add API params to arguments
-      _.each(options.fetchParams, (fetchParam) => {
+      _.forEach(options.fetchParams, (fetchParam) => {
         const fetchParamValue = _.get(this.props.params, fetchParam);
         if (fetchParamValue) {
           args.push(fetchParamValue);

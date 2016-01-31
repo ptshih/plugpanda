@@ -11,7 +11,7 @@ module.exports = BaseModel.extend({
   urlRoot: 'users',
 
   definition: function() {
-    return _.extend({},
+    return _.assign({},
       _.result(BaseModel.prototype, 'definition'), {
         // Reserved fields
         access_token: {
@@ -242,7 +242,7 @@ module.exports = BaseModel.extend({
   // Return name parsed from email
   _usernameFromEmail(email) {
     const matches = /[(\W|^)[\w.+\-]{0,25}(?=@)/.exec(email);
-    return _.first(matches);
+    return _.head(matches);
   },
 
   // Get the prepended country phone code

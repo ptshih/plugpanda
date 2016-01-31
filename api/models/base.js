@@ -37,7 +37,7 @@ module.exports = Muni.Model.extend({
     const nowDate = new Date();
 
     // Automatically set updated/updated_date on save
-    _.extend(this.attributes, {
+    _.assign(this.attributes, {
       updated: nowDate.getTime(),
       updated_date: nowDate,
     });
