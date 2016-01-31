@@ -6,7 +6,7 @@ module.exports = BaseModel.extend({
   urlRoot: 'stations',
 
   definition: function() {
-    return _.extend({},
+    return _.assign({},
       _.result(BaseModel.prototype, 'definition'), {}
     );
   },

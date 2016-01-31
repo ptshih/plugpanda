@@ -39,13 +39,13 @@ module.exports = BaseController.extend({
         access_token: 1,
       },
     }).then((result) => {
-      const users = _.first(result);
-      const userIds = _.pluck(users, '_id');
-      const accessTokens = _.pluck(users, 'access_token');
+      const users = _.head(result);
+      const userIds = _.map(users, '_id');
+      const accessTokens = _.map(users, 'access_token');
 
       // Fire off the jobs
       const promises = [];
-      _.each(accessTokens, function(accessToken) {
+      _.forEach(accessTokens, function(accessToken) {
         promises.push(createTask('session', {
           method: 'GET',
           url: `${nconf.get('HOST')}/api/session/status`,

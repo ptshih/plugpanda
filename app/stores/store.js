@@ -148,7 +148,7 @@ class Store extends EventEmitter {
    */
   _append(oldState, data) {
     const newState = {};
-    _.each(data, (val, key) => {
+    _.forEach(data, (val, key) => {
       newState[key] = [...oldState[key], ...val];
     });
 
