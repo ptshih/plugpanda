@@ -13,23 +13,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
 
-  {{#if debug}}
-    <link rel="stylesheet" href="/css/main.css">
-  {{else}}
-    <link rel="stylesheet" href="/css/main.min.css?v={{version}}">
-  {{/if}}
-
   <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script> -->
 </head>
 <body>
   <noscript style="color:red">We do not currently support browsers without javascript enabled. Please enable javascript and try again. Thank you!</noscript>
 
   <div id="app"></div>
-  {{#if debug}}
-    <script src="/js/main.js"></script>
-    <script src="//localhost:9091"></script>
-  {{else}}
-    <script src="/js/main.min.js?v={{version}}"></script>
-  {{/if}}
 </body>
 </html>

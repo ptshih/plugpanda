@@ -1,9 +1,9 @@
 // Dependencies
-const _ = require('lodash');
-const express = require('express');
-const helmet = require('helmet');
-const path = require('path');
-const Muni = require('muni');
+import _ from 'lodash';
+import express from 'express';
+import helmet from 'helmet';
+import path from 'path';
+import Muni from 'muni';
 
 // Errors
 global.APIError = Muni.Error;
@@ -12,7 +12,7 @@ global.APIError = Muni.Error;
 global.nconf = require('nconf');
 nconf.env().defaults({
   NODE_ENV: 'development',
-  VERSION: new Date().getTime(),
+  VERSION: require('./package.json').version || new Date().getTime(),
   PORT: 9001,
   HOST: 'http://ngrok.petershih.com',
   PANDA_IRON_PROJECT_ID: '55d66dbac7cf220008000062',
@@ -62,16 +62,13 @@ if (!nconf.get('PANDA_IRON_TOKEN')) {
   process.exit(1);
 }
 
-// Transparently support JSX
-require('babel-core/register');
-
 // Middleware
-const cors = require('cors');
-const morgan = require('morgan');
-const compress = require('compression');
-const responseTime = require('response-time');
-const favicon = require('serve-favicon');
-const bodyParser = require('body-parser');
+import cors from 'cors';
+import morgan from 'morgan';
+import compress from 'compression';
+import responseTime from 'response-time';
+import favicon from 'serve-favicon';
+import bodyParser from 'body-parser';
 
 // Time units in ms
 const oneDay = 86400000;
@@ -87,11 +84,11 @@ app.set('props', {
   port: nconf.get('PORT'),
   pid: process.pid,
 });
-app.set('views', path.join(__dirname, '/views'));
-app.set('view engine', 'hbs');
-app.set('view options', {
-  layout: false,
-});
+// app.set('views', path.join(__dirname, '/views'));
+// app.set('view engine', 'hbs');
+// app.set('view options', {
+//   layout: false,
+// });
 
 // Helmet HTTP headers
 app.use(helmet());
@@ -123,9 +120,6 @@ app.use(cors({
 // Favicon
 app.use(favicon(path.join(__dirname, '/public/favicon.ico')));
 
-// Enable Logging
-app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
-
 // Assets
 const maxAge = !app.get('props').debug ? oneYear : 0;
 
@@ -144,6 +138,10 @@ app.use('/', express.static(path.join(__dirname, '/public'), {
   maxAge: 0,
 }));
 
+// Enable Logging
+// Don't log anything above this line
+app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
+
 // Configure Environment Locals
 app.use((req, res, next) => {
   _.assign(res.locals, app.get('props'));
@@ -155,10 +153,24 @@ db.connect().then(() => {
   // API Routes
   app.use('/api', require('./api/routes'));
 
-  // Default Server Route
-  app.get('*', (req, res) => {
-    res.render('index');
-  });
+  // Load Webpack Middleware
+  if (app.get('props').debug) {
+    const webpackMiddleware = require('./webpack-middleware');
+    app.use(webpackMiddleware.devMiddleware);
+    app.use(webpackMiddleware.hotMiddleware);
+
+    // Default Server Route
+    app.get('*', (req, res) => {
+      res.set('Content-Type', 'text/html');
+      res.write(webpackMiddleware.devMiddleware.fileSystem.readFileSync(path.join(__dirname, 'assets/index.html')));
+      res.end();
+    });
+  } else {
+    // Default Server Route
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'assets/index.html'));
+    });
+  }
 
   // Start the HTTP server
   app.listen(app.get('props').port, () => {
