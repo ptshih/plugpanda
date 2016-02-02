@@ -39,6 +39,31 @@ module.exports = BaseModel.extend({
           readonly: true,
           hidden: true,
         },
+        features: {
+          type: 'object',
+          fields: {
+            admin: {
+              type: 'boolean',
+              default: false,
+            },
+            waitlisted: {
+              type: 'boolean',
+              default: true,
+            },
+            car: {
+              type: 'boolean',
+              default: false,
+            },
+            chargepoint: {
+              type: 'boolean',
+              default: false,
+            },
+            getaround: {
+              type: 'boolean',
+              default: false,
+            },
+          },
+        },
 
         // Basic
         email: {
@@ -61,6 +86,11 @@ module.exports = BaseModel.extend({
         },
         phone: {
           type: 'string',
+        },
+
+        // Waitlist
+        waitlisted_date: {
+          type: 'date',
         },
 
         // Billing
@@ -214,11 +244,10 @@ module.exports = BaseModel.extend({
     });
   },
 
-  // Generates an access token using `_id` and a timestamp
+  // Generates an access token using `_id`
   generateAccessToken() {
     return Muni.encryptString(JSON.stringify({
       _id: this.id,
-      created: (new Date()).getTime(),
     }), 'aes256', nconf.get('PANDA_CLIENT_TOKEN'));
   },
 

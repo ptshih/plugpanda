@@ -107,6 +107,10 @@ export default React.createClass({
       return null;
     }
 
+    if (auth.getFeatures('waitlisted')) {
+      return null;
+    }
+
     return (
       <Link className="Navbar-link" to="/car">Car</Link>
     );
@@ -118,6 +122,10 @@ export default React.createClass({
     }
 
     if (!auth.getFeatures('chargepoint')) {
+      return null;
+    }
+
+    if (auth.getFeatures('waitlisted')) {
       return null;
     }
 
@@ -133,6 +141,20 @@ export default React.createClass({
 
     return (
       <Link className="Navbar-link" to="/account">Account</Link>
+    );
+  },
+
+  getWaitlist() {
+    if (!auth.isLoggedIn()) {
+      return null;
+    }
+
+    if (!auth.getFeatures('admin')) {
+      return null;
+    }
+
+    return (
+      <Link className="Navbar-link" to="/waitlist">Waitlist</Link>
     );
   },
 
@@ -177,6 +199,7 @@ export default React.createClass({
           {this.getDashboard()}
           {this.getCar()}
           {this.getSessions()}
+          {this.getWaitlist()}
           {this.getAccount()}
           {this.getLogin()}
         </div>

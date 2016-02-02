@@ -1,5 +1,6 @@
 # Todo
 
+- model indexes
 - improve error handling
 - multiple active sessions
 - power is reduced status???

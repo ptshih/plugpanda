@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router';
 
+// Utils
+import api from '../lib/api';
+
 // Container
 import createContainer from './container';
 
@@ -41,6 +44,18 @@ export default createContainer(React.createClass({
 
   onChangePhone() {
     // TODO: readonly for now
+  },
+
+  onSave(e) {
+    e.preventDefault();
+
+    // TODO: auth.setFeatures
+
+    return api.saveAccount(this.props.account).then(() => {
+      console.log('saved');
+    }).catch(() => {
+      console.error('saved');
+    });
   },
 
   // Render
@@ -100,6 +115,15 @@ export default createContainer(React.createClass({
     }, {
       label: 'PST',
       value: 'pst',
+    }, {
+      label: 'MST',
+      value: 'mst',
+    }, {
+      label: 'CST',
+      value: 'cst',
+    }, {
+      label: 'EST',
+      value: 'est',
     }];
 
     return (
@@ -160,6 +184,7 @@ export default createContainer(React.createClass({
       );
     }
 
+    // TODO: move to component
     return (
       <section>
         <div className="row">
@@ -353,6 +378,9 @@ export default createContainer(React.createClass({
         {this.getBMW()}
         {this.getGetaround()}
         {this.getSubscription()}
+        <section>
+          <a href="#" onClick={this.onSave}>Save</a>
+        </section>
         <section>
           <Link to="/logout">Sign Out</Link>
         </section>

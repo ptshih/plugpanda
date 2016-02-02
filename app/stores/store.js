@@ -31,6 +31,7 @@ class Store extends EventEmitter {
         update_data: [],
         // TBD
       },
+      waitlist: {},
     };
   }
 

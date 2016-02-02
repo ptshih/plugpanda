@@ -111,7 +111,7 @@ module.exports = BaseController.extend({
 
     return session.fetch({
       query: {},
-      sort: [['updated', 'desc']],
+      sort: [['updated_date', 'desc']],
     }).then(() => {
       switch (cmd) {
         case 'status':

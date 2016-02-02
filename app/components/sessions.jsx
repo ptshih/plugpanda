@@ -13,7 +13,6 @@ export default createContainer(React.createClass({
     params: React.PropTypes.object,
     history: React.PropTypes.object,
     sessions: React.PropTypes.array,
-    fetch: React.PropTypes.func,
   },
 
   // Handlers

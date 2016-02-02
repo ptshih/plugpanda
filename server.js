@@ -16,8 +16,6 @@ nconf.env().defaults({
   PORT: 9001,
   HOST: 'http://ngrok.petershih.com',
   PANDA_IRON_PROJECT_ID: '55d66dbac7cf220008000062',
-  PANDA_MONGODB_USER: 'panda',
-  PANDA_MONGODB_PASSWORD: 'sadpanda',
 });
 global.db = require('./api/config/db');
 

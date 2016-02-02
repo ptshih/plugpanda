@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const Muni = require('muni');
+const moment = require('moment');
 const chargepoint = require('../lib/chargepoint');
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
@@ -81,7 +82,7 @@ module.exports = BaseController.extend({
     return session.fetch({
       query: query,
       require: true,
-      sort: [['created', 'desc']],
+      sort: [['created_date', 'desc']],
     }).tap(() => {
       if (session.get('status') === 'off') {
         return session;
@@ -105,16 +106,14 @@ module.exports = BaseController.extend({
         payment_type: 'string',
         device_id: 'integer',
       },
-      sortParam: 'created',
+      sortParam: 'created_date',
       sortOrder: 'desc',
     });
 
     // Omit `update_data` and `vehicle_info`
     qo.fields = {
       user_id: 1,
-      created: 1,
       created_date: 1,
-      updated: 1,
       updated_date: 1,
 
       ack_id: 1,
@@ -159,8 +158,8 @@ module.exports = BaseController.extend({
     return sessions.fetch({
       query: {
         status: 'on',
-        updated: {
-          $lt: new Date().getTime() - 900000, // 15 minutes
+        updated_date: {
+          $lt: moment().subtract(15, 'minutes').toDate(), // 15 minutes
         },
       },
     }).tap(() => {

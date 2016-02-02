@@ -1,9 +1,14 @@
 const Muni = require('muni');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = new Muni.Mongo(
-  `mongodb://${nconf.get('PANDA_MONGODB_USER')}:${nconf.get('PANDA_MONGODB_PASSWORD')}@candidate.49.mongolayer.com:10603,candidate.1.mongolayer.com:10742/production`,
+  `mongodb://${nconf.get('PANDA_MONGODB_USER')}:${nconf.get('PANDA_MONGODB_PASSWORD')}@aws-us-east-1-portal.4.dblayer.com:11115,aws-us-east-1-portal.9.dblayer.com:10549/production`,
   {
-    replicaSet: 'set-55d526ebad798bab6c000a34',
-    readPreference: 'primary',
+    mongos: {
+      ssl: true,
+      sslValidate: true,
+      sslCA: [fs.readFileSync(path.join(__dirname, 'compose.pem'))],
+    },
   }
 );

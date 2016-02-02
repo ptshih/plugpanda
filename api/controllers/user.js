@@ -1,9 +1,10 @@
-// const _ = require('lodash');
+const _ = require('lodash');
 const Muni = require('muni');
 const UserModel = require('../models/user');
 const BaseController = require('./base');
 
 const authenticateUserMiddleware = require('../middleware/authenticate_user');
+const authenticateAdminMiddleware = require('../middleware/authenticate_admin');
 
 module.exports = BaseController.extend({
   setupRoutes() {
@@ -25,11 +26,25 @@ module.exports = BaseController.extend({
       requiredParams: ['email'],
     };
 
-
     // Private
+
+    this.routes.get['/waitlist'] = {
+      action: this.waitlist,
+      middleware: [authenticateUserMiddleware, authenticateAdminMiddleware],
+    };
+
+    this.routes.get['/waitlist_position'] = {
+      action: this.waitlistPosition,
+      middleware: [authenticateUserMiddleware],
+    };
 
     this.routes.get['/account'] = {
       action: this.account,
+      middleware: [authenticateUserMiddleware],
+    };
+
+    this.routes.put['/account'] = {
+      action: this.updateAccount,
       middleware: [authenticateUserMiddleware],
     };
 
@@ -40,9 +55,53 @@ module.exports = BaseController.extend({
     };
   },
 
+  waitlist(req, res, next) {
+    this.get('db').find('users', {
+      waitlisted_date: {
+        $ne: null,
+      },
+    }, {
+      fields: {
+        email: 1,
+        name: 1,
+        waitlisted_date: 1,
+      },
+      sort: [['waitlisted_date', 'asc']],
+    }).then((result) => {
+      res.data = {
+        users: _.head(result),
+        count: _.last(result),
+      };
+      return next();
+    }).catch(next);
+  },
+
+  waitlistPosition(req, res, next) {
+    // TODO: move to model
+    this.get('db').count('users', {
+      waitlisted_date: {
+        $lt: req.user.get('waitlisted_date'),
+      },
+    }).then((count) => {
+      res.data = {
+        position: count + 1,
+      };
+      return next();
+    }).catch(next);
+  },
+
   account(req, res, next) {
     res.data = req.user.render();
     return next();
+  },
+
+  updateAccount(req, res, next) {
+    return req.user.setFromRequest(req.body).then(() => {
+      return req.user.save();
+    }).then(() => {
+      res.data = req.user.render();
+      return next();
+    }).catch(next);
   },
 
   chargepoint(req, res, next) {

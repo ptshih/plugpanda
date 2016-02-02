@@ -7,12 +7,6 @@ module.exports = Muni.Model.extend({
       _id: {
         type: 'id',
       },
-      created: {
-        type: 'timestamp',
-      },
-      updated: {
-        type: 'timestamp',
-      },
       created_date: {
         type: 'date',
       },
@@ -25,21 +19,16 @@ module.exports = Muni.Model.extend({
   setFromRequest: Muni.Promise.method(function setFromRequest(body) {
     const keys = _.union(_.keys(_.result(this, 'readOnlyAttributes')), [
       '_id',
-      'created',
       'created_date',
-      'updated',
       'updated_date',
     ]);
     return Muni.Model.prototype.setFromRequest.call(this, _.omit(body, keys));
   }),
 
   beforeSave: Muni.Promise.method(function beforeSave() {
-    const nowDate = new Date();
-
     // Automatically set updated/updated_date on save
     _.assign(this.attributes, {
-      updated: nowDate.getTime(),
-      updated_date: nowDate,
+      updated_date: new Date(),
     });
 
     return Muni.Model.prototype.beforeSave.apply(this, arguments);

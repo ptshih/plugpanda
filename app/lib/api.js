@@ -19,11 +19,7 @@ export default {
       },
     }).then((user) => {
       auth.setAccessToken(user.access_token);
-      auth.setFeatures({
-        car: true,
-        chargepoint: true,
-        getaround: true,
-      });
+      auth.setFeatures(user.features);
       return user;
     });
   }),
@@ -67,6 +63,22 @@ export default {
   fetchAccount: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/account',
+      headers: auth.buildAuthHeaders(),
+    });
+  }),
+
+  saveAccount: Promise.method(function(json) {
+    return this._request({
+      method: 'PUT',
+      url: window.location.origin + '/api/account',
+      headers: auth.buildAuthHeaders(),
+      json: json,
+    });
+  }),
+
+  fetchWaitlist: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/waitlist',
       headers: auth.buildAuthHeaders(),
     });
   }),

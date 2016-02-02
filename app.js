@@ -21,6 +21,7 @@ import Car from './app/components/car';
 import Session from './app/components/session';
 import Sessions from './app/components/sessions';
 import Account from './app/components/account';
+import Waitlist from './app/components/waitlist';
 import Login from './app/components/login';
 import Logout from './app/components/logout';
 import Register from './app/components/register';
@@ -30,6 +31,8 @@ import Register from './app/components/register';
 // NProgress.configure({
 //   showSpinner: false,
 // });
+
+// TODO: Fetch User features and update local-storage if authed
 
 // App Component
 const App = React.createClass({
@@ -80,6 +83,7 @@ ReactDOM.render((
       <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth />
       <Route path="sessions" component={Sessions} onEnter={onEnter} requireAuth />
       <Route path="account" component={Account} onEnter={onEnter} requireAuth />
+      <Route path="waitlist" component={Waitlist} onEnter={onEnter} requireAuth />
       <Route path="register" component={Register} onEnter={onEnter} />
       <Route path="login" component={Login} onEnter={onEnter} />
       <Route path="logout" component={Logout} onEnter={onEnter} requireAuth />
