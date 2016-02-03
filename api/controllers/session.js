@@ -3,7 +3,7 @@ const Muni = require('muni');
 const moment = require('moment');
 const chargepoint = require('../lib/chargepoint');
 
-const authenticateUserMiddleware = require('../middleware/authenticate_user');
+const authenticateUserMiddleware = require('../middleware/authenticate-user');
 
 const BaseController = require('./base');
 const SessionModel = require('../models/session');

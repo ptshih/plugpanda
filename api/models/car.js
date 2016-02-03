@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const math = require('../../lib/math');
 
-const BaseUserModel = require('./base_user');
+const BaseUserModel = require('./base-user');
 
 module.exports = BaseUserModel.extend({
   urlRoot: 'cars',

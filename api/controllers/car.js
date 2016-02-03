@@ -5,8 +5,8 @@ const BaseController = require('./base');
 const CarModel = require('../models/car');
 // const CarCollection = require('../collections/car');
 
-const authenticateUserMiddleware = require('../middleware/authenticate_user');
-const authenticateBmwMiddleware = require('../middleware/authenticate_bmw');
+const authenticateUserMiddleware = require('../middleware/authenticate-user');
+const authenticateBmwMiddleware = require('../middleware/authenticate-bmw');
 
 module.exports = BaseController.extend({
   setupRoutes() {

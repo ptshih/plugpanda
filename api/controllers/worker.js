@@ -2,7 +2,7 @@ const _ = require('lodash');
 const Muni = require('muni');
 const BaseController = require('./base');
 
-const authenticateWorkerMiddleware = require('../middleware/authenticate_worker');
+const authenticateWorkerMiddleware = require('../middleware/authenticate-worker');
 
 const IronWorker = require('iron_worker');
 const ironWorker = new IronWorker.Client({

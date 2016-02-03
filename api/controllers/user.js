@@ -3,8 +3,8 @@ const Muni = require('muni');
 const UserModel = require('../models/user');
 const BaseController = require('./base');
 
-const authenticateUserMiddleware = require('../middleware/authenticate_user');
-const authenticateAdminMiddleware = require('../middleware/authenticate_admin');
+const authenticateUserMiddleware = require('../middleware/authenticate-user');
+const authenticateAdminMiddleware = require('../middleware/authenticate-admin');
 
 module.exports = BaseController.extend({
   setupRoutes() {
