@@ -59,7 +59,7 @@
     "webpack-hot-middleware": "*"
   },
   "main": "server.js",
-  "browser": "app.js",
+  "browser": "browser.js",
   "scripts": {
     "clean": "rimraf assets",
     "prebuild": "npm run clean",

@@ -26,7 +26,7 @@ module.exports = {
     }),
   ],
   entry: [
-    path.join(__dirname, './app.js'),
+    path.join(__dirname, './browser.js'),
   ],
   output: {
     path: path.join(__dirname, '/assets/'),
