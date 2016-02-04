@@ -51,10 +51,12 @@
   },
   "devDependencies": {
     "babel-eslint": "*",
+    "babel-plugin-react-transform": "*",
     "eslint": "*",
     "eslint-plugin-react": "*",
     "mocha": "*",
     "nodemon": "*",
+    "react-transform-hmr": "*",
     "webpack-dev-middleware": "*",
     "webpack-hot-middleware": "*"
   },

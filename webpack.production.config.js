@@ -17,12 +17,11 @@ module.exports = {
     }),
     new ExtractTextPlugin('css/[name]-[hash].min.css'),
     new HtmlWebpackPlugin({
-      // title: 'Custom template using Handlebars',
       template: 'index.webpack.html',
       inject: 'body',
     }),
     new webpack.DefinePlugin({
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production'),
     }),
   ],
   entry: [
@@ -37,6 +36,9 @@ module.exports = {
       test: /\.js?$/,
       loader: 'babel',
       exclude: /node_modules/,
+      query: {
+        presets: ['es2015', 'react'],
+      },
     }, {
       test: /\.jsx?$/,
       loader: 'babel',

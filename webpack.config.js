@@ -12,7 +12,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
-      // title: 'Custom template using Handlebars',
       template: 'index.webpack.html',
       inject: 'body',
     }),
@@ -21,7 +20,7 @@ module.exports = {
     }),
   ],
   entry: [
-    'webpack-hot-middleware/client?reload=true',
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
     path.join(__dirname, './browser.js'),
   ],
   output: {
@@ -34,12 +33,24 @@ module.exports = {
       test: /\.js?$/,
       loader: 'babel',
       exclude: /node_modules/,
+      query: {
+        presets: ['es2015', 'react'],
+      },
     }, {
       test: /\.jsx?$/,
       loader: 'babel',
       exclude: /node_modules/,
       query: {
         presets: ['es2015', 'react'],
+        plugins: [
+          ['react-transform', {
+            transforms: [{
+              transform: 'react-transform-hmr',
+              imports: ['react'],
+              locals: ['module'],
+            }],
+          }],
+        ],
       },
     }, {
       test: /\.json?$/,
