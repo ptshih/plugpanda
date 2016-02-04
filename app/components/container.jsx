@@ -131,12 +131,11 @@ export default (Component, options) => {
       // Fetch data from API
       return api[options.fetchHandler].apply(api, args).finally(() => {
         this.isFetched = true;
-      }).then((resp) => {
+      }).then((data) => {
         // SET or APPEND API response
-        const data = {};
-        data[options.storeKey] = resp;
+        const type = [append ? 'APPEND' : 'SET', options.storeKey].join('_').toUpperCase();
         store.dispatch({
-          type: append ? 'APPEND' : 'SET',
+          type: type,
           data: data,
         });
       }).catch((err) => {

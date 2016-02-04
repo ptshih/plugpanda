@@ -61,7 +61,7 @@ class Store extends EventEmitter {
 
   /**
    * Used by Components to retrieve state
-   * @return {Object} Current state or portion thereof
+   * @return {Object} Current state
    */
   getState() {
     return this.state;
@@ -86,6 +86,9 @@ class Store extends EventEmitter {
 
   /**
    * Dispatch Action Handler
+   *
+   * DO NOT ever mutate `this.state`, ALWAYS return a copy
+   *
    * @param {Object} action Describes how the state should change
    * @param {String} action.type What type of change
    * @param {Object} [action.data] What is actually changing
@@ -97,63 +100,58 @@ class Store extends EventEmitter {
 
     console.log('DISPATCH ACTION -> %s DATA -> %s', action.type, action.data);
 
-    // Assign reducer function for action type
-    let reducer;
-    const oldState = this.state;
-    const newState = {};
-
+    let shouldEmit = true;
     switch (action.type) {
-      case 'RESET':
-        reducer = this._set;
-        newState[action.data] = this.defaults()[action.data];
+      case 'RESET_ACCOUNT':
+        this.state.account = this.defaults().account;
         break;
-      case 'SET':
-        reducer = this._set;
-        _.merge(newState, action.data);
+      case 'SET_ACCOUNT':
+        this.state.account = _.assign({}, this.state.account, action.data);
         break;
 
-      case 'APPEND':
-        reducer = this._append;
-        _.merge(newState, action.data);
+      case 'RESET_WAITLIST':
+        this.state.waitlist = this.defaults().waitlist;
+        break;
+      case 'SET_WAITLIST':
+        this.state.waitlist = _.assign({}, this.state.waitlist, action.data);
+        break;
+
+      case 'RESET_CAR':
+        this.state.car = this.defaults().car;
+        break;
+      case 'SET_CAR':
+        this.state.car = _.assign({}, this.state.car, action.data);
+        break;
+
+      case 'RESET_SESSION':
+        this.state.session = this.defaults().session;
+        break;
+      case 'SET_SESSION':
+        this.state.session = _.assign({}, this.state.session, action.data);
+        break;
+
+      case 'RESET_SESSIONS':
+        this.state.sessions = this.defaults().sessions;
+        break;
+      case 'SET_SESSIONS':
+        this.state.sessions = [...action.data];
+        break;
+      case 'APPEND_SESSIONS':
+        this.state.sessions = [...this.state.sessions, ...action.data];
+        break;
+      case 'PREPEND_SESSIONS':
+        this.state.sessions = [...action.data, ...this.state.sessions];
         break;
 
       default:
         // Unknown action, don't emit any changes
+        shouldEmit = false;
         break;
     }
 
-    // If a reducer is assigned...
-    // Replace existing state with reduced state and emit change
-    if (reducer) {
-      this.state = reducer.call(this, oldState, newState);
+    if (shouldEmit) {
       this.emit('change');
     }
-  }
-
-  // Action Handlers
-
-  /**
-   * Object assigns existing state with a new state
-   * @param {Object} oldState
-   * @param {Object} newState
-   */
-  _set(oldState, newState) {
-    return Object.assign({}, oldState, newState);
-  }
-
-  /**
-   * Appends more items to an array
-   * @param  {[type]} oldState [description]
-   * @param  {[type]} data     [description]
-   * @return {[type]}          [description]
-   */
-  _append(oldState, data) {
-    const newState = {};
-    _.forEach(data, (val, key) => {
-      newState[key] = [...oldState[key], ...val];
-    });
-
-    return Object.assign({}, oldState, newState);
   }
 }
 
