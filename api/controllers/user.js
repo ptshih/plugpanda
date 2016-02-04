@@ -60,6 +60,7 @@ module.exports = BaseController.extend({
       waitlisted_date: {
         $ne: null,
       },
+      'features.waitlisted': true,
     }, {
       fields: {
         email: 1,
