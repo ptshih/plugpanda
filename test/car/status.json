@@ -1,0 +1,43 @@
+{
+  "vehicleStatus": {
+    "vin": "WBY1Z4C58FV501513",
+    "mileage": 1016,
+    "updateReason": "DOOR_STATE_CHANGED",
+    "updateTime": "2015-08-21T03:43:20-0400",
+    "doorDriverFront": "CLOSED",
+    "doorDriverRear": "CLOSED",
+    "doorPassengerFront": "CLOSED",
+    "doorPassengerRear": "CLOSED",
+    "windowDriverFront": "CLOSED",
+    "windowDriverRear": "CLOSED",
+    "windowPassengerFront": "CLOSED",
+    "windowPassengerRear": "CLOSED",
+    "trunk": "CLOSED",
+    "rearWindow": "INVALID",
+    "convertibleRoofState": "INVALID",
+    "hood": "CLOSED",
+    "doorLockState": "SECURED",
+    "parkingLight": "OFF",
+    "positionLight": "OFF",
+    "remainingFuel": 9,
+    "remainingRangeElectric": 110,
+    "remainingRangeElectricMls": 68,
+    "remainingRangeFuel": 119,
+    "remainingRangeFuelMls": 74,
+    "maxRangeElectric": 127,
+    "maxRangeElectricMls": 79,
+    "maxFuel": 7.3,
+    "connectionStatus": "CONNECTED",
+    "chargingStatus": "CHARGING",
+    "chargingTimeRemaining": 65,
+    "chargingLevelHv": 87,
+    "lastChargingEndReason": "UNKNOWN",
+    "lastChargingEndResult": "UNKNOWN",
+    "position": {
+      "lat": 37.77136,
+      "lon": -122.39371,
+      "heading": 307,
+      "status": "OK"
+    }
+  }
+}

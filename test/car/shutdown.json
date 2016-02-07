@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "code": 200
+  },
+  "data": {
+    "_id": "55d6d67be2895e9a62018498",
+    "created_date": "2015-08-21T07:42:50.598Z",
+    "updated_date": "2015-08-25T20:56:16.215Z",
+    "vin": "WBY1Z4C58FV501513",
+    "miles": 844,
+    "updateReason": "VEHICLE_SHUTDOWN_SECURED",
+    "updateTime": "2015-08-25T15:32:48.000Z",
+    "connectionStatus": "DISCONNECTED",
+    "chargingStatus": "INVALID",
+    "chargingTimeRemaining": null,
+    "chargingLevelHv": 74,
+    "remainingFuel": 9,
+    "maxFuel": 9,
+    "remainingRangeElectricMls": 59,
+    "remainingRangeFuelMls": 76,
+    "doorLockState": "SECURED",
+    "doorDriverFront": "CLOSED",
+    "doorDriverRear": "CLOSED",
+    "doorPassengerFront": "CLOSED",
+    "doorPassengerRear": "CLOSED",
+    "windowDriverFront": "CLOSED",
+    "windowDriverRear": "CLOSED",
+    "windowPassengerFront": "CLOSED",
+    "windowPassengerRear": "CLOSED",
+    "trunk": "CLOSED",
+    "hood": "CLOSED",
+    "parkingLight": "OFF",
+    "positionLight": "OFF",
+    "position": {
+      "lat": 37.88572,
+      "lon": -122.443855,
+      "heading": 13,
+      "status": "OK"
+    }
+  }
+}
