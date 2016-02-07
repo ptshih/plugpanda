@@ -1,9 +1,9 @@
 // Dependencies
-import _ from 'lodash';
-import express from 'express';
-import helmet from 'helmet';
-import path from 'path';
-import Muni from 'muni';
+const _ = require('lodash');
+const express = require('express');
+const helmet = require('helmet');
+const path = require('path');
+const Muni = require('muni');
 
 // Errors
 global.APIError = Muni.Error;
@@ -61,12 +61,12 @@ if (!nconf.get('PANDA_IRON_TOKEN')) {
 }
 
 // Middleware
-import cors from 'cors';
-import morgan from 'morgan';
-import compress from 'compression';
-import responseTime from 'response-time';
-import favicon from 'serve-favicon';
-import bodyParser from 'body-parser';
+const cors = require('cors');
+const morgan = require('morgan');
+const compress = require('compression');
+const responseTime = require('response-time');
+const favicon = require('serve-favicon');
+const bodyParser = require('body-parser');
 
 // Time units in ms
 const oneDay = 86400000;
