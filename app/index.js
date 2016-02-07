@@ -1,30 +1,30 @@
 // Load Stylesheets
-import './scss/main.scss';
+import '../scss/main.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {createHistory} from 'history';
 
 // Utils
-import auth from './app/lib/auth';
+import auth from './lib/auth';
 
 // Components
 import Router from 'react-router';
 import {Route, IndexRoute} from 'react-router';
-import Err from './app/components/err';
+import Err from './components/err';
 
 // Components (containers)
-import Root from './app/components/root';
-import Faq from './app/components/faq';
-import Dashboard from './app/components/dashboard';
-import Car from './app/components/car';
-import Session from './app/components/session';
-import Sessions from './app/components/sessions';
-import Account from './app/components/account';
-import Waitlist from './app/components/waitlist';
-import Login from './app/components/login';
-import Logout from './app/components/logout';
-import Register from './app/components/register';
+import Root from './components/root';
+import Faq from './components/faq';
+import Dashboard from './components/dashboard';
+import Car from './components/car';
+import Session from './components/session';
+import Sessions from './components/sessions';
+import Account from './components/account';
+import Waitlist from './components/waitlist';
+import Login from './components/login';
+import Logout from './components/logout';
+import Register from './components/register';
 
 // NProgress loading indicator
 // import NProgress from 'nprogress';
