@@ -31,7 +31,7 @@
     "lodash": "~4.1.0",
     "moment": "~2.11.1",
     "morgan": "~1.6.1",
-    "muni": "~2.2.1",
+    "muni": "~3.0.0",
     "nconf": "~0.8.3",
     "node-sass": "^3.4.2",
     "nprogress": "~0.2.0",
@@ -71,7 +71,7 @@
     "lint:api": "eslint --ext .js --ignore-path .gitignore api",
     "lint:lib": "eslint --ext .js --ignore-path .gitignore lib",
     "watch": "nodemon --exec npm start",
-    "start": "babel-node --optimize_for_size --max_old_space_size=460 --gc_interval=100 server.js",
+    "start": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 server-babel.js",
     "postinstall": "if [ -n \"$BUILD_ASSETS\" ]; then npm run build; fi",
     "pretest": "npm run lint",
     "test": "mocha"

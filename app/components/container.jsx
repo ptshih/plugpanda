@@ -141,6 +141,7 @@ export default (Component, options) => {
       }).catch((err) => {
         // Catch API error
         this.error = err;
+        console.error(err);
       });
     },
   });

@@ -15,7 +15,7 @@ import Err from './app/components/err';
 
 // Components (containers)
 import Root from './app/components/root';
-import FAQ from './app/components/faq';
+import Faq from './app/components/faq';
 import Dashboard from './app/components/dashboard';
 import Car from './app/components/car';
 import Session from './app/components/session';
@@ -77,7 +77,7 @@ ReactDOM.render((
       <IndexRoute component={Root} onEnter={onEnter} />
 
       {/* Routes */}
-      <Route path="faq" component={FAQ} onEnter={onEnter} />
+      <Route path="faq" component={Faq} onEnter={onEnter} />
       <Route path="dashboard" component={Dashboard} onEnter={onEnter} requireAuth />
       <Route path="car" component={Car} onEnter={onEnter} requireAuth />
       <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth />
