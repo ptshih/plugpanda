@@ -30,6 +30,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/assets/'),
     filename: 'js/[name]-[hash].min.js',
+    publicPath: '/',
   },
   module: {
     loaders: [{
