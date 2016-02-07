@@ -1,0 +1,5 @@
+{"poi":{"street":"1713 TARAVAL ST","city":"SAN FRANCISCO","country":"CALIFORNIA","useAsDestination":"true","name":"Kingdom of Dumpling"}}
+
+
+
+{"poi":{"street":"1713 TARAVAL ST","city":"SAN FRANCISCO","country":"CALIFORNIA","subject":"SID_MYBMW_MAP_DROPPED_PIN_TITLE","lon":-122.4844,"additionalInfo":"Sent from the BMW i Remote App.","lat":37.74266,"useAsDestination":"true","name":"1713 TARAVAL ST"}}
