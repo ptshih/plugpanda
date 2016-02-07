@@ -16,6 +16,7 @@ results
 
 .DS_Store
 .migrate
+.env
 npm-debug.log
 newrelic_agent.log
 node_modules

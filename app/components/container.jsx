@@ -23,7 +23,6 @@ import api from '../lib/api';
 import store from '../stores/store';
 
 // Components
-import Nav from './nav';
 import Loading from './loading';
 import Err from './err';
 
@@ -43,23 +42,15 @@ export default (Component, options) => {
     // Lifecycle
 
     componentWillMount() {
-      this.isFetched = false;
-      this.error = null;
       // this.offset = _.parseInt(_.get(this.props, 'location.query.offset', 0));
       // this.limit = _.parseInt(_.get(this.props, 'location.query.limit', 10));
-
-      if (!_.isString(options.fetchHandler) || !_.isString(options.storeKey)) {
-        this.isFetched = true;
-      }
     },
 
     componentDidMount() {
       store.subscribe(this.onChange);
 
-      // Fetch from remote and set in store if not already fetched
-      if (!this.isFetched) {
-        this.fetch();
-      }
+      // Fetch from remote
+      this.fetch();
     },
 
     componentWillUnmount() {
@@ -77,10 +68,10 @@ export default (Component, options) => {
     render() {
       let content;
 
-      if (this.error) {
+      if (this.state.error) {
         // Error
         const params = {
-          message: this.error.message,
+          message: this.state.error.message,
         };
         content = <Err {...this.props} params={params} />;
       } else if (!this.isFetched) {
@@ -99,14 +90,7 @@ export default (Component, options) => {
 
       return (
         <div className="Component">
-          <Nav
-            {...this.props}
-            title={options.title}
-            loading={!this.isFetched}
-          />
-          <main className="Content">
-            {content}
-          </main>
+          {content}
         </div>
       );
     },
@@ -114,13 +98,33 @@ export default (Component, options) => {
     // Methods
 
     fetch(append = false) {
-      this.isFetched = false;
-      this.error = null;
+      // Reset error
+      store.dispatch({
+        type: 'APP_ERROR',
+        data: null,
+      });
 
-      // Build API arguments
-      const args = [{}];
+      // Don't fetch if nothing to fetch
+      if (!_.isString(options.fetchHandler) || !_.isString(options.storeKey)) {
+        this.isFetched = true;
+
+        // Stop loading
+        store.dispatch({
+          type: 'NAV_LOADING',
+          data: false,
+        });
+        return;
+      }
+      this.isFetched = false;
+
+      // Start loading
+      store.dispatch({
+        type: 'NAV_LOADING',
+        data: true,
+      });
 
       // Add API params to arguments
+      const args = [{}];
       _.forEach(options.fetchParams, (fetchParam) => {
         const fetchParamValue = _.get(this.props.params, fetchParam);
         if (fetchParamValue) {
@@ -129,7 +133,7 @@ export default (Component, options) => {
       });
 
       // Fetch data from API
-      return api[options.fetchHandler].apply(api, args).finally(() => {
+      api[options.fetchHandler].apply(api, args).finally(() => {
         this.isFetched = true;
       }).then((data) => {
         // SET or APPEND API response
@@ -140,8 +144,16 @@ export default (Component, options) => {
         });
       }).catch((err) => {
         // Catch API error
-        this.error = err;
-        console.error(err);
+        store.dispatch({
+          type: 'APP_ERROR',
+          data: err,
+        });
+      }).finally(() => {
+        // Stop loading
+        store.dispatch({
+          type: 'NAV_LOADING',
+          data: false,
+        });
       });
     },
   });

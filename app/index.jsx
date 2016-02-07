@@ -1,4 +1,4 @@
-// Load Stylesheets
+// Load Stylesheets with Webpack
 import '../scss/main.scss';
 
 import React from 'react';
@@ -12,6 +12,7 @@ import auth from './lib/auth';
 import Router from 'react-router';
 import {Route, IndexRoute} from 'react-router';
 import Err from './components/err';
+import Nav from './components/nav';
 
 // Components (containers)
 import Root from './components/root';
@@ -34,20 +35,6 @@ import Register from './components/register';
 
 // TODO: Fetch User features and update local-storage if authed
 
-// App Component
-const App = React.createClass({
-  propTypes: {
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.element,
-    ]),
-  },
-
-  render() {
-    return this.props.children;
-  },
-});
-
 function onEnter(nextState, replaceState, callback) {
   // Already logged in
   if ((!this.path || this.path === 'login') && auth.isLoggedIn()) {
@@ -67,6 +54,30 @@ function onEnter(nextState, replaceState, callback) {
 function onEnterNotFound(nextState) {
   nextState.params.message = 'Page Not Found';
 }
+
+// App Component
+const App = React.createClass({
+  propTypes: {
+    location: React.PropTypes.object,
+    history: React.PropTypes.object,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.element,
+    ]),
+  },
+
+  render() {
+    return (
+      <div>
+        <Nav
+          history={this.props.history}
+          location={this.props.location}
+        />
+        <main className="Content">{this.props.children}</main>
+      </div>
+    );
+  },
+});
 
 // Define Routes
 // https://github.com/rackt/react-router/blob/master/docs/API.md#route

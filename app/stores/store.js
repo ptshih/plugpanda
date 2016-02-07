@@ -13,6 +13,14 @@ import {EventEmitter} from 'events';
 class Store extends EventEmitter {
   defaults() {
     return {
+      // Error
+      error: null,
+
+      // Navbar
+      title: 'Plug Panda',
+      loading: true,
+      collapse: true,
+
       account: {
         // TBD
       },
@@ -102,6 +110,17 @@ class Store extends EventEmitter {
 
     let shouldEmit = true;
     switch (action.type) {
+      case 'APP_ERROR':
+        this.state.error = action.data;
+        break;
+
+      case 'NAV_COLLAPSE':
+        this.state.collapse = action.data;
+        break;
+      case 'NAV_LOADING':
+        this.state.loading = action.data;
+        break;
+
       case 'RESET_ACCOUNT':
         this.state.account = this.defaults().account;
         break;

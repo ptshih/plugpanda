@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router';
 
+// Store
+import store from '../stores/store';
+
 // Utils
 import auth from '../lib/auth';
 
@@ -9,50 +12,37 @@ export default React.createClass({
   displayName: 'Nav',
 
   propTypes: {
-    params: React.PropTypes.object,
     location: React.PropTypes.object,
     history: React.PropTypes.object,
-    title: React.PropTypes.string,
-    loading: React.PropTypes.bool,
   },
 
   getInitialState() {
-    return {
-      title: 'Plug Panda',
-      collapse: true,
-      loading: false,
-    };
+    return store.getState();
   },
 
   // Lifecycle
 
-  componentWillMount() {
-    this.setState({
-      title: this.props.title,
-      collapse: true,
-      loading: !!this.props.loading ? true : false,
-    });
+  componentDidMount() {
+    // Subscribe to changes in the store
+    store.subscribe(this.onChange);
   },
 
-  componentWillReceiveProps(nextProps) {
-    // Reset collapse state when changing routes
-    this.setState({
-      title: nextProps.title,
-      collapse: true,
-      loading: !!nextProps.loading ? true : false,
-    });
+  componentWillUnmount() {
+    store.unsubscribe(this.onChange);
   },
 
   // Handlers
 
+  onChange() {
+    this.setState(store.getState());
+  },
+
   onClickCollapse(e) {
     e.preventDefault();
 
-    const collapse = !this.state.collapse;
-
-    // Update collapse state
-    this.setState({
-      collapse: collapse,
+    store.dispatch({
+      type: 'NAV_COLLAPSE',
+      data: !this.state.collapse,
     });
   },
 
@@ -193,7 +183,7 @@ export default React.createClass({
           <div className="Nav-title">{this.state.title}</div>
         </nav>
 
-        <div className="Navbar">
+        <div className="Navbar" onClick={this.onClickCollapse}>
           {this.getRoot()}
           {this.getFAQ()}
           {this.getDashboard()}

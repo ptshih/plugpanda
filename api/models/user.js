@@ -248,7 +248,7 @@ module.exports = BaseModel.extend({
   generateAccessToken() {
     return Muni.encryptString(JSON.stringify({
       _id: this.id,
-    }), 'aes256', nconf.get('PANDA_CLIENT_TOKEN'));
+    }), 'aes256', nconf.get('CLIENT_TOKEN'));
   },
 
   // Login to Chargepoint and get `user_id` and `auth_token`

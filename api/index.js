@@ -8,57 +8,44 @@ const Muni = require('muni');
 // Errors
 global.APIError = Muni.Error;
 
-// Configuration
+// Environment
+require('dotenv').config();
 global.nconf = require('nconf');
 nconf.env().defaults({
-  NODE_ENV: 'development',
   VERSION: require('../package.json').version || new Date().getTime(),
+  NODE_ENV: 'development',
+  HOST: 'http://localhost',
   PORT: 9001,
-  HOST: 'http://ngrok.petershih.com',
-  PANDA_IRON_PROJECT_ID: '55d66dbac7cf220008000062',
 });
+
+const requiredEnvs = [
+  'NODE_ENV',
+  'VERSION',
+  'HOST',
+  'PORT',
+  'MONGODB_USER',
+  'MONGODB_PASSWORD',
+  'MONGODB_URL',
+  'CLIENT_TOKEN',
+  'WORKER_TOKEN',
+  'COULOMB_SESS',
+  'BMW_BASIC_AUTH',
+  'TWILIO_ACCOUNT_SID',
+  'TWILIO_AUTH_TOKEN',
+  'IRON_PROJECT_ID',
+  'IRON_TOKEN',
+];
+
+_.each(requiredEnvs, (requiredEnv) => {
+  if (!nconf.get(requiredEnv)) {
+    console.error(`Missing ${requiredEnv}`);
+    process.exit(1);
+  }
+  console.log(`${requiredEnv} -> ${nconf.get(requiredEnv)}`);
+});
+
+// Database
 global.db = require('./config/db');
-
-// Required ENV
-if (!nconf.get('TWILIO_ACCOUNT_SID') || !nconf.get('TWILIO_AUTH_TOKEN')) {
-  console.error('Missing ENV for TWILIO.');
-  process.exit(1);
-}
-
-if (!nconf.get('BMW_BASIC_AUTH')) {
-  console.error('Missing ENV for BMW_BASIC_AUTH.');
-  process.exit(1);
-}
-
-if (!nconf.get('PANDA_MONGODB_USER')) {
-  console.error('Missing ENV for PANDA_MONGODB_USER.');
-  process.exit(1);
-}
-
-if (!nconf.get('PANDA_MONGODB_PASSWORD')) {
-  console.error('Missing ENV for PANDA_MONGODB_PASSWORD.');
-  process.exit(1);
-}
-
-if (!nconf.get('PANDA_WORKER_TOKEN')) {
-  console.error('Missing ENV for PANDA_WORKER_TOKEN.');
-  process.exit(1);
-}
-
-if (!nconf.get('PANDA_CLIENT_TOKEN')) {
-  console.error('Missing ENV for PANDA_CLIENT_TOKEN.');
-  process.exit(1);
-}
-
-if (!nconf.get('PANDA_IRON_PROJECT_ID')) {
-  console.error('Missing ENV for PANDA_IRON_PROJECT_ID.');
-  process.exit(1);
-}
-
-if (!nconf.get('PANDA_IRON_TOKEN')) {
-  console.error('Missing ENV for PANDA_IRON_TOKEN.');
-  process.exit(1);
-}
 
 // Middleware
 const cors = require('cors');
@@ -82,11 +69,6 @@ app.set('props', {
   port: nconf.get('PORT'),
   pid: process.pid,
 });
-// app.set('views', path.join(__dirname, '/views'));
-// app.set('view engine', 'hbs');
-// app.set('view options', {
-//   layout: false,
-// });
 
 // Helmet HTTP headers
 app.use(helmet());

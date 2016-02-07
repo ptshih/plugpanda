@@ -17,6 +17,7 @@
     "compression": "1.6.1",
     "cors": "2.7.1",
     "css-loader": "0.23.1",
+    "dotenv": "2.0.0",
     "envify": "3.4.0",
     "express": "4.13.4",
     "extract-text-webpack-plugin": "1.0.1",
@@ -60,7 +61,6 @@
     "webpack-hot-middleware": "*"
   },
   "main": "server.js",
-  "browser": "browser.js",
   "scripts": {
     "clean": "rimraf assets",
     "prebuild": "npm run clean",

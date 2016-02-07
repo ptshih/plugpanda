@@ -6,8 +6,8 @@ const authenticateWorkerMiddleware = require('../middleware/authenticate-worker'
 
 const IronWorker = require('iron_worker');
 const ironWorker = new IronWorker.Client({
-  project_id: nconf.get('PANDA_IRON_PROJECT_ID'),
-  token: nconf.get('PANDA_IRON_TOKEN'),
+  project_id: nconf.get('IRON_PROJECT_ID'),
+  token: nconf.get('IRON_TOKEN'),
 });
 const createTask = Muni.Promise.promisify(ironWorker.tasksCreate, {
   context: ironWorker,
