@@ -9,7 +9,7 @@ const Muni = require('muni');
 global.APIError = Muni.Error;
 
 // Environment
-require('dotenv').config();
+require('dotenv').config({silent: true});
 global.nconf = require('nconf');
 nconf.env().defaults({
   VERSION: require('../package.json').version || new Date().getTime(),
