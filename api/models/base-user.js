@@ -5,7 +5,7 @@ const BaseModel = require('./base');
 
 module.exports = BaseModel.extend({
   definition: function() {
-    return _.defaults({},
+    return _.assign({},
       _.result(BaseModel.prototype, 'definition'), {
         user_id: {
           type: 'id',

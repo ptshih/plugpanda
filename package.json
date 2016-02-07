@@ -31,7 +31,7 @@
     "lodash": "4.2.1",
     "moment": "2.11.2",
     "morgan": "1.6.1",
-    "muni": "3.0.2",
+    "muni": "3.0.4",
     "nconf": "0.8.4",
     "node-sass": "3.4.2",
     "nprogress": "0.2.0",
