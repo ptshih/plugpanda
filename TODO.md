@@ -1,5 +1,6 @@
 # Todo
 
+- HTML5 web caching
 - model indexes
 - improve error handling
 - multiple active sessions

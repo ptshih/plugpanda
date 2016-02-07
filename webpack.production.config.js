@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AppCachePlugin = require('appcache-webpack-plugin');
 
 module.exports = {
   resolve: {
@@ -22,6 +23,14 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production'),
+    }),
+    new AppCachePlugin({
+      cache: [],
+      network: ['*'],  // No network access allowed!
+      // fallback: [],
+      // settings: ['prefer-online'],
+      exclude: [/.*\.map$/],  // Exclude .map files
+      output: 'cache.manifest',
     }),
   ],
   entry: [
