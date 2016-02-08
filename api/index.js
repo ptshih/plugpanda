@@ -99,6 +99,12 @@ app.use(cors({
   maxAge: oneDay,
 }));
 
+// Configure Environment Locals
+app.use((req, res, next) => {
+  _.assign(res.locals, app.get('props'));
+  next();
+});
+
 // Favicon
 app.use(favicon(path.join(__dirname, '../public/favicon.ico')));
 
@@ -129,12 +135,6 @@ app.use('/', express.static(path.join(__dirname, '../public'), {
 // Enable Logging
 // Don't log anything above this line
 app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
-
-// Configure Environment Locals
-app.use((req, res, next) => {
-  _.assign(res.locals, app.get('props'));
-  next();
-});
 
 // API database
 db.connect().then(() => {
