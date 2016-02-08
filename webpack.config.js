@@ -24,7 +24,7 @@ module.exports = {
       network: ['*'],  // No network access allowed!
       // fallback: [],
       // settings: ['prefer-online'],
-      exclude: [/.*\.map$/],  // Exclude .map files
+      exclude: [/.*\.js$/, /.*\.map$/, 'index.html'],  // Exclude .js, .map files
       output: 'cache.manifest',
     }),
   ],
