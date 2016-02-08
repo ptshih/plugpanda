@@ -19,5 +19,11 @@
   <noscript style="color:red">We do not currently support browsers without javascript enabled. Please enable javascript and try again. Thank you!</noscript>
 
   <div id="app"></div>
+  <script>
+    function appCacheBust() {
+      window.location.reload(true);
+    }
+    window.applicationCache.addEventListener('updateready', appCacheBust, false);
+  </script>
 </body>
 </html>
