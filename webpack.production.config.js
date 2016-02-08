@@ -20,6 +20,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'index.webpack.html',
       inject: 'body',
+      filename: 'index.html',
+      cache: false,
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'production'),

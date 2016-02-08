@@ -105,8 +105,14 @@ app.use(favicon(path.join(__dirname, '../public/favicon.ico')));
 // Assets
 const maxAge = !app.get('props').debug ? oneYear : 0;
 
-app.use('/', express.static(path.join(__dirname, '../assets'), {
+app.use('/js', express.static(path.join(__dirname, '../assets/js'), {
   maxAge: maxAge,
+}));
+app.use('/css', express.static(path.join(__dirname, '../assets/css'), {
+  maxAge: maxAge,
+}));
+app.use('/cache.manifest', express.static(path.join(__dirname, '../assets/cache.manifest'), {
+  maxAge: 0,
 }));
 
 // Set /public as our static content dir
@@ -150,6 +156,7 @@ db.connect().then(() => {
   } else {
     // Default Server Route
     app.get('*', (req, res) => {
+      res.set('Content-Type', 'text/html');
       res.sendFile(path.join(__dirname, '../assets/index.html'));
     });
   }
