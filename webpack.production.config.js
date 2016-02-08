@@ -16,7 +16,7 @@ module.exports = {
         screw_ie8: true,
       },
     }),
-    new ExtractTextPlugin('css/[name]-[hash].min.css'),
+    new ExtractTextPlugin('css/[name].min.css?v=[hash]'),
     new HtmlWebpackPlugin({
       template: 'index.webpack.html',
       inject: 'body',
@@ -29,7 +29,7 @@ module.exports = {
       network: ['*'],  // No network access allowed!
       // fallback: [],
       // settings: ['prefer-online'],
-      exclude: [/.*\.js$/, /.*\.map$/, /.*\.json$/, 'index.html'],  // Exclude .js, .map files
+      exclude: [/.*\.map$/, /.*\.json$/],  // Exclude .js, .map files
       output: 'cache.manifest',
     }),
   ],
@@ -38,7 +38,7 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, '/assets/'),
-    filename: 'js/[name]-[hash].min.js',
+    filename: 'js/[name].min.js?v=[hash]',
     publicPath: '/',
   },
   module: {
