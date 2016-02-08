@@ -10,7 +10,7 @@ export default React.createClass({
   render() {
     return (
       <section>
-        Welcome to Plug Panda!
+        Welcome to Plug Panda! More news to come soon!
       </section>
     );
   },
