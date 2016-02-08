@@ -1,11 +1,15 @@
-# Configuration
+# [Plug Panda](https://www.plugpanda.com/)
+
+Nobody knows what it means, but its provocative!
+
+## Configuration
 
 [Configuration](CONFIGURATION.md)
 
-# Reference
+## Reference
 
 [Reference](REFERENCE.md)
 
-# Todo
+## Todo
 
 [Todo](TODO.md)
