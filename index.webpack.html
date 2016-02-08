@@ -20,10 +20,10 @@
 
   <div id="app"></div>
   <script>
-    function appCacheBust() {
-      window.location.reload(true);
+    function updateSite(event) {
+      window.applicationCache.swapCache();
     }
-    window.applicationCache.addEventListener('updateready', appCacheBust, false);
+    window.applicationCache.addEventListener('updateready', updateSite, false);
   </script>
 </body>
 </html>
