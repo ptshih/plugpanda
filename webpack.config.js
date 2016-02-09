@@ -31,7 +31,7 @@ module.exports = {
     }),
   ],
   entry: [
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
     path.join(__dirname, './app/index.jsx'),
   ],
   output: {
@@ -68,7 +68,16 @@ module.exports = {
       loader: 'json',
     }, {
       test: /\.scss$/,
-      loaders: ['style', 'css?sourceMap', 'sass?sourceMap'],
+      loaders: ['style', 'css', 'sass'],
+    }, {
+      test: /\.(woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: 'url-loader?limit=10000&minetype=application/font-woff',
+    }, {
+      test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+      loader: 'file-loader',
     }],
+  },
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, './node_modules')],
   },
 };

@@ -4,7 +4,8 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 
 // Internal Imports
-@import 'bootstrap/bootstrap';
+$font-family-sans-serif: 'Open Sans', sans-serif !default;
+@import '~bootstrap/scss/bootstrap.scss';
 @import 'inputs';
 @import 'error';
 @import 'float-label';
@@ -13,6 +14,10 @@
 @import 'spinner';
 
 // Bootstrap Overrides
+
+body {
+  font-weight: 300;
+}
 
 // When columns are stacked
 // Add a bottom margin
@@ -190,7 +195,7 @@ section, .Section {
 }
 
 .Nav-title {
-  @extend .text-center;
+  @extend .text-xs-center;
   position: absolute;
   top: 0;
   right: 0;

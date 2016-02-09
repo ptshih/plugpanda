@@ -82,19 +82,19 @@ export default React.createClass({
       <li className={className}>
         <a href={`/sessions/${session.session_id}`} onClick={this.onClick}>
           <div className="row">
-            <div className="col-xs-8 text-left">
+            <div className="col-xs-8 text-xs-left">
               <div>{displayDate}</div>
             </div>
-            <div className="col-xs-4 text-right">
+            <div className="col-xs-4 text-xs-right">
               <div>{displayHours}h {displayMinutes}m</div>
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-8 text-left">
+            <div className="col-xs-8 text-xs-left">
               <div>{energyAdded} kWh @ {averagePower} kW</div>
             </div>
-            <div className="col-xs-4 text-right">
+            <div className="col-xs-4 text-xs-right">
               <div>{price}</div>
             </div>
           </div>
