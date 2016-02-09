@@ -53,11 +53,17 @@
   "devDependencies": {
     "babel-eslint": "*",
     "babel-plugin-react-transform": "*",
+    "chai": "3.5.0",
+    "chai-as-promised": "5.2.0",
+    "chai-datetime": "1.4.0",
     "eslint": "*",
     "eslint-plugin-react": "*",
-    "mocha": "*",
+    "eyes": "git://github.com/airbrite/eyes.js.git",
+    "mocha": "2.4.5",
     "nodemon": "*",
     "react-transform-hmr": "*",
+    "sinon": "1.17.3",
+    "sinon-as-promised": "4.0.0",
     "webpack-dev-middleware": "*",
     "webpack-hot-middleware": "*"
   },

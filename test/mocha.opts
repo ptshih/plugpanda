@@ -1,0 +1,9 @@
+--compilers js:babel-core/register
+--require ./test/common
+--reporter spec
+--bail
+--check-leaks
+--recursive
+--colors
+--timeout 60000
+--slow 300
