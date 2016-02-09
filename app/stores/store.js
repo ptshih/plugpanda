@@ -13,7 +13,7 @@ import {EventEmitter} from 'events';
 // Utils
 import api from '../lib/api';
 import debounce from '../../lib/debounce';
-const debouncedSaveAccount = debounce(api.saveAccount.bind(api), 3000);
+const debouncedSaveAccount = debounce(api.saveAccount.bind(api), 2000);
 
 class Store extends EventEmitter {
   defaults() {
@@ -146,10 +146,8 @@ class Store extends EventEmitter {
         this.state.account = _.assign({}, this.state.account, action.data);
         break;
       case 'ACCOUNT_SAVE':
-        console.log('ACCOUNT_SAVE');
         // TODO: auth.setFeatures() on every save to update user dashboard features available
         debouncedSaveAccount(this.state.account).bind(this).then(() => {
-          console.log('ACCOUNT_SAVE_SUCCESS');
           this.dispatch({
             type: 'ACCOUNT_SAVE_SUCCESS',
           });
@@ -157,6 +155,9 @@ class Store extends EventEmitter {
         break;
       case 'ACCOUNT_SAVE_SUCCESS':
         // No-op
+        break;
+      case 'ACCOUNT_FLUSH':
+        debouncedSaveAccount.flush();
         break;
       case 'ACCOUNT_CHANGE_NAME':
         this.state.account = _.assign({}, this.state.account, {

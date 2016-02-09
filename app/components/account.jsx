@@ -22,6 +22,19 @@ export default createContainer(React.createClass({
 
   // Handlers
 
+  onUnimplemented(event) {
+    event.preventDefault();
+    alert('Feature not yet implemented.');
+  },
+
+  onFlush(event) {
+    event.preventDefault();
+
+    store.dispatch({
+      type: 'ACCOUNT_FLUSH',
+    });
+  },
+
   onChangeTimezone(event) {
     event.preventDefault();
     store.dispatch({
@@ -61,20 +74,6 @@ export default createContainer(React.createClass({
     });
   },
 
-  onUnimplemented(event) {
-    event.preventDefault();
-    alert('Feature not yet implemented.');
-  },
-
-  // UNUSED
-  // Originally for manual save button
-  onSave(event) {
-    event.preventDefault();
-    store.dispatch({
-      type: 'ACCOUNT_SAVE',
-    });
-  },
-
   // Render
 
   getInformation() {
@@ -96,6 +95,7 @@ export default createContainer(React.createClass({
                     value={this.props.account.name}
                     placeholder="Your Name"
                     onChange={this.onChangeName}
+                    onBlur={this.onFlush}
                   />
                 </fieldset>
               </div>
@@ -369,6 +369,7 @@ export default createContainer(React.createClass({
                     placeholder="415-555-5555"
                     value={formattedPhone}
                     onChange={this.onChangePhone}
+                    onBlur={this.onFlush}
                   />
                 </fieldset>
               </div>
