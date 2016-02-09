@@ -6,8 +6,10 @@ describe('Debounce', function() {
   // Set max timeout allowed
   this.timeout(10000);
 
-  it('should only call thenable once', function(done) {
-    const obj = {
+  let obj;
+
+  beforeEach(function() {
+    obj = {
       foo: 'bar',
 
       // A function that returns a thenable
@@ -18,7 +20,9 @@ describe('Debounce', function() {
         });
       },
     };
+  });
 
+  it('should debounce', function(done) {
     // Create debounced function that returns a thenable
     const debounced = debounce(obj.thenable.bind(obj), 1000);
 
@@ -36,19 +40,34 @@ describe('Debounce', function() {
     });
   });
 
+  it('should flush', function(done) {
+    // Create debounced function that returns a thenable
+    const debounced = debounce(obj.thenable.bind(obj), 5000);
+    const begin = new Date().getTime();
+
+    debounced('hello world').then(() => {
+      // Should not be called
+      assert.ok(0);
+    });
+    debounced('hello again').then(() => {
+      // Should not be called
+      assert.ok(0);
+    });
+    debounced('hello final').then((text) => {
+      assert.strictEqual(text, 'hello final');
+      const end = new Date().getTime();
+      const duration = end - begin;
+      assert.ok(duration >= 500 && duration < 5000);
+      done();
+    });
+
+    // Flush at 500ms instead of waiting 5000ms
+    setTimeout(() => {
+      debounced.flush();
+    }, 500);
+  });
+
   it('should cancel', function(done) {
-    const obj = {
-      foo: 'bar',
-
-      // A function that returns a thenable
-      thenable: function(text) {
-        assert.strictEqual(this.foo, 'bar');
-        return new Promise((resolve) => {
-          resolve(text);
-        });
-      },
-    };
-
     // Create debounced function that returns a thenable
     const debounced = debounce(obj.thenable.bind(obj), 1000);
 
