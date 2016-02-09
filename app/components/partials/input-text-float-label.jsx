@@ -43,17 +43,17 @@ export default React.createClass({
 
   // Handlers
 
-  onChange(e) {
+  onChange(event) {
     // Bubble Up
     if (this.props.onChange) {
-      this.props.onChange(e);
+      this.props.onChange(event);
     }
   },
 
-  onFocus(e) {
+  onFocus(event) {
     // Bubble Up
     if (this.props.onFocus) {
-      this.props.onFocus(e);
+      this.props.onFocus(event);
     }
 
     this.setState({
@@ -61,14 +61,14 @@ export default React.createClass({
     });
   },
 
-  onBlur(e) {
+  onBlur(event) {
     // Bubble Up
     if (this.props.onBlur) {
-      this.props.onBlur(e);
+      this.props.onBlur(event);
     }
 
     this.setState({
-      on: this.props.alwaysOn || !!e.target.value,
+      on: this.props.alwaysOn || !!event.target.value,
     });
   },
 

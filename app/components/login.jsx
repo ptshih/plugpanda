@@ -28,22 +28,22 @@ export default React.createClass({
 
   // Handlers
 
-  onChangeEmail(e) {
-    e.preventDefault();
+  onChangeEmail(event) {
+    event.preventDefault();
     this.setState({
-      email: e.target.value,
+      email: event.target.value,
     });
   },
 
-  onChangePassword(e) {
-    e.preventDefault();
+  onChangePassword(event) {
+    event.preventDefault();
     this.setState({
-      password: e.target.value,
+      password: event.target.value,
     });
   },
 
-  onLogin(e) {
-    e.preventDefault();
+  onLogin(event) {
+    event.preventDefault();
     this.setState({
       disabled: true,
       error: false,
@@ -73,8 +73,8 @@ export default React.createClass({
     });
   },
 
-  onRegister(e) {
-    e.preventDefault();
+  onRegister(event) {
+    event.preventDefault();
     this.props.history.push('/register');
   },
 

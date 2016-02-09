@@ -28,8 +28,8 @@ export default createContainer(React.createClass({
 
   // Handlers
 
-  onStop(e) {
-    e.preventDefault();
+  onStop(event) {
+    event.preventDefault();
     console.log('STOP');
 
     // TODO: Remember to disable button during async request

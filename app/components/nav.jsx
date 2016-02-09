@@ -37,8 +37,8 @@ export default React.createClass({
     this.setState(store.getState());
   },
 
-  onClickCollapse(e) {
-    e.preventDefault();
+  onClickCollapse(event) {
+    event.preventDefault();
 
     store.dispatch({
       type: 'NAV_COLLAPSE',

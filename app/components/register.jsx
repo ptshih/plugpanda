@@ -19,6 +19,7 @@ export default React.createClass({
   getInitialState() {
     return {
       email: null,
+      password: null,
       message: null,
       error: false,
       disabled: false,
@@ -27,15 +28,22 @@ export default React.createClass({
 
   // Handlers
 
-  onChangeEmail(e) {
-    e.preventDefault();
+  onChangeEmail(event) {
+    event.preventDefault();
     this.setState({
-      email: e.target.value,
+      email: event.target.value,
     });
   },
 
-  onRegister(e) {
-    e.preventDefault();
+  onChangePassword(event) {
+    event.preventDefault();
+    this.setState({
+      password: event.target.value,
+    });
+  },
+
+  onRegister(event) {
+    event.preventDefault();
     this.setState({
       disabled: true,
       error: false,
@@ -65,8 +73,8 @@ export default React.createClass({
     });
   },
 
-  onLogin(e) {
-    e.preventDefault();
+  onLogin(event) {
+    event.preventDefault();
     this.props.history.push('/login');
   },
 
@@ -93,6 +101,21 @@ export default React.createClass({
                   value={this.state.email}
                   placeholder="Email"
                   onChange={this.onChangeEmail}
+                  disabled={this.state.disabled}
+                />
+              </fieldset>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-12">
+              <fieldset className="form-group">
+                <InputTextFloatLabel
+                  type="password"
+                  label="Password"
+                  value={this.state.password}
+                  placeholder="Password"
+                  onChange={this.onChangePassword}
                   disabled={this.state.disabled}
                 />
               </fieldset>
