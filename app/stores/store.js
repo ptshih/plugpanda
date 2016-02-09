@@ -12,6 +12,8 @@ import {EventEmitter} from 'events';
 
 // Utils
 import api from '../lib/api';
+import debounce from '../../lib/debounce';
+const debouncedSaveAccount = debounce(api.saveAccount.bind(api), 3000);
 
 class Store extends EventEmitter {
   defaults() {
@@ -146,7 +148,7 @@ class Store extends EventEmitter {
       case 'ACCOUNT_SAVE':
         console.log('ACCOUNT_SAVE');
         // TODO: auth.setFeatures() on every save to update user dashboard features available
-        api.saveAccount(this.state.account).bind(this).then(() => {
+        debouncedSaveAccount(this.state.account).bind(this).then(() => {
           console.log('ACCOUNT_SAVE_SUCCESS');
           this.dispatch({
             type: 'ACCOUNT_SAVE_SUCCESS',

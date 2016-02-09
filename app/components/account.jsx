@@ -2,9 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router';
 
-// Utils
-import api from '../lib/api';
-
 // Store
 import store from '../stores/store';
 
@@ -44,6 +41,11 @@ export default createContainer(React.createClass({
       type: 'ACCOUNT_CHANGE_NAME',
       data: event.target.value,
     });
+
+    // Save after changing
+    store.dispatch({
+      type: 'ACCOUNT_SAVE',
+    });
   },
 
   onChangePhone(event) {
@@ -52,6 +54,11 @@ export default createContainer(React.createClass({
       type: 'ACCOUNT_CHANGE_PHONE',
       data: event.target.value,
     });
+
+    // Save after changing
+    store.dispatch({
+      type: 'ACCOUNT_SAVE',
+    });
   },
 
   onUnimplemented(event) {
@@ -59,6 +66,8 @@ export default createContainer(React.createClass({
     alert('Feature not yet implemented.');
   },
 
+  // UNUSED
+  // Originally for manual save button
   onSave(event) {
     event.preventDefault();
     store.dispatch({
@@ -87,7 +96,6 @@ export default createContainer(React.createClass({
                     value={this.props.account.name}
                     placeholder="Your Name"
                     onChange={this.onChangeName}
-                    onBlur={this.onSave}
                   />
                 </fieldset>
               </div>
@@ -361,7 +369,6 @@ export default createContainer(React.createClass({
                     placeholder="415-555-5555"
                     value={formattedPhone}
                     onChange={this.onChangePhone}
-                    onBlur={this.onSave}
                   />
                 </fieldset>
               </div>
