@@ -48,7 +48,7 @@ export default React.createClass({
   },
 
   getTableCol(col, idx) {
-    const className = idx > 0 ? 'text-right' : '';
+    const className = idx > 0 ? 'text-xs-right' : '';
 
     return (
       <td key={idx} className={className}>{col}</td>
