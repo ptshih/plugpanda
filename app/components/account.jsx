@@ -5,6 +5,9 @@ import {Link} from 'react-router';
 // Utils
 import api from '../lib/api';
 
+// Store
+import store from '../stores/store';
+
 // Container
 import createContainer from './container';
 
@@ -22,39 +25,44 @@ export default createContainer(React.createClass({
 
   // Handlers
 
-  onChangeCurrency() {
-    // TODO: readonly for now
+  onChangeTimezone(event) {
+    event.preventDefault();
+    store.dispatch({
+      type: 'ACCOUNT_CHANGE_TIMEZONE',
+      data: event.target.value,
+    });
+
+    // Save after changing
+    store.dispatch({
+      type: 'ACCOUNT_SAVE',
+    });
   },
 
-  onChangeTimezone() {
-    // TODO: readonly for now
+  onChangeName(event) {
+    event.preventDefault();
+    store.dispatch({
+      type: 'ACCOUNT_CHANGE_NAME',
+      data: event.target.value,
+    });
   },
 
-  onChangeCountry() {
-    // TODO: readonly for now
+  onChangePhone(event) {
+    event.preventDefault();
+    store.dispatch({
+      type: 'ACCOUNT_CHANGE_PHONE',
+      data: event.target.value,
+    });
   },
 
-  onChangeName() {
-    // TODO: readonly for now
+  onUnimplemented(event) {
+    event.preventDefault();
+    alert('Feature not yet implemented.');
   },
 
-  onChangeEmail() {
-    // TODO: readonly for now
-  },
-
-  onChangePhone() {
-    // TODO: readonly for now
-  },
-
-  onSave(e) {
-    e.preventDefault();
-
-    // TODO: auth.setFeatures
-
-    return api.saveAccount(this.props.account).then(() => {
-      console.log('saved');
-    }).catch(() => {
-      console.error('saved');
+  onSave(event) {
+    event.preventDefault();
+    store.dispatch({
+      type: 'ACCOUNT_SAVE',
     });
   },
 
@@ -79,6 +87,7 @@ export default createContainer(React.createClass({
                     value={this.props.account.name}
                     placeholder="Your Name"
                     onChange={this.onChangeName}
+                    onBlur={this.onSave}
                   />
                 </fieldset>
               </div>
@@ -89,7 +98,7 @@ export default createContainer(React.createClass({
                     label="Email"
                     value={this.props.account.email}
                     placeholder="Your Email"
-                    onChange={this.onChangeEmail}
+                    readOnly
                   />
                 </fieldset>
               </div>
@@ -104,9 +113,6 @@ export default createContainer(React.createClass({
     const currencyOptions = [{
       label: 'USD',
       value: 'usd',
-    }, {
-      label: 'CAD',
-      value: 'cad',
     }];
 
     const timezoneOptions = [{
@@ -142,8 +148,8 @@ export default createContainer(React.createClass({
                   <SelectFloatLabel
                     label="Currency"
                     value={this.props.account.currency}
-                    onChange={this.onChangeCurrency}
                     options={currencyOptions}
+                    readOnly
                   />
                 </fieldset>
               </div>
@@ -152,8 +158,8 @@ export default createContainer(React.createClass({
                   <SelectFloatLabel
                     label="Timezone"
                     value={_.get(this.props.account, 'timezone')}
-                    onChange={this.onChangeTimezone}
                     options={timezoneOptions}
+                    onChange={this.onChangeTimezone}
                   />
                 </fieldset>
               </div>
@@ -217,7 +223,7 @@ export default createContainer(React.createClass({
 
             <div className="row">
               <div className="col-xs-12">
-                <button className="btn btn-primary">Authenticate</button>
+                <button className="btn btn-primary margin-top">Authenticate</button>
               </div>
             </div>
           </div>
@@ -327,9 +333,6 @@ export default createContainer(React.createClass({
     const countryOptions = [{
       label: 'United States',
       value: 'us',
-    }, {
-      label: 'Canada',
-      value: 'CA',
     }];
 
     const formattedPhone = this._formatPhone(this.props.account.phone);
@@ -346,8 +349,8 @@ export default createContainer(React.createClass({
                   <SelectFloatLabel
                     label="Country"
                     value={this.props.account.country}
-                    onChange={this.onChangeCountry}
                     options={countryOptions}
+                    readOnly
                   />
                 </fieldset>
               </div>
@@ -358,6 +361,7 @@ export default createContainer(React.createClass({
                     placeholder="415-555-5555"
                     value={formattedPhone}
                     onChange={this.onChangePhone}
+                    onBlur={this.onSave}
                   />
                 </fieldset>
               </div>
@@ -379,10 +383,8 @@ export default createContainer(React.createClass({
         {this.getGetaround()}
         {this.getSubscription()}
         <section>
-          <a href="#" onClick={this.onSave}>Save</a>
-        </section>
-        <section>
-          <Link to="/logout">Sign Out</Link>
+          <div><a href="#" onClick={this.onUnimplemented}>Change Password</a></div>
+          <div><Link to="/logout">Sign Out</Link></div>
         </section>
       </div>
     );
@@ -390,13 +392,29 @@ export default createContainer(React.createClass({
 
   // Private
 
-  _formatPhone(str = '') {
+  _formatPhone(str) {
+    if (!_.isString(str)) {
+      return '';
+    }
+
     const r = /(\D+)/g;
     const val = str.replace(r, '');
     const npa = val.substr(0, 3);
     const nxx = val.substr(3, 3);
     const last4 = val.substr(6, 4);
-    return npa + '-' + nxx + '-' + last4;
+
+    const formattedPhone = [];
+    if (npa) {
+      formattedPhone.push(npa);
+    }
+    if (nxx) {
+      formattedPhone.push(nxx);
+    }
+    if (last4) {
+      formattedPhone.push(last4);
+    }
+
+    return formattedPhone.join('-');
   },
 }), {
   title: 'Account',

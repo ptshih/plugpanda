@@ -10,6 +10,9 @@ import _ from 'lodash';
 import Dispatcher from '../dispatcher/dispatcher';
 import {EventEmitter} from 'events';
 
+// Utils
+import api from '../lib/api';
+
 class Store extends EventEmitter {
   defaults() {
     return {
@@ -125,6 +128,7 @@ class Store extends EventEmitter {
         this.state.error = action.data;
         break;
 
+      // Nav
       case 'NAV_COLLAPSE':
         this.state.collapse = action.data;
         break;
@@ -132,13 +136,46 @@ class Store extends EventEmitter {
         this.state.loading = action.data;
         break;
 
+      // Account
       case 'RESET_ACCOUNT':
         this.state.account = this.defaults().account;
         break;
       case 'SET_ACCOUNT':
         this.state.account = _.assign({}, this.state.account, action.data);
         break;
+      case 'ACCOUNT_SAVE':
+        console.log('ACCOUNT_SAVE');
+        // TODO: auth.setFeatures() on every save to update user dashboard features available
+        api.saveAccount(this.state.account).bind(this).then(() => {
+          console.log('ACCOUNT_SAVE_SUCCESS');
+          this.dispatch({
+            type: 'ACCOUNT_SAVE_SUCCESS',
+          });
+        });
+        break;
+      case 'ACCOUNT_SAVE_SUCCESS':
+        // No-op
+        break;
+      case 'ACCOUNT_CHANGE_NAME':
+        this.state.account = _.assign({}, this.state.account, {
+          name: action.data,
+        });
+        break;
+      case 'ACCOUNT_CHANGE_TIMEZONE':
+        this.state.account = _.assign({}, this.state.account, {
+          timezone: action.data,
+        });
+        break;
+      case 'ACCOUNT_CHANGE_PHONE':
+        const phone = (action.data || '').replace(/-/g, '');
+        if (_.isEmpty(phone) || _.isFinite(_.parseInt(phone))) {
+          this.state.account = _.assign({}, this.state.account, {
+            phone: phone,
+          });
+        }
+        break;
 
+      // Waitlist
       case 'RESET_WAITLIST':
         this.state.waitlist = this.defaults().waitlist;
         break;
@@ -146,6 +183,7 @@ class Store extends EventEmitter {
         this.state.waitlist = _.assign({}, this.state.waitlist, action.data);
         break;
 
+      // Car
       case 'RESET_CAR':
         this.state.car = this.defaults().car;
         break;
@@ -153,6 +191,7 @@ class Store extends EventEmitter {
         this.state.car = _.assign({}, this.state.car, action.data);
         break;
 
+      // Session
       case 'RESET_SESSION':
         this.state.session = this.defaults().session;
         break;
@@ -160,6 +199,7 @@ class Store extends EventEmitter {
         this.state.session = _.assign({}, this.state.session, action.data);
         break;
 
+      // Sessions
       case 'RESET_SESSIONS':
         this.state.sessions = this.defaults().sessions;
         break;
