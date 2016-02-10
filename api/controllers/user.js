@@ -148,6 +148,8 @@ module.exports = BaseController.extend({
     let password = (req.body.password || req.query.password || '').trim();
     const name = req.body.name || null;
 
+    console.log(password);
+
     return Muni.Promise.bind(this).then(() => {
       const user = new UserModel();
       user.db = this.get('db');

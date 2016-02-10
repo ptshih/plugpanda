@@ -24,12 +24,13 @@ export default {
     });
   }),
 
-  register: Promise.method(function(email) {
+  register: Promise.method(function(email, password) {
     return this._request({
       method: 'POST',
       url: window.location.origin + '/api/register',
       json: {
         email: email,
+        password: password,
       },
     }).then((user) => {
       auth.setAccessToken(user.access_token);

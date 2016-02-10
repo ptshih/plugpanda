@@ -19,7 +19,7 @@ export default createContainer(React.createClass({
       <div>
         <section>
           <h5>Active Charging Sessions</h5>
-          <div>701 China Basin St, San Francisco</div>
+          <div>1 Market St, San Francisco, CA</div>
         </section>
 
         <section>
@@ -31,9 +31,9 @@ export default createContainer(React.createClass({
 
         <section>
           <h5>Frequently Used Stations</h5>
-          <div>701 China Basin St, San Francisco</div>
-          <div>444 Stockton St, San Francisco</div>
-          <div>329 Miller Ave, South San Francisco</div>
+          <div>1 Market St, San Francisco, CA</div>
+          <div>444 Stockton St, San Francisco, CA</div>
+          <div>329 Miller Ave, South San Francisco, CA</div>
         </section>
       </div>
     );
