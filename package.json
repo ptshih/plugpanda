@@ -1,7 +1,7 @@
 {
   "name": "panda",
   "author": "Peter Shih <ptshih@gmail.com>",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "description": "Panda",
   "private": true,
   "dependencies": {
