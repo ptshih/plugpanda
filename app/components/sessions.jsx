@@ -20,7 +20,7 @@ export default createContainer(React.createClass({
   // Render
 
   getSessionCells(session, idx) {
-    return <SessionCell key={idx} history={this.props.history} session={session} />;
+    return <SessionCell key={idx} session={session} />;
   },
 
   getSessionList() {

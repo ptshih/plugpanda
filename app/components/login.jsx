@@ -12,8 +12,8 @@ import InputTextFloatLabel from './partials/input-text-float-label';
 export default React.createClass({
   displayName: 'Login',
 
-  propTypes: {
-    history: React.PropTypes.object,
+  contextTypes: {
+    router: React.PropTypes.object.isRequired,
   },
 
   getInitialState() {
@@ -76,7 +76,7 @@ export default React.createClass({
         data: false,
       });
     }).then(() => {
-      this.props.history.push('/dashboard');
+      this.context.router.push('/dashboard');
       return null;
     }).catch((err) => {
       this.setState({
@@ -89,7 +89,7 @@ export default React.createClass({
 
   onRegister(event) {
     event.preventDefault();
-    this.props.history.push('/register');
+    this.context.router.push('/register');
   },
 
   // Render

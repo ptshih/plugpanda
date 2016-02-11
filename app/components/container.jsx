@@ -97,11 +97,7 @@ export default (Component, options) => {
         );
       }
 
-      return (
-        <div className="Component">
-          {content}
-        </div>
-      );
+      return content;
     },
 
     // Methods

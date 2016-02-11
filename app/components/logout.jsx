@@ -6,8 +6,8 @@ import auth from '../lib/auth';
 export default React.createClass({
   displayName: 'Logout',
 
-  propTypes: {
-    history: React.PropTypes.object,
+  contextTypes: {
+    router: React.PropTypes.object.isRequired,
   },
 
   // Lifecycle
@@ -15,7 +15,7 @@ export default React.createClass({
   componentDidMount() {
     auth.removeAccessToken();
     auth.removeFeatures();
-    this.props.history.push('/');
+    this.context.router.push('/');
   },
 
   // Handlers

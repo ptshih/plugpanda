@@ -21,7 +21,11 @@
   <div id="app"></div>
   <script>
     function updateSite(event) {
-      window.applicationCache.swapCache();
+      try {
+        window.applicationCache.swapCache();
+      } catch (err) {
+        console.error(err);
+      }
     }
     window.applicationCache.addEventListener('updateready', updateSite, false);
   </script>

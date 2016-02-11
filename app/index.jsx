@@ -3,14 +3,12 @@ import '../scss/main.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createHistory} from 'history';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 // Utils
 import auth from './lib/auth';
 
 // Components
-import Router from 'react-router';
-import {Route, IndexRoute} from 'react-router';
 import Err from './components/err';
 import Header from './components/header';
 
@@ -35,15 +33,15 @@ import Register from './components/register';
 
 // TODO: Fetch User features and update local-storage if authed
 
-function onEnter(nextState, replaceState, callback) {
+function onEnter(nextState, replace, callback) {
   // Already logged in
   if ((!this.path || this.path === 'login') && auth.isLoggedIn()) {
-    replaceState(null, '/dashboard');
+    replace(null, '/dashboard');
   }
 
   // Check auth
   if (this.requireAuth && !auth.isLoggedIn()) {
-    replaceState({
+    replace({
       nextPathname: nextState.location.pathname,
     }, '/login');
   }
@@ -70,10 +68,9 @@ const App = React.createClass({
     return (
       <div>
         <Header
-          history={this.props.history}
           location={this.props.location}
         />
-        <main className="Content">{this.props.children}</main>
+        <main role="main" className="Content">{this.props.children}</main>
       </div>
     );
   },
@@ -82,7 +79,7 @@ const App = React.createClass({
 // Define Routes
 // https://github.com/rackt/react-router/blob/master/docs/API.md#route
 ReactDOM.render((
-  <Router history={createHistory()}>
+  <Router history={browserHistory}>
     <Route path="/" component={App}>
       {/* Default */}
       <IndexRoute component={Root} onEnter={onEnter} />

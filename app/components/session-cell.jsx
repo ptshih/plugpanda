@@ -8,8 +8,11 @@ export default React.createClass({
   displayName: 'SessionCell',
 
   propTypes: {
-    history: React.PropTypes.object,
     session: React.PropTypes.object.isRequired,
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object.isRequired,
   },
 
   // Handlers
@@ -23,7 +26,7 @@ export default React.createClass({
 
     // URL
     const url = `/sessions/${this.props.session.session_id}`;
-    this.props.history.push({
+    this.context.router.push({
       pathname: url,
       state: {
         parentPath: '/sessions',

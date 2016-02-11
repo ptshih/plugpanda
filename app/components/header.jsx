@@ -13,7 +13,10 @@ export default React.createClass({
 
   propTypes: {
     location: React.PropTypes.object,
-    history: React.PropTypes.object,
+  },
+
+  contextTypes: {
+    router: React.PropTypes.object.isRequired,
   },
 
   getInitialState() {
@@ -50,9 +53,9 @@ export default React.createClass({
     const parentPath = _.get(this.props, 'location.state.parentPath', '/dashboard');
     const action = _.get(this.props, 'location.action', 'POP').toLowerCase();
     if (action === 'push') {
-      this.props.history.goBack();
+      this.context.router.goBack();
     } else {
-      this.props.history.push(parentPath);
+      this.context.router.push(parentPath);
     }
   },
 
