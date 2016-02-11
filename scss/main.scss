@@ -317,11 +317,29 @@ section, .Section {
   position: absolute;
   margin: 0;
   padding: 0;
-  top: 67px;
+  top: 4.25rem;
   right: 0;
   left: 0;
   // bottom: 0;
   // overflow: scroll;
   // -webkit-overflow-scrolling: touch;
   // position: fixed;
+}
+
+.macbook {
+  position: relative;
+  margin: 0 auto;
+  width: 535px;
+
+  .screen {
+    position: absolute;
+    left: 68px;
+    top: 25px;
+  }
+}
+
+
+.faq-section {
+  @extend .p-y-3;
+  border-bottom: 1px solid #ccc;
 }
