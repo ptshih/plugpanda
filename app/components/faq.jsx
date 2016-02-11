@@ -63,7 +63,7 @@ export default React.createClass({
             </div>
             <div className="text-xs-center text-lg-left">
               <h2 className="m-b-1">Save Money</h2>
-              <p className="lead">Keep track of how much money you're saving by avoiding trickle charging.</p>
+              <p className="lead">Keep track of how much money you're saving when you avoid trickle charging.</p>
             </div>
           </div>
         </section>
