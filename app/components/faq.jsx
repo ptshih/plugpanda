@@ -34,7 +34,7 @@ export default React.createClass({
               <img className="screen" src="/img/screen-1.png"></img>
             </div>
             <div className="text-xs-center text-lg-left">
-              <h2 className="m-b-1">Charging Without Anxiety</h2>
+              <h2 className="m-b-1">Charging Without the Anxiety</h2>
               <p className="lead">PlugPanda monitors your ChargePoint charging sessions and automatically stops them for you.</p>
               <p className="lead">Having EV range anxiety is bad enough!</p>
             </div>
@@ -49,7 +49,7 @@ export default React.createClass({
             </div>
             <div className="text-xs-center text-lg-left">
               <h2 className="m-b-1">You're In Control</h2>
-              <p className="lead">You decide when stop charging your vehicle.</p>
+              <p className="lead">You decide when to stop charging your vehicle.</p>
               <p className="lead">If a charging session is free, Plug Panda does not attempt to stop the session prematurely.</p>
             </div>
           </div>
@@ -63,7 +63,7 @@ export default React.createClass({
             </div>
             <div className="text-xs-center text-lg-left">
               <h2 className="m-b-1">Save Money</h2>
-              <p className="lead">Keep track of how much money you're saving.</p>
+              <p className="lead">Keep track of how much money you're saving by avoiding trickle charging.</p>
             </div>
           </div>
         </section>
