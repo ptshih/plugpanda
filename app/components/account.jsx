@@ -2,6 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router';
 
+// Utils
+import auth from '../lib/auth';
+
 // Store
 import store from '../stores/store';
 
@@ -27,6 +30,14 @@ export default createContainer(React.createClass({
     alert('Feature not yet implemented.');
   },
 
+  onSave(event) {
+    event.preventDefault();
+
+    store.dispatch({
+      type: 'ACCOUNT_SAVE',
+    });
+  },
+
   onFlush(event) {
     event.preventDefault();
 
@@ -44,7 +55,7 @@ export default createContainer(React.createClass({
 
     // Save after changing
     store.dispatch({
-      type: 'ACCOUNT_SAVE',
+      type: 'ACCOUNT_SAVE_DEBOUNCED',
     });
   },
 
@@ -57,7 +68,7 @@ export default createContainer(React.createClass({
 
     // Save after changing
     store.dispatch({
-      type: 'ACCOUNT_SAVE',
+      type: 'ACCOUNT_SAVE_DEBOUNCED',
     });
   },
 
@@ -70,7 +81,7 @@ export default createContainer(React.createClass({
 
     // Save after changing
     store.dispatch({
-      type: 'ACCOUNT_SAVE',
+      type: 'ACCOUNT_SAVE_DEBOUNCED',
     });
   },
 
@@ -179,6 +190,10 @@ export default createContainer(React.createClass({
   },
 
   getChargepoint() {
+    if (auth.isWaitlisted()) {
+      return null;
+    }
+
     const userId = _.get(this.props.account, 'chargepoint.user_id');
     const authToken = _.get(this.props.account, 'chargepoint.auth_token');
 
@@ -380,6 +395,19 @@ export default createContainer(React.createClass({
     );
   },
 
+  getAdmin() {
+    if (!auth.isAdmin()) {
+      return null;
+    }
+
+    return (
+      <section>
+        <div><a href="#" onClick={this.onSave}>Save Changes</a></div>
+        <div><a href="#" onClick={this.onUnimplemented}>Change Password</a></div>
+      </section>
+    )
+  },
+
   render() {
     return (
       <div>
@@ -390,8 +418,8 @@ export default createContainer(React.createClass({
         {this.getBMW()}
         {this.getGetaround()}
         {this.getSubscription()}
+        {this.getAdmin()}
         <section>
-          <div><a href="#" onClick={this.onUnimplemented}>Change Password</a></div>
           <div><Link to="/logout">Sign Out</Link></div>
         </section>
       </div>

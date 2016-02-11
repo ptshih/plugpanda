@@ -14,6 +14,14 @@ export default {
     return _.isString(localStorage.get('access_token'));
   },
 
+  isAdmin() {
+    return this.getFeatures('admin');
+  },
+
+  isWaitlisted() {
+    return this.getFeatures('waitlisted');
+  },
+
   /**
    * Used by the API library to build request headers including the access token
    * @return {Object} Request headers with Authorization defined

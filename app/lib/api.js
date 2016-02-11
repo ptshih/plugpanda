@@ -74,6 +74,9 @@ export default {
       url: window.location.origin + '/api/account',
       headers: auth.buildAuthHeaders(),
       json: json,
+    }).then((user) => {
+      auth.setFeatures(user.features);
+      return user;
     });
   }),
 
@@ -84,7 +87,12 @@ export default {
     });
   }),
 
-  // TODO: after `saveAccount`, remember to call `auth.setFeatures()`
+  fetchWaitlistPosition: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/waitlist_position',
+      headers: auth.buildAuthHeaders(),
+    });
+  }),
 
   _request: Promise.method(function(opts) {
     return request(opts).then((body) => {

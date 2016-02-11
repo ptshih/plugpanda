@@ -83,6 +83,7 @@ module.exports = BaseController.extend({
       waitlisted_date: {
         $lt: req.user.get('waitlisted_date'),
       },
+      'features.waitlisted': true,
     }).then((count) => {
       res.data = {
         position: count + 1,

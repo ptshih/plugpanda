@@ -146,6 +146,13 @@ class Store extends EventEmitter {
         this.state.account = _.assign({}, this.state.account, action.data);
         break;
       case 'ACCOUNT_SAVE':
+        api.saveAccount(this.state.account).bind(this).then(() => {
+          this.dispatch({
+            type: 'ACCOUNT_SAVE_SUCCESS',
+          });
+        });
+        break;
+      case 'ACCOUNT_SAVE_DEBOUNCED':
         // TODO: auth.setFeatures() on every save to update user dashboard features available
         debouncedSaveAccount(this.state.account).bind(this).then(() => {
           this.dispatch({
