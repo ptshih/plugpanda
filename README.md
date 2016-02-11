@@ -16,5 +16,5 @@ Nobody knows what it means, but its provocative!
 
 ## Heroku
 
-[Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-[Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
+- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
+- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
