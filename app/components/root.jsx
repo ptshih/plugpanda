@@ -17,7 +17,7 @@ export default React.createClass({
           <p>
             <a href="http://www.chargepoint.com/">ChargePoint</a> is the largest provider of public (paid and free) EV charging stations.
             <br/>
-            It's also the most commonly installed EV charging station in apartment complexes.
+            It's also the most commonly installed EV charging station in apartment and condominium complexes.
           </p>
 
           <p className="lead">Many ChargePoint stations charge by the hour:</p>
@@ -34,8 +34,8 @@ export default React.createClass({
 
           <br/>
 
-          <div><strong>2. Like smartphones, the charge rate of EVs trickles down as it approaches 100%.</strong></div>
-          <div>The reduced rate of charging could be as much as 20% of regular rate towards the last 5-10% of the battery.</div>
+          <div><strong>2. Like smartphones, the charge rate of EVs trickle down as the battery approaches 100%.</strong></div>
+          <div>The reduced rate of charging can be as much as 80% slower during the last 5-10%.</div>
 
           <br/>
 

@@ -35,8 +35,8 @@ export default React.createClass({
             </div>
             <div className="text-xs-center text-lg-left">
               <h2 className="m-b-1">Charging Without the Anxiety</h2>
-              <p className="lead">PlugPanda monitors your ChargePoint charging sessions and automatically stops them for you.</p>
-              <p className="lead">Having EV range anxiety is bad enough!</p>
+              <p className="lead">PlugPanda monitors your ChargePoint charging sessions 24/7 and automatically stops them for you.</p>
+              <p className="lead">Having range anxiety is bad enough, don't let charging make it worse.</p>
             </div>
           </div>
         </section>
@@ -63,7 +63,7 @@ export default React.createClass({
             </div>
             <div className="text-xs-center text-lg-left">
               <h2 className="m-b-1">Save Money</h2>
-              <p className="lead">Keep track of how much money you're saving when you avoid trickle charging.</p>
+              <p className="lead">Keep track of how much money you've saved by preventing trickle charging.</p>
             </div>
           </div>
         </section>
