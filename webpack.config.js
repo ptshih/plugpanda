@@ -10,8 +10,6 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
       template: 'index.webpack.html',
       inject: 'body',
@@ -31,7 +29,6 @@ module.exports = {
     }),
   ],
   entry: [
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
     path.join(__dirname, './app/index.jsx'),
   ],
   output: {
@@ -53,22 +50,13 @@ module.exports = {
       exclude: /node_modules/,
       query: {
         presets: ['es2015', 'react'],
-        plugins: [
-          ['react-transform', {
-            transforms: [{
-              transform: 'react-transform-hmr',
-              imports: ['react'],
-              locals: ['module'],
-            }],
-          }],
-        ],
       },
     }, {
       test: /\.json?$/,
       loader: 'json',
     }, {
       test: /\.scss$/,
-      loaders: ['style', 'css', 'sass'],
+      loaders: ['style', 'css?sourceMap', 'sass?sourceMap'],
     }, {
       test: /\.(woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
       loader: 'url-loader?limit=10000&minetype=application/font-woff',

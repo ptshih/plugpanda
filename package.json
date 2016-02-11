@@ -63,12 +63,10 @@
     "eyes": "git://github.com/airbrite/eyes.js.git",
     "mocha": "2.4.5",
     "nodemon": "*",
-    "react-transform-hmr": "*",
     "sass-lint": "1.5.0",
     "sinon": "1.17.3",
     "sinon-as-promised": "4.0.0",
-    "webpack-dev-middleware": "*",
-    "webpack-hot-middleware": "*"
+    "webpack-dev-middleware": "*"
   },
   "main": "server.js",
   "scripts": {

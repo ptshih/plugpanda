@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config.js');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackCompiler = webpack(webpackConfig);
 
 module.exports = {
@@ -15,9 +14,5 @@ module.exports = {
       chunkModules: false,
       modules: false,
     },
-  }),
-
-  hotMiddleware: webpackHotMiddleware(webpackCompiler, {
-    log: console.log,
   }),
 };

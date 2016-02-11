@@ -145,7 +145,6 @@ db.connect().then(() => {
   if (app.get('props').debug) {
     const webpackMiddleware = require('../webpack-middleware');
     app.use(webpackMiddleware.devMiddleware);
-    app.use(webpackMiddleware.hotMiddleware);
 
     // Default Server Route
     app.get('*', (req, res) => {
