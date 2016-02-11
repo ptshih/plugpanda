@@ -24,7 +24,7 @@ export default createContainer(React.createClass({
 
   componentDidMount() {
     // Fetch from remote
-    api.fetchWaitlistPosition().then((data) => {
+    return api.fetchWaitlistPosition().then((data) => {
       this.setState({
         position: data.position,
       });
@@ -48,6 +48,31 @@ export default createContainer(React.createClass({
     );
   },
 
+  getActivity() {
+    return (
+      <div>
+        <section>
+          <h4>Active Charging Sessions</h4>
+          <div>1 Market St, San Francisco, CA</div>
+        </section>
+
+        <section>
+          <h4>Savings</h4>
+          <div>You saved $0.87 today.</div>
+          <div>You saved $5.68 this week.</div>
+          <div>You saved $13.37 this month.</div>
+        </section>
+
+        <section>
+          <h4>Frequently Used Stations</h4>
+          <div>1 Market St, San Francisco, CA</div>
+          <div>444 Stockton St, San Francisco, CA</div>
+          <div>329 Miller Ave, South San Francisco, CA</div>
+        </section>
+      </div>
+    );
+  },
+
 
   render() {
     // Show waitlisted status
@@ -55,28 +80,7 @@ export default createContainer(React.createClass({
       return this.getWaitlisted();
     }
 
-    return (
-      <div>
-        <section>
-          <h5>Active Charging Sessions</h5>
-          <div>1 Market St, San Francisco, CA</div>
-        </section>
-
-        <section>
-          <h5>Savings</h5>
-          <div>You saved $0.87 today.</div>
-          <div>You saved $5.68 this week.</div>
-          <div>You saved $13.37 this month.</div>
-        </section>
-
-        <section>
-          <h5>Frequently Used Stations</h5>
-          <div>1 Market St, San Francisco, CA</div>
-          <div>444 Stockton St, San Francisco, CA</div>
-          <div>329 Miller Ave, South San Francisco, CA</div>
-        </section>
-      </div>
-    );
+    return this.getActivity();
   },
 
 }), {

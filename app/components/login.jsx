@@ -64,6 +64,7 @@ export default React.createClass({
       });
     }).then(() => {
       this.props.history.push('/dashboard');
+      return null;
     }).catch((err) => {
       this.setState({
         disabled: false,
