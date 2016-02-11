@@ -38,8 +38,8 @@ export default createContainer(React.createClass({
     return (
       <section>
         <h4>Hey there, thanks for being interested in Plug Panda!</h4>
-        <p>We're trying our best to get as many people up and running as fast as possible.</p>
-        <p>Your current place in line is: <strong>{position}</strong></p>
+        <p className="lead">We're trying our best to get as many people up and running as fast as possible.</p>
+        <p className="lead">Your current place in line is: <strong>{position}</strong></p>
         <p>
           We'll contact you via email once we're ready to get you started.<br />
           Until then, if you have any questions, please email us at: <a href="mailto:help@plugpanda.com">help@plugpanda.com</a>.
