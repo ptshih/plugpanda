@@ -410,7 +410,7 @@ export default createContainer(React.createClass({
 
   render() {
     return (
-      <div>
+      <article>
         {this.getInformation()}
         {this.getSettings()}
         {this.getNotifications()}
@@ -422,7 +422,7 @@ export default createContainer(React.createClass({
         <section>
           <div><Link to="/logout">Sign Out</Link></div>
         </section>
-      </div>
+      </article>
     );
   },
 

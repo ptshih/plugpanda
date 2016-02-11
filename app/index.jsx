@@ -12,7 +12,7 @@ import auth from './lib/auth';
 import Router from 'react-router';
 import {Route, IndexRoute} from 'react-router';
 import Err from './components/err';
-import Nav from './components/nav';
+import Header from './components/header';
 
 // Components (containers)
 import Root from './components/root';
@@ -69,7 +69,7 @@ const App = React.createClass({
   render() {
     return (
       <div>
-        <Nav
+        <Header
           history={this.props.history}
           location={this.props.location}
         />

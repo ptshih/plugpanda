@@ -10,7 +10,7 @@ export default React.createClass({
 
   render() {
     return (
-      <div>
+      <article>
         <section>
           <h4>What’s wrong with public EV charging today?</h4>
 
@@ -41,7 +41,7 @@ export default React.createClass({
 
           <p>If this sounds like your situation today, <Link to="/faq">read more about how Plug Panda can help!</Link></p>
         </section>
-      </div>
+      </article>
     );
   },
 

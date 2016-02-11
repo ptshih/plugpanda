@@ -178,7 +178,7 @@ export default createContainer(React.createClass({
 
   render() {
     return (
-      <div>
+      <article>
         <section>
           {this.getStats()}
         </section>
@@ -186,7 +186,7 @@ export default createContainer(React.createClass({
         <section>
           {this.getChart()}
         </section>
-      </div>
+      </article>
     );
   },
 }), {

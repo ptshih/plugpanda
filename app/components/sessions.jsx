@@ -35,13 +35,15 @@ export default createContainer(React.createClass({
 
   render() {
     return (
-      <section>
-        <div className="row">
-          <div className="col-xs-12">
-            {this.getSessionList()}
+      <article>
+        <section>
+          <div className="row">
+            <div className="col-xs-12">
+              {this.getSessionList()}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </article>
     );
   },
 }), {

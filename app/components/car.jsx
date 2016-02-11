@@ -168,9 +168,11 @@ export default createContainer(React.createClass({
 
   render() {
     return (
-      <section>
-        {this.getStats()}
-      </section>
+      <article>
+        <section>
+          {this.getStats()}
+        </section>
+      </article>
     );
   },
 }), {

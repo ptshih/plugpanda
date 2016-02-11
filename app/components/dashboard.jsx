@@ -50,7 +50,7 @@ export default createContainer(React.createClass({
 
   getActivity() {
     return (
-      <div>
+      <article>
         <section>
           <h4>Active Charging Sessions</h4>
           <div>1 Market St, San Francisco, CA</div>
@@ -69,7 +69,7 @@ export default createContainer(React.createClass({
           <div>444 Stockton St, San Francisco, CA</div>
           <div>329 Miller Ave, South San Francisco, CA</div>
         </section>
-      </div>
+      </article>
     );
   },
 

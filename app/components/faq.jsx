@@ -26,7 +26,7 @@ export default React.createClass({
 
   render() {
     return (
-      <div>
+      <article>
         <section className="faq-section">
           <div>
             <div className="macbook pull-lg-right">
@@ -71,7 +71,7 @@ export default React.createClass({
         <section>
           <div className="text-xs-center"><Link to="/register">Join the waitlist today!</Link></div>
         </section>
-      </div>
+      </article>
     );
   },
 

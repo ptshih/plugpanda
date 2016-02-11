@@ -14,9 +14,9 @@ export default React.createClass({
 
   render() {
     return (
-      <div>
+      <article>
         <section>Loading...</section>
-      </div>
+      </article>
     );
   },
 });
