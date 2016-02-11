@@ -131,6 +131,9 @@ class Store extends EventEmitter {
         break;
 
       // Nav
+      case 'NAV_TITLE':
+        this.state.title = action.data || this.defaults().title;
+        break;
       case 'NAV_COLLAPSE':
         this.state.collapse = action.data;
         break;

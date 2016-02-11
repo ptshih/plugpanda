@@ -49,11 +49,20 @@ export default (Component, options) => {
     componentDidMount() {
       store.subscribe(this.onChange);
 
+      store.dispatch({
+        type: 'NAV_TITLE',
+        data: options.title,
+      });
+
       // Fetch from remote
       this.fetch();
     },
 
     componentWillUnmount() {
+      store.dispatch({
+        type: 'NAV_TITLE',
+      });
+
       store.unsubscribe(this.onChange);
     },
 

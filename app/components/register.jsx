@@ -26,6 +26,19 @@ export default React.createClass({
     };
   },
 
+  componentDidMount() {
+    store.dispatch({
+      type: 'NAV_TITLE',
+      data: 'Sign Up',
+    });
+  },
+
+  componentWillUnmount() {
+    store.dispatch({
+      type: 'NAV_TITLE',
+    });
+  },
+
   // Handlers
 
   onChangeEmail(event) {

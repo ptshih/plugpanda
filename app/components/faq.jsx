@@ -1,10 +1,26 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+// Store
+import store from '../stores/store';
+
 // Components
 
 export default React.createClass({
   displayName: 'Faq',
+
+  componentDidMount() {
+    store.dispatch({
+      type: 'NAV_TITLE',
+      data: 'How Plug Panda Works',
+    });
+  },
+
+  componentWillUnmount() {
+    store.dispatch({
+      type: 'NAV_TITLE',
+    });
+  },
 
   // Render
 
