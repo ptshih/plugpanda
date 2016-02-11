@@ -12,7 +12,7 @@ export default React.createClass({
   componentDidMount() {
     store.dispatch({
       type: 'NAV_TITLE',
-      data: 'How Plug Panda Works',
+      data: 'How It Works',
     });
   },
 
