@@ -10,6 +10,10 @@ Nobody knows what it means, but its provocative!
 
 [Reference](REFERENCE.md)
 
+## Dependencies
+
+- [Muni](https://github.com/airbrite/muni)
+
 ## Todo
 
 [Todo](TODO.md)
