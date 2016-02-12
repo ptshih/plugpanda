@@ -285,6 +285,17 @@ module.exports = BaseModel.extend({
     ).return(this);
   },
 
+  getWaitlistPosition() {
+    return this.db.count('users', {
+      waitlisted_date: {
+        $lt: this.get('waitlisted_date'),
+      },
+      'features.waitlisted': true,
+    }).then((count) => {
+      return count + 1;
+    });
+  },
+
   // Login to Chargepoint and get `user_id` and `auth_token`
   authenticateChargepoint(email, password) {
     return chargepoint.sendLoginRequest(email, password).tap((login) => {

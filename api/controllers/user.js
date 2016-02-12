@@ -88,15 +88,9 @@ module.exports = BaseController.extend({
   },
 
   waitlistPosition(req, res, next) {
-    // TODO: move to model
-    this.get('db').count('users', {
-      waitlisted_date: {
-        $lt: req.user.get('waitlisted_date'),
-      },
-      'features.waitlisted': true,
-    }).then((count) => {
+    return req.user.getWaitlistPosition().then((position) => {
       res.data = {
-        position: count + 1,
+        position: position,
       };
       return next();
     }).catch(next);

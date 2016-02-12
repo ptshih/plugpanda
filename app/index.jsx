@@ -33,8 +33,6 @@ import ResetPassword from './components/reset-password';
 //   showSpinner: false,
 // });
 
-// TODO: Fetch User features and update local-storage if authed
-
 function onEnter(nextState, replace, callback) {
   // Already logged in
   if ((!this.path || this.path === 'login') && auth.isLoggedIn()) {
