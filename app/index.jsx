@@ -38,14 +38,12 @@ import ResetPassword from './components/reset-password';
 function onEnter(nextState, replace, callback) {
   // Already logged in
   if ((!this.path || this.path === 'login') && auth.isLoggedIn()) {
-    replace(null, '/dashboard');
+    replace('/dashboard');
   }
 
   // Check auth
   if (this.requireAuth && !auth.isLoggedIn()) {
-    replace({
-      nextPathname: nextState.location.pathname,
-    }, '/login');
+    replace('/login');
   }
 
   callback();

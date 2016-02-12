@@ -45,6 +45,7 @@ module.exports = function(app) {
   // API Routes
   app.use('/api', require('./routes'));
 
+  // Serve `index.html` for all other routes
   app.all('*', (req, res) => {
     proxy.web(req, res, {
       target: 'http://localhost:9002/assets/index.html',

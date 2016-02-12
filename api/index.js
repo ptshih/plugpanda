@@ -123,7 +123,7 @@ app.use(favicon(path.join(__dirname, '../public/favicon.ico')));
 // Browser Caching
 const maxAge = !app.get('props').debug ? oneYear : 0;
 
-// Set ``/public` as the static content directory
+// Set `/public` as the static content directory
 app.use('/fonts', express.static(path.join(__dirname, '../public/fonts'), {
   maxAge: maxAge,
 }));
@@ -154,7 +154,8 @@ if (app.get('props').debug) {
   // API Routes
   app.use('/api', require('./routes'));
 
-  app.get('*', (req, res) => {
+  // Serve `index.html` for all other routes
+  app.all('*', (req, res) => {
     res.set('Content-Type', 'text/html');
     res.sendFile(path.join(__dirname, '../assets/index.html'));
   });
