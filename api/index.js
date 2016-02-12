@@ -36,6 +36,7 @@ const requiredEnvs = [
   'TWILIO_NUMBER',
   'IRON_PROJECT_ID',
   'IRON_TOKEN',
+  'MAILGUN_KEY',
 ];
 
 _.each(requiredEnvs, (requiredEnv) => {

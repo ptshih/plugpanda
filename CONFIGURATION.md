@@ -50,3 +50,5 @@ If on Heroku, include in the app's config variables
 	- Used to authenticate Iron.io
 - IRON_TOKEN
 	- Used to authenticate Iron.io
+- MAILGUN_KEY
+	- Used to authenticate with Mailgun and send emails
