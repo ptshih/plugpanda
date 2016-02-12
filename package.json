@@ -40,7 +40,6 @@
     "nprogress": "0.2.0",
     "react": "0.14.7",
     "react-dom": "0.14.7",
-    "react-google-analytics": "0.2.0",
     "react-highcharts": "7.0.0",
     "react-router": "2.0.0",
     "response-time": "2.3.1",
