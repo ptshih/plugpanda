@@ -16,7 +16,7 @@ module.exports = {
         screw_ie8: true,
       },
     }),
-    new ExtractTextPlugin('css/[name].min.css?v=[hash]'),
+    new ExtractTextPlugin('[name].min.css?v=[hash]'),
     new HtmlWebpackPlugin({
       template: 'index.webpack.html',
       inject: 'body',
@@ -40,8 +40,8 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, '/assets/'),
-    filename: 'js/[name].min.js?v=[hash]',
-    publicPath: '/',
+    filename: '[name].min.js?v=[hash]',
+    publicPath: '/assets/',
   },
   module: {
     loaders: [{

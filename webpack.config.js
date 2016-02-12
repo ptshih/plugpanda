@@ -1,10 +1,22 @@
-const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AppCachePlugin = require('appcache-webpack-plugin');
 
+const path = require('path');
+const outputPath = path.resolve(__dirname, 'assets');
+const entryPath = path.resolve(__dirname, 'app', 'index.jsx');
+
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
+  entry: [
+    'webpack-dev-server/client?http://localhost:9002',
+    entryPath,
+  ],
+  output: {
+    path: outputPath,
+    filename: '[name].js',
+    publicPath: '/assets/',
+  },
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.json'],
   },
@@ -28,14 +40,6 @@ module.exports = {
       output: 'cache.manifest',
     }),
   ],
-  entry: [
-    path.join(__dirname, './app/index.jsx'),
-  ],
-  output: {
-    path: path.join(__dirname, '/assets/'),
-    filename: 'js/[name].js',
-    publicPath: '/',
-  },
   module: {
     loaders: [{
       test: /\.js?$/,
