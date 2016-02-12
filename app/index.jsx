@@ -34,6 +34,9 @@ import ResetPassword from './components/reset-password';
 // });
 
 function onEnter(nextState, replace, callback) {
+  window.ga('set', 'page', nextState.location.pathname + nextState.location.search);
+  window.ga('send', 'pageview');
+
   // Already logged in
   if ((!this.path || this.path === 'login') && auth.isLoggedIn()) {
     replace('/dashboard');
