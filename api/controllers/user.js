@@ -26,6 +26,16 @@ module.exports = BaseController.extend({
       requiredParams: ['email'],
     };
 
+    this.routes.post['/reset_password'] = {
+      action: this.resetPassword,
+      requiredParams: ['email'],
+    };
+
+    this.routes.post['/set_password'] = {
+      action: this.setPassword,
+      requiredParams: ['token', 'password'],
+    };
+
     // Private
 
     this.routes.get['/waitlist'] = {
@@ -149,8 +159,6 @@ module.exports = BaseController.extend({
     let password = (req.body.password || req.query.password || '').trim();
     const name = req.body.name || null;
 
-    console.log(password);
-
     return Muni.Promise.bind(this).then(() => {
       const user = new UserModel();
       user.db = this.get('db');
@@ -167,6 +175,51 @@ module.exports = BaseController.extend({
       });
     }).tap((user) => {
       user.set('access_token', user.generateAccessToken());
+      return user.save();
+    }).then(this.render(req, res, next)).catch(next);
+  },
+
+  // POST
+  resetPassword(req, res, next) {
+    const email = Muni.sanitizeEmail(req.body.email || req.query.email);
+
+    return Muni.Promise.bind(this).then(function() {
+      const user = new UserModel();
+      user.db = this.get('db');
+      return user.fetch({
+        query: {
+          email: email,
+        },
+        require: true,
+      });
+    }).tap((user) => {
+      return user.sendResetPasswordEmail();
+    }).then(this.render(req, res, next)).catch(next);
+  },
+
+  // POST
+  setPassword(req, res, next) {
+    const token = req.body.token || req.query.token;
+    const password = (req.body.password || req.query.password || '').trim();
+
+    return Muni.Promise.bind(this).then(function() {
+      const user = new UserModel();
+      user.db = this.get('db');
+
+      const decryptedToken = user.decryptResetToken(token);
+      if (!decryptedToken || !user.isResetTokenValid(decryptedToken)) {
+        throw new Error('Invalid or expired reset token.');
+      }
+
+      return user.fetch({
+        query: {
+          email: decryptedToken.email,
+        },
+        require: true,
+      });
+    }).tap((user) => {
+      return user.setPassword(password);
+    }).tap((user) => {
       return user.save();
     }).then(this.render(req, res, next)).catch(next);
   },

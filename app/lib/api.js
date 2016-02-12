@@ -34,6 +34,22 @@ export default {
       },
     }).then((user) => {
       auth.setAccessToken(user.access_token);
+      auth.setFeatures(user.features);
+      return user;
+    });
+  }),
+
+  resetPassword: Promise.method(function(token, password) {
+    return this._request({
+      method: 'POST',
+      url: window.location.origin + '/api/set_password',
+      json: {
+        token: token,
+        password: password,
+      },
+    }).then((user) => {
+      auth.setAccessToken(user.access_token);
+      auth.setFeatures(user.features);
       return user;
     });
   }),

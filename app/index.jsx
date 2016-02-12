@@ -24,6 +24,7 @@ import Waitlist from './components/waitlist';
 import Login from './components/login';
 import Logout from './components/logout';
 import Register from './components/register';
+import ResetPassword from './components/reset-password';
 
 // NProgress loading indicator
 // import NProgress from 'nprogress';
@@ -95,6 +96,7 @@ ReactDOM.render((
       <Route path="register" component={Register} onEnter={onEnter} />
       <Route path="login" component={Login} onEnter={onEnter} />
       <Route path="logout" component={Logout} onEnter={onEnter} requireAuth />
+      <Route path="reset_password" component={ResetPassword} onEnter={onEnter} />
 
       {/* Not Found */}
       <Route path="*" component={Err} onEnter={onEnterNotFound} />

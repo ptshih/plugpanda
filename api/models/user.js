@@ -4,6 +4,8 @@ const Muni = require('muni');
 const Chance = require('chance');
 const chance = new Chance();
 const chargepoint = require('../lib/chargepoint');
+const Mailgun = require('mailgun').Mailgun;
+const mailgun = Muni.Promise.promisifyAll(new Mailgun(nconf.get('MAILGUN_KEY')));
 
 const BaseModel = require('./base');
 
@@ -175,10 +177,6 @@ module.exports = BaseModel.extend({
     }
   },
 
-  decryptAccessToken(accessToken) {
-    return JSON.parse(Muni.decryptString(accessToken, 'aes256', config.client_id));
-  },
-
   setFromRequest: Muni.Promise.method(function(body) {
     return Muni.Promise.bind(this).then(function() {
       return this._validateEmail(body);
@@ -247,6 +245,44 @@ module.exports = BaseModel.extend({
   // Generates an access token using a random hash
   generateAccessToken() {
     return Muni.randomHash();
+  },
+
+  // Generate a reset password token (expires in 24 hours)
+  generateResetToken() {
+    const token = {
+      email: this.get('email'),
+      expires: (new Date()).getTime() + 86400000,
+    };
+    return Muni.encryptString(JSON.stringify(token), 'aes256', nconf.get('CLIENT_TOKEN'));
+  },
+
+  decryptResetToken(resetToken) {
+    try {
+      return JSON.parse(Muni.decryptString(resetToken, 'aes256', nconf.get('CLIENT_TOKEN')));
+    } catch (err) {
+      return null;
+    }
+  },
+
+  // Checks for expiration date
+  // Expects `token` to be an Object
+  isResetTokenValid(token) {
+    if (_.isObject(token)) {
+      return token.expires >= (new Date().getTime());
+    }
+    return false;
+  },
+
+  sendResetPasswordEmail() {
+    const resetToken = this.generateResetToken();
+    const resetUrl = `${nconf.get('HOST')}/reset_password?reset_token=${resetToken}`;
+
+    return mailgun.sendTextAsync(
+      'noreply@plugpanda.com',
+      this.get('email'),
+      'Reset Your Password',
+      resetUrl
+    ).return(this);
   },
 
   // Login to Chargepoint and get `user_id` and `auth_token`
