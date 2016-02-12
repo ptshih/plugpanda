@@ -39,6 +39,7 @@ module.exports = function(app) {
   });
 
   // Enable Logging
+  // Don't log anything above this line
   app.use(morgan('dev'));
 
   // API Routes

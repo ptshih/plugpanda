@@ -149,11 +149,7 @@ if (app.get('props').debug) {
 
   // Enable Logging
   // Don't log anything above this line
-  app.use(morgan(':method :url :status :response-time ms - :user-agent', {
-    skip: (req, res) => {
-      return res.statusCode < 400;
-    },
-  }));
+  app.use(morgan('dev'));
 
   // API Routes
   app.use('/api', require('./routes'));
