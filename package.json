@@ -74,7 +74,7 @@
   "scripts": {
     "clean": "rimraf assets",
     "prebuild": "npm run clean",
-    "build": "webpack --config ./webpack.production.config.js --progress --profile",
+    "build": "webpack --config ./webpack.production.config.js --profile",
     "lint": "npm run lint:api && npm run lint:app && npm run lint:lib",
     "lint:app": "eslint --ext .js --ext .jsx --ignore-path .gitignore app",
     "lint:api": "eslint --ext .js --ignore-path .gitignore api",

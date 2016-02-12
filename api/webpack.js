@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const webpackConfig = require('../webpack.config.js');
-
+const morgan = require('morgan');
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer();
 
@@ -37,6 +37,13 @@ module.exports = function(app) {
       ignorePath: true,
     });
   });
+
+  // Enable Logging
+  app.use(morgan('dev'));
+
+  // API Routes
+  app.use('/api', require('./routes'));
+
   app.all('*', (req, res) => {
     proxy.web(req, res, {
       target: 'http://localhost:9002/assets/index.html',

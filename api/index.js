@@ -5,6 +5,14 @@ const helmet = require('helmet');
 const path = require('path');
 const Muni = require('muni');
 
+// Middleware
+const cors = require('cors');
+const morgan = require('morgan');
+const compress = require('compression');
+const responseTime = require('response-time');
+const favicon = require('serve-favicon');
+const bodyParser = require('body-parser');
+
 // Errors
 global.APIError = Muni.Error;
 
@@ -59,14 +67,6 @@ console.log('\nLaunching...\n');
 
 // Database
 global.db = require('./config/db');
-
-// Middleware
-const cors = require('cors');
-const morgan = require('morgan');
-const compress = require('compression');
-const responseTime = require('response-time');
-const favicon = require('serve-favicon');
-const bodyParser = require('body-parser');
 
 // Time units in ms
 const oneDay = 86400000;
@@ -134,13 +134,6 @@ app.use('/', express.static(path.join(__dirname, '../public'), {
   maxAge: 0,
 }));
 
-// Enable Logging
-// Don't log anything above this line
-app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
-
-// API Routes
-app.use('/api', require('./routes'));
-
 // Routes
 if (app.get('props').debug) {
   // Serve from webpack-dev-server
@@ -153,6 +146,18 @@ if (app.get('props').debug) {
   app.use('/cache.manifest', express.static(path.join(__dirname, '../assets/cache.manifest'), {
     maxAge: 0,
   }));
+
+  // Enable Logging
+  // Don't log anything above this line
+  app.use(morgan(':method :url :status :response-time ms - :user-agent', {
+    skip: (req, res) => {
+      return res.statusCode < 400;
+    },
+  }));
+
+  // API Routes
+  app.use('/api', require('./routes'));
+
   app.get('*', (req, res) => {
     res.set('Content-Type', 'text/html');
     res.sendFile(path.join(__dirname, '../assets/index.html'));
