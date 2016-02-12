@@ -23,9 +23,7 @@
     function updateSite(event) {
       try {
         window.applicationCache.swapCache();
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     }
     window.applicationCache.addEventListener('updateready', updateSite, false);
   </script>
