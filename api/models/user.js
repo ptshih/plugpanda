@@ -244,11 +244,9 @@ module.exports = BaseModel.extend({
     });
   },
 
-  // Generates an access token using `_id`
+  // Generates an access token using a random hash
   generateAccessToken() {
-    return Muni.encryptString(JSON.stringify({
-      _id: this.id,
-    }), 'aes256', nconf.get('CLIENT_TOKEN'));
+    return Muni.randomHash();
   },
 
   // Login to Chargepoint and get `user_id` and `auth_token`
