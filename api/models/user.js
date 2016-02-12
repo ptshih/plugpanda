@@ -275,7 +275,7 @@ module.exports = BaseModel.extend({
 
   sendResetPasswordEmail() {
     const resetToken = this.generateResetToken();
-    const resetUrl = `${nconf.get('HOST')}/reset_password?reset_token=${resetToken}`;
+    const resetUrl = `${nconf.get('HOST')}/reset_password?token=${resetToken}`;
 
     return mailgun.sendTextAsync(
       'noreply@plugpanda.com',

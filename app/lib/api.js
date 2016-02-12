@@ -39,10 +39,22 @@ export default {
     });
   }),
 
+  forgotPassword: Promise.method(function(email) {
+    return this._request({
+      method: 'POST',
+      url: window.location.origin + '/api/forgot_password',
+      json: {
+        email: email,
+      },
+    }).then(() => {
+      return email;
+    });
+  }),
+
   resetPassword: Promise.method(function(token, password) {
     return this._request({
       method: 'POST',
-      url: window.location.origin + '/api/set_password',
+      url: window.location.origin + '/api/reset_password',
       json: {
         token: token,
         password: password,

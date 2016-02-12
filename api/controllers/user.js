@@ -26,13 +26,13 @@ module.exports = BaseController.extend({
       requiredParams: ['email'],
     };
 
-    this.routes.post['/reset_password'] = {
-      action: this.resetPassword,
+    this.routes.post['/forgot_password'] = {
+      action: this.forgotPassword,
       requiredParams: ['email'],
     };
 
-    this.routes.post['/set_password'] = {
-      action: this.setPassword,
+    this.routes.post['/reset_password'] = {
+      action: this.resetPassword,
       requiredParams: ['token', 'password'],
     };
 
@@ -180,7 +180,7 @@ module.exports = BaseController.extend({
   },
 
   // POST
-  resetPassword(req, res, next) {
+  forgotPassword(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
 
     return Muni.Promise.bind(this).then(function() {
@@ -198,7 +198,7 @@ module.exports = BaseController.extend({
   },
 
   // POST
-  setPassword(req, res, next) {
+  resetPassword(req, res, next) {
     const token = req.body.token || req.query.token;
     const password = (req.body.password || req.query.password || '').trim();
 

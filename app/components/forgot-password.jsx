@@ -10,7 +10,7 @@ import store from '../stores/store';
 import InputTextFloatLabel from './partials/input-text-float-label';
 
 export default React.createClass({
-  displayName: 'ResetPassword',
+  displayName: 'ForgotPassword',
 
   contextTypes: {
     router: React.PropTypes.object.isRequired,
@@ -18,23 +18,16 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      token: null,
-      password: null,
+      email: null,
       message: null,
       disabled: false,
     };
   },
 
-  componentWillMount() {
-    this.setState({
-      token: _.get(this.props, 'location.query.token'),
-    });
-  },
-
   componentDidMount() {
     store.dispatch({
       type: 'NAV_TITLE',
-      data: 'Reset Your Password',
+      data: 'Forgot Your Password',
     });
   },
 
@@ -46,14 +39,19 @@ export default React.createClass({
 
   // Handlers
 
-  onChangePassword(event) {
+  onLogin(event) {
+    event.preventDefault();
+    this.context.router.push('/login');
+  },
+
+  onChangeEmail(event) {
     event.preventDefault();
     this.setState({
-      password: event.target.value,
+      email: event.target.value,
     });
   },
 
-  onResetPassword(event) {
+  onForgotPassword(event) {
     event.preventDefault();
     this.setState({
       disabled: true,
@@ -66,14 +64,17 @@ export default React.createClass({
       data: true,
     });
 
-    return api.resetPassword(this.state.token, this.state.password).finally(() => {
+    return api.forgotPassword(this.state.email).finally(() => {
       // Stop loading
       store.dispatch({
         type: 'NAV_LOADING',
         data: false,
       });
-    }).then(() => {
-      this.context.router.push('/dashboard');
+    }).then((email) => {
+      this.setState({
+        disabled: false,
+        message: `An email with instructions on resetting your password has been sent to ${email}.`,
+      });
       return null;
     }).catch((err) => {
       this.setState({
@@ -101,11 +102,11 @@ export default React.createClass({
             <div className="col-xs-12">
               <fieldset className="form-group">
                 <InputTextFloatLabel
-                  type="password"
-                  label="Password"
-                  value={this.state.password}
-                  placeholder="Password"
-                  onChange={this.onChangePassword}
+                  type="email"
+                  label="Email"
+                  value={this.state.email}
+                  placeholder="Email"
+                  onChange={this.onChangeEmail}
                   disabled={this.state.disabled}
                 />
               </fieldset>
@@ -118,9 +119,11 @@ export default React.createClass({
               <button
                 type="submit"
                 className="btn btn-primary"
-                onClick={this.onResetPassword}
+                onClick={this.onForgotPassword}
                 disabled={this.state.disabled}
-              >Reset Your Password</button>
+              >Forgot Your Password</button>
+              &nbsp;&nbsp;or&nbsp;&nbsp;
+              <span className="Login-register" onClick={this.onLogin}>I remember my password</span>
             </div>
           </div>
         </section>

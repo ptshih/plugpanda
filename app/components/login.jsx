@@ -92,6 +92,11 @@ export default React.createClass({
     this.context.router.push('/register');
   },
 
+  onForgotPassword(event) {
+    event.preventDefault();
+    this.context.router.push('/forgot_password');
+  },
+
   // Render
 
   getMessage() {
@@ -147,6 +152,8 @@ export default React.createClass({
               >Sign In</button>
               &nbsp;&nbsp;or&nbsp;&nbsp;
               <span className="Login-register" onClick={this.onRegister}>Sign up for a new account</span>
+              &nbsp;&nbsp;or&nbsp;&nbsp;
+              <span className="Login-register" onClick={this.onForgotPassword}>Forgot your password?</span>
             </div>
           </div>
         </section>
