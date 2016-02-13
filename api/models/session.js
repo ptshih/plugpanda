@@ -1,5 +1,4 @@
-const POWER_KW_MIN = 3.5;
-const CHARGING_TIME_MIN = 300000;
+const CHARGING_TIME_MIN = 300000; // 5 minutes
 
 const _ = require('lodash');
 const Muni = require('muni');
@@ -91,6 +90,9 @@ module.exports = BaseUserModel.extend({
         average_power: {
           type: 'ufloat',
         },
+        max_power: {
+          type: 'ufloat',
+        },
         miles_added: {
           type: 'ufloat',
         },
@@ -126,19 +128,15 @@ module.exports = BaseUserModel.extend({
     );
   },
 
-  // render() {
-  //   const json = BaseUserModel.prototype.render.apply(this, arguments);
-  //   json.average_power = this._calculateAveragePower(json.update_data);
-  //   return json;
-  // },
-
-  beforeSave: Muni.Promise.method(function() {
-    const averagePower = this._calculateAveragePower(this.get('update_data'));
-    this.set('average_power', averagePower);
-
-    return BaseUserModel.prototype.beforeSave.apply(this, arguments);
+  setFromRequest: Muni.Promise.method(function(body) {
+    return Muni.Promise.bind(this).then(function() {
+      return this._setAveragePower(body);
+    }).then(function() {
+      return this._setMaxPower(body);
+    }).then(function() {
+      return BaseUserModel.prototype.setFromRequest.call(this, body);
+    });
   }),
-
 
   startSession() {
     console.log(`-----> Starting Session: ${this.get('session_id')}.`);
@@ -308,6 +306,30 @@ module.exports = BaseUserModel.extend({
     }).return(this);
   },
 
+  /**
+   * Compute `average_power` (kw) from `update_data`
+   * @param  {Object} body
+   * @return {Object}
+   */
+  _setAveragePower: Muni.Promise.method(function(body) {
+    const updateData = body.update_data;
+    if (!_.isArray(updateData) || _.isEmpty(updateData)) {
+      return body;
+    }
+
+    body.average_power = this._calculateAveragePower(updateData);
+    return body;
+  }),
+
+  _setMaxPower: Muni.Promise.method(function(body) {
+    const updateData = body.update_data;
+    if (!_.isArray(updateData) || _.isEmpty(updateData)) {
+      return body;
+    }
+
+    body.max_power = this._calculateMaxPower(updateData);
+    return body;
+  }),
 
   /**
    * Whitelisted properties to extract from Chargepoint API
@@ -358,13 +380,15 @@ module.exports = BaseUserModel.extend({
    * This is because `power_kw` from Chargepoint is real-time
    */
   _calculateAveragePower(updateData) {
-    if (!updateData.length) {
+    if (!_.isArray(updateData) || _.isEmpty(updateData)) {
       return 0;
     }
 
     const totalPower = _.reduce(updateData, (total, dataPoint) => {
       return total + dataPoint.power_kw;
     }, 0);
+
+    // Ignore data points with `power_kw = 0`
     const totalPoints = _.reduce(updateData, (total, dataPoint) => {
       if (dataPoint.power_kw === 0) {
         return total;
@@ -375,17 +399,34 @@ module.exports = BaseUserModel.extend({
     return math.round(totalPower / totalPoints, 3);
   },
 
+  _calculateMaxPower(updateData) {
+    if (!_.isArray(updateData) || _.isEmpty(updateData)) {
+      return 0;
+    }
+
+    const maxPower = _.maxBy(updateData, 'power_kw');
+    return maxPower.power_kw;
+  },
+
   /**
    * Logic to determine when to STOP a session
    * Only stops sessions that are `paid`
-   * Must have `power_kw > 0` so it's not warming up
-   * Must have at least charged for `CHARGING_TIME_MIN` milliseconds
-   * Must maintain at least `POWER_KW_MIN` power level during last update
+   * Must have `max_power > 0` so it's not warming up
+   * Must have at least charged for `CHARGING_TIME_MIN` milliseconds (5min)
+   * Must maintain at least half of mox power level since last update
    */
   _shouldStopSession() {
-    return this.get('payment_type') === 'paid' &&
-      this.get('power_kw') > 0 &&
-      this.get('power_kw') < POWER_KW_MIN &&
+    // Don't stop if session is not `paid`
+    if (this.get('payment_type') !== 'paid') {
+      return false;
+    }
+
+    // Cutoff power is half of `max_power`
+    const cutoffPower = this.get('max_power') / 2;
+
+    // Make sure other conditions are met
+    return this.get('max_power') > 0 &&
+      this.get('power_kw') < cutoffPower &&
       this.get('charging_time') > CHARGING_TIME_MIN;
   },
 });

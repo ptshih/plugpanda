@@ -77,6 +77,7 @@ export default createContainer(React.createClass({
 
   getStatsData() {
     const averagePower = this.props.session.average_power;
+    const maxPower = this.props.session.max_power;
     const totalEnergy = math.round(this.props.session.energy_kwh, 3);
     const milesAdded = math.round(this.props.session.miles_added, 1);
 
@@ -98,6 +99,7 @@ export default createContainer(React.createClass({
       ['Port', this.props.session.outlet_number],
       ['Charging Time', `${displayHours}h ${displayMinutes}m`],
       ['Average Power', `${averagePower.toFixed(3)} kWh`],
+      ['Max Power', `${maxPower.toFixed(3)} kWh`],
       ['Total Energy', `${totalEnergy.toFixed(3)} kW`],
       ['Added Distance', `${milesAdded.toFixed(1)} miles`],
       ['Total Price', `$${this.props.session.total_amount.toFixed(2)}`],

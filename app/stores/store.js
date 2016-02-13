@@ -45,6 +45,7 @@ class Store extends EventEmitter {
       sessions: [],
       session: {
         average_power: 0,
+        max_power: 0,
         energy_kwh: 0,
         miles_added: 0,
         total_amount: 0,
