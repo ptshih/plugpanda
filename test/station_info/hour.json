@@ -1,0 +1,60 @@
+{
+  "station_info": {
+    "time": "2016-02-14 02:24:27.625",
+    "watermark": 2168788852,
+    "map_data_size": 1,
+    "summaries": [
+      {
+        "lat": 37.76607350149751,
+        "lon": -122.38759695026243,
+        "port_count": {
+          "total": 2,
+          "available": 2
+        },
+        "station_status": "available",
+        "map_data": {
+          "level2": {
+            "paid": {
+              "available": 2,
+              "in_use": 0,
+              "total": 2
+            }
+          }
+        },
+        "device_id": 121377,
+        "payment_type": "paid",
+        "tou_status": "open",
+        "can_remote_start_charge": true,
+        "is_connected": false,
+        "community_mode": 0,
+        "port_type_count": {
+          "3": 2
+        },
+        "station_name": [
+          "ARE-ILLINOIS ST",
+          "STATION 2"
+        ],
+        "address": {
+          "address1": "499 Illinois St",
+          "state_name": "California",
+          "city": "San Francisco"
+        },
+        "pricing": "pricing_detail",
+        "power_select": "40A",
+        "station_power_shed_status": false,
+        "network_logo_url": "https://mc.chargepoint.com/images/network/2/ic_network_chargepoint.png"
+      }
+    ],
+    "port_type_info": {
+      "3": {
+        "connector": "J1772",
+        "energy": 6.599999904632568,
+        "level": "Level 2",
+        "unit": "kW"
+      }
+    },
+    "port_type_text_map": {
+      "3": "J1772 - 6.6kw"
+    }
+  }
+}

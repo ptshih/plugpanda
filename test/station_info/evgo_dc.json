@@ -1,0 +1,68 @@
+{
+  "station_info": {
+    "time": "2016-02-14 02:22:48.929",
+    "watermark": 0,
+    "map_data_size": 1,
+    "summaries": [
+      {
+        "lat": 37.76445388793945,
+        "lon": -122.40280151367188,
+        "port_count": {
+          "total": 1,
+          "available": 0
+        },
+        "station_status": "in_use_dc",
+        "map_data": {},
+        "out_of_network": 1,
+        "device_id": 1000033129,
+        "hours": [],
+        "tou_status": "open",
+        "port_type_count": {
+          "91": 1
+        },
+        "station_name": [
+          "Whole Foods Market - Potrero Hill"
+        ],
+        "address": {
+          "address1": "450 Rhode Island St",
+          "state_name": "CA",
+          "city": "San Francisco"
+        },
+        "description": "24 hours daily; eVgo network subscription and key fob required",
+        "network_id": 7,
+        "program_ids": [
+          71,
+          72
+        ],
+        "tip_count": 1,
+        "network_logo_url": "https://mc.chargepoint.com/images/network/2/ic_network_evgo.png"
+      }
+    ],
+    "port_type_info": {
+      "91": {
+        "connector": "J1772COMBO",
+        "energy": 0,
+        "level": "DC",
+        "unit": "kW"
+      }
+    },
+    "port_type_text_map": {
+      "91": "J1772COMBO"
+    },
+    "network_info": {
+      "7": {
+        "name": "eVgo Network",
+        "network_url": "https://www.evgonetwork.com",
+        "logo_url": "https://mc.chargepoint.com/images/network/2/ic_network_evgo.png"
+      }
+    },
+    "program_info": {
+      "71": {
+        "name": "bmw_dc_program"
+      },
+      "72": {
+        "name": "nctc_program"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "pricing_detail": {
+    "pricing": {
+      "121377": {
+        "price_vary_by": "duration",
+        "driver_pays_per_hour": "entire_time",
+        "currency_iso_code": "USD",
+        "is_legacy": false,
+        "detail": [
+          {
+            "initial_duration": "04:00:00",
+            "unit_charge": 1.5,
+            "unit_charge_per": "HOUR",
+            "unit_charge_second": 20,
+            "unit_charge_second_per": "HOUR",
+            "session_time": 0
+          }
+        ]
+      }
+    },
+    "time": "2016-02-14 02:10:32.498"
+  }
+}

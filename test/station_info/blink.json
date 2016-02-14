@@ -1,0 +1,62 @@
+{
+  "station_info": {
+    "time": "2016-02-14 02:23:47.029",
+    "watermark": 0,
+    "map_data_size": 1,
+    "summaries": [
+      {
+        "lat": 37.79034423828125,
+        "lon": -122.3922119140625,
+        "port_count": {
+          "total": 1,
+          "available": 1
+        },
+        "station_status": "available",
+        "map_data": {},
+        "out_of_network": 1,
+        "device_id": 1000028349,
+        "payment_type": "paid",
+        "tou_status": "open",
+        "port_type_count": {
+          "81": 1
+        },
+        "station_name": [
+          "221 Main Public Parking Garage"
+        ],
+        "address": {
+          "address1": "221 Main Street",
+          "state_name": "CA",
+          "city": "San Francisco"
+        },
+        "network_id": 1,
+        "program_ids": [
+          72
+        ],
+        "network_logo_url": "https://mc.chargepoint.com/images/network/2/ic_network_blink.png"
+      }
+    ],
+    "port_type_info": {
+      "81": {
+        "connector": "J1772",
+        "energy": 0,
+        "level": "Level 2",
+        "unit": "kW"
+      }
+    },
+    "port_type_text_map": {
+      "81": "J1772"
+    },
+    "network_info": {
+      "1": {
+        "name": "Blink Network",
+        "network_url": "http://www.blinknetwork.com",
+        "logo_url": "https://mc.chargepoint.com/images/network/2/ic_network_blink.png"
+      }
+    },
+    "program_info": {
+      "72": {
+        "name": "nctc_program"
+      }
+    }
+  }
+}

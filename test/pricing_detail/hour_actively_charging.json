@@ -1,0 +1,22 @@
+{
+  "pricing_detail": {
+    "pricing": {
+      "8252": {
+        "price_vary_by": "none",
+        "driver_pays_per_hour": "actively_charging",
+        "currency_iso_code": "USD",
+        "is_legacy": false,
+        "detail": [
+          {
+            "unit_charge": 1.25,
+            "unit_charge_per": "HOUR",
+            "min_charge": 1.25,
+            "max_charge": 10,
+            "session_time": 0
+          }
+        ]
+      }
+    },
+    "time": "2016-02-14 02:12:08.668"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "pricing_detail": {
+    "pricing": {
+      "1000028349": {
+        "currency_iso_code": "USD",
+        "detail": [
+          {
+            "energy_rate": 0.59
+          }
+        ],
+        "price_vary_by": "none"
+      }
+    },
+    "time": "2016-02-14 02:15:49.576"
+  }
+}
