@@ -138,6 +138,10 @@ module.exports = BaseUserModel.extend({
     });
   }),
 
+  isPaid() {
+    return this.get('payment_type') === 'paid';
+  },
+
   startSession() {
     console.log(`-----> Starting Session: ${this.get('session_id')}.`);
     this.set('status', 'on');
@@ -258,11 +262,27 @@ module.exports = BaseUserModel.extend({
           return true;
         }
 
+        // This session is not `paid`
+        if (!this.isPaid()) {
+          console.log(`-----> Session: ${sessionId} is free and actively charging.`);
+          return true;
+        }
+
+        // This session is in `trickle` mode until manually stopped
+        if (status === 'trickle') {
+          console.log(`-----> Session: ${sessionId} is in trickle charging mode and must be manually stopped.`);
+          return true;
+        }
+
         // For all other `status`, stop the session if necessary
         if (this._shouldStopSession()) {
-          // This session is tapering and is almost done charging
-          // Charging rate has dropped below `POWER_KW_MIN`
-          // And has been charging at least `CHARGING_TIME_MIN`
+          // User has specified to NOT auto stop the session
+          if (!this.user.shouldAutoStop()) {
+            this.set('status', 'trickle');
+            return true;
+          }
+
+          // User has specified to auto stop the session
           return this.stopSession().then(() => {
             // Successfully stopped session
             return true;
@@ -273,7 +293,7 @@ module.exports = BaseUserModel.extend({
         }
 
         // This session is charging above the minimum rate
-        console.log(`-----> Session: ${sessionId} is actively charging.`);
+        console.log(`-----> Session: ${sessionId} is paid and actively charging.`);
         return true;
       }
 
@@ -410,17 +430,11 @@ module.exports = BaseUserModel.extend({
 
   /**
    * Logic to determine when to STOP a session
-   * Only stops sessions that are `paid`
    * Must have `max_power > 0` so it's not warming up
    * Must have at least charged for `CHARGING_TIME_MIN` milliseconds (5min)
    * Must maintain at least half of mox power level since last update
    */
   _shouldStopSession() {
-    // Don't stop if session is not `paid`
-    if (this.get('payment_type') !== 'paid') {
-      return false;
-    }
-
     // Cutoff power is half of `max_power`
     const cutoffPower = this.get('max_power') / 2;
 

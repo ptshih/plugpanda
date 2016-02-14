@@ -66,6 +66,15 @@ module.exports = BaseModel.extend({
             },
           },
         },
+        flags: {
+          type: 'object',
+          fields: {
+            auto_stop: {
+              type: 'boolean',
+              default: true,
+            },
+          },
+        },
 
         // Basic
         email: {
@@ -334,6 +343,10 @@ module.exports = BaseModel.extend({
     }
 
     return code;
+  },
+
+  shouldAutoStop() {
+    return !!this.get('flags.auto_stop');
   },
 
   beforeSave: Muni.Promise.method(function() {
