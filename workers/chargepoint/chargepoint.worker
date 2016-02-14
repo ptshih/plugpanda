@@ -1,5 +1,5 @@
 runtime "node"
-stack "node-0.10"
+stack "node-4.1"
 exec "chargepoint-worker.js"
 file "package.json"
 build "npm config set strict-ssl false; npm install --production"

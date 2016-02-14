@@ -10,3 +10,5 @@
 - multiple active sessions
 - power is reduced status???
 - session override mode to not stop when hitting limit
+- Migrate to Iron Docker Workers
+  - https://github.com/iron-io/dockerworker/tree/master/node
