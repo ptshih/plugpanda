@@ -3,6 +3,7 @@ import React from 'react';
 
 // Utils
 import math from '../../lib/math';
+import api from '../lib/api';
 
 // Container
 import createContainer from './container';
@@ -26,13 +27,29 @@ export default createContainer(React.createClass({
     session: React.PropTypes.object,
   },
 
+  getInitialState() {
+    return {
+      disabled: false,
+    };
+  },
+
   // Handlers
 
   onStop(event) {
     event.preventDefault();
-    console.log('STOP');
 
-    // TODO: Remember to disable button during async request
+    this.setState({
+      disabled: true,
+    });
+
+    return api.stopSession(this.props.session.session_id).finally(() => {
+      this.setState({
+        disabled: false,
+      });
+    }).catch((err) => {
+      // TODO: don't use js alert
+      alert(err.message);
+    });
   },
 
   // Render
@@ -175,12 +192,24 @@ export default createContainer(React.createClass({
       return null;
     }
 
-    return <button className="btn btn-danger pull-right" onClick={this.onStop}>Stop</button>;
+    return (
+      <button
+        className="btn btn-danger pull-right"
+        onClick={this.onStop}
+        disabled={this.state.disabled}
+      >
+        Stop Session
+      </button>
+    );
   },
 
   render() {
     return (
       <article>
+        <section>
+          {this.getStopButton()}
+        </section>
+
         <section>
           {this.getStats()}
         </section>

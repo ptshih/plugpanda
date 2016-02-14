@@ -76,7 +76,15 @@ export default {
   fetchSession: Promise.method(function(opts, sessionId) {
     opts = _.isPlainObject(opts) ? opts : {};
     return this._request({
-      url: window.location.origin + '/api/sessions/' + sessionId,
+      url: `${window.location.origin}/api/sessions/${sessionId}`,
+      headers: auth.buildAuthHeaders(),
+    });
+  }),
+
+  stopSession: Promise.method(function(sessionId) {
+    return this._request({
+      method: 'POST',
+      url: `${window.location.origin}/api/sessions/${sessionId}/stop`,
       headers: auth.buildAuthHeaders(),
     });
   }),
