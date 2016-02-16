@@ -128,16 +128,6 @@ module.exports = BaseUserModel.extend({
     );
   },
 
-  setFromRequest: Muni.Promise.method(function(body) {
-    return Muni.Promise.bind(this).then(function() {
-      return this._setAveragePower(body);
-    }).then(function() {
-      return this._setMaxPower(body);
-    }).then(function() {
-      return BaseUserModel.prototype.setFromRequest.call(this, body);
-    });
-  }),
-
   isPaid() {
     return this.get('payment_type') === 'paid';
   },
@@ -327,31 +317,6 @@ module.exports = BaseUserModel.extend({
   },
 
   /**
-   * Compute `average_power` (kw) from `update_data`
-   * @param  {Object} body
-   * @return {Object}
-   */
-  _setAveragePower: Muni.Promise.method(function(body) {
-    const updateData = body.update_data;
-    if (!_.isArray(updateData) || _.isEmpty(updateData)) {
-      return body;
-    }
-
-    body.average_power = this._calculateAveragePower(updateData);
-    return body;
-  }),
-
-  _setMaxPower: Muni.Promise.method(function(body) {
-    const updateData = body.update_data;
-    if (!_.isArray(updateData) || _.isEmpty(updateData)) {
-      return body;
-    }
-
-    body.max_power = this._calculateMaxPower(updateData);
-    return body;
-  }),
-
-  /**
    * Whitelisted properties to extract from Chargepoint API
    * Some properties don't exist when `current_charging` is `done` (not active)
    */
@@ -385,6 +350,10 @@ module.exports = BaseUserModel.extend({
     // Only when charging is active
     if (obj.update_data) {
       attrs.update_data = obj.update_data;
+
+      // Calculate `max_power` and `average_power`
+      attrs.max_power = this._calculateMaxPower(attrs.update_data);
+      attrs.average_power = this._calculateAveragePower(attrs.update_data);
     }
 
     // Only when charging is active
@@ -419,6 +388,10 @@ module.exports = BaseUserModel.extend({
     return math.round(totalPower / totalPoints, 3);
   },
 
+  /**
+   * Compute the max power (kw) by iterating over `update_data`
+   * And finding the maximum value during the session
+   */
   _calculateMaxPower(updateData) {
     if (!_.isArray(updateData) || _.isEmpty(updateData)) {
       return 0;
