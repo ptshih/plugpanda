@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import moment from 'moment';
 
 // Utils
 import math from '../../lib/math';
@@ -12,7 +13,10 @@ import createContainer from './container';
 import Table from './partials/table';
 import GoogleMap from './partials/google-map';
 import Highcharts from 'react-highcharts/bundle/highcharts';
+import themeGray from '../highcharts/theme-gray';
 
+// Gray theme
+Highcharts.Highcharts.setOptions(themeGray);
 Highcharts.Highcharts.setOptions({
   global: {
     useUTC: false,
@@ -54,7 +58,88 @@ export default createContainer(React.createClass({
 
   // Render
 
-  getChartConfig(name, data, options = {}) {
+  getStopButton() {
+    if (this.props.session.status !== 'on') {
+      return null;
+    }
+
+    return (
+      <section className="text-xs-center">
+        <button
+          className="btn btn-danger"
+          onClick={this.onStop}
+          disabled={this.state.disabled}
+        >
+          Stop Session
+        </button>
+      </section>
+    );
+  },
+
+  getChart() {
+    const data = this._getDisplayData();
+
+    // Charts
+    const chartData = this._getChartData();
+    const powerConfig = this._getChartConfig('Power (kW)', chartData.power);
+
+    return (
+      <section>
+        <div className="row">
+          <div className="col-xs-12">
+            <div style={{position: 'relative'}}>
+              <Highcharts style={{height: '300px'}} config={powerConfig} />
+              <div className="session-chart-overlay">
+                <div className="session-chart-overlay-date">{data.date}</div>
+                <div className="session-chart-overlay-duration">{`${data.hours}h ${data.minutes}m`}</div>
+                <div className="session-chart-overlay-rate">{`${data.totalEnergy} @ ${data.averagePower}`}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  },
+
+  getTable() {
+    const sessionId = _.get(this.props, 'session.session_id');
+    const totalPaid = '$' + _.get(this.props, 'session.total_amount', 0).toFixed(2);
+    return (
+      <section>
+        <Table
+          rows={this._getStatsData()}
+          headers={[['Session ID', sessionId]]}
+          footers={[['Total Paid', totalPaid]]}
+        />
+      </section>
+    );
+  },
+
+  getMap() {
+    return (
+      <section>
+        <GoogleMap
+          lat={this.props.session.lat}
+          lon={this.props.session.lon}
+        />
+      </section>
+    );
+  },
+
+  render() {
+    return (
+      <article>
+        {this.getChart()}
+        {this.getStopButton()}
+        {this.getTable()}
+        {this.getMap()}
+      </article>
+    );
+  },
+
+  // Private
+
+  _getChartConfig(name, data, options = {}) {
     _.defaults(options, {
       color: 'rgba(151,187,205,1)',
       fillColor: 'rgba(151,187,205,0.2)',
@@ -69,9 +154,22 @@ export default createContainer(React.createClass({
       },
       xAxis: {
         type: 'datetime',
+        labels: {
+          enabled: false,
+        },
+        lineWidth: 0,
+        minorGridLineWidth: 0,
+        lineColor: 'transparent',
+        minorTickLength: 0,
+        tickLength: 0,
       },
       yAxis: {
         title: '',
+        labels: {
+          enabled: false,
+        },
+        gridLineWidth: 0,
+        minorGridLineWidth: 0,
       },
       series: [{
         name: name,
@@ -92,39 +190,7 @@ export default createContainer(React.createClass({
     };
   },
 
-  getStatsData() {
-    const averagePower = this.props.session.average_power;
-    const maxPower = this.props.session.max_power;
-    const totalEnergy = math.round(this.props.session.energy_kwh, 3);
-    const milesAdded = math.round(this.props.session.miles_added, 1);
-
-    let displayHours;
-    let displayMinutes;
-    const chargingTime = math.round(this.props.session.charging_time / 1000 / 60, 0);
-    if (chargingTime >= 60) {
-      displayHours = Math.floor(chargingTime / 60);
-      displayMinutes = chargingTime % 60;
-    } else {
-      displayHours = 0;
-      displayMinutes = chargingTime;
-    }
-
-    return [
-      ['Session Status', this.props.session.status],
-      ['Charging Status', this.props.session.current_charging],
-      ['Station', this.props.session.device_id],
-      ['Port', this.props.session.outlet_number],
-      ['Charging Time', `${displayHours}h ${displayMinutes}m`],
-      ['Average Power', `${averagePower.toFixed(3)} kWh`],
-      ['Max Power', `${maxPower.toFixed(3)} kWh`],
-      ['Total Energy', `${totalEnergy.toFixed(3)} kW`],
-      ['Added Distance', `${milesAdded.toFixed(1)} miles`],
-      ['Total Price', `$${this.props.session.total_amount.toFixed(2)}`],
-      ['Payment Type', this.props.session.payment_type],
-    ];
-  },
-
-  getChartData() {
+  _getChartData() {
     const power = [];
     const energy = [];
 
@@ -150,76 +216,51 @@ export default createContainer(React.createClass({
     };
   },
 
-  // Render
+  _getStatsData() {
+    const data = this._getDisplayData();
 
-  getStats() {
-    // Stats
-    const statsData = this.getStatsData();
-
-    return (
-      <div className="row">
-        <div className="col-md-6 col-xs-12">
-          <Table rows={statsData} />
-        </div>
-        <div className="col-md-6 col-xs-12">
-          <GoogleMap
-            lat={this.props.session.lat}
-            lon={this.props.session.lon}
-          />
-        </div>
-      </div>
-    );
+    return [
+      ['Session Status', _.upperCase(this.props.session.status)],
+      ['Station / Port', `${this.props.session.device_id} / ${this.props.session.outlet_number}`],
+      ['Max Power', data.maxPower],
+      ['Average Power', data.averagePower],
+      ['Total Energy', data.totalEnergy],
+      ['Added Distance', data.milesAdded],
+    ];
   },
 
-  getChart() {
-    // Charts
-    const chartData = this.getChartData();
-    const powerConfig = this.getChartConfig('Power (kW)', chartData.power);
-    // const energyConfig = this.getChartConfig('Energy (kWh)', chartData.energy);
+  _getDisplayData() {
+    const data = {};
 
-    return (
-      <div className="row">
-        <div className="col-xs-12">
-          <h5>Power (kW)</h5>
-          <Highcharts style={{height: '300px'}} config={powerConfig} />
-        </div>
-      </div>
-    );
-  },
+    // Date
+    data.date = moment(_.get(this.props, 'session.created_date')).calendar(null, {
+      lastDay: '[Yesterday] [at] HH:MM',
+      sameDay: '[Today] [at] HH:MM',
+      nextDay: '[Tomorrow] [at] HH:MM',
+      lastWeek: 'MM/DD [at] HH:MM',
+      nextWeek: 'MM/DD [at] HH:MM',
+      sameElse: 'MM/DD [at] HH:MM',
+    });
 
-  getStopButton() {
-    if (this.props.session.status !== 'on') {
-      return null;
+    // Hours and Minutes
+    const chargingTime = math.round(this.props.session.charging_time / 1000 / 60, 0);
+    if (chargingTime >= 60) {
+      data.hours = Math.floor(chargingTime / 60);
+      data.minutes = chargingTime % 60;
+    } else {
+      data.hours = 0;
+      data.minutes = chargingTime;
     }
 
-    return (
-      <button
-        className="btn btn-danger pull-right"
-        onClick={this.onStop}
-        disabled={this.state.disabled}
-      >
-        Stop Session
-      </button>
-    );
+    // Energy and Power
+    data.averagePower = `${_.get(this.props, 'session.average_power', 0).toFixed(3)} kW`;
+    data.maxPower = `${_.get(this.props, 'session.max_power', 0).toFixed(3)} kW`;
+    data.totalEnergy = `${math.round(_.get(this.props, 'session.energy_kwh', 0), 3).toFixed(3)} kWh`;
+    data.milesAdded = `${math.round(_.get(this.props, 'session.miles_added', 0), 1)} miles`;
+
+    return data;
   },
 
-  render() {
-    return (
-      <article>
-        <section>
-          {this.getStopButton()}
-        </section>
-
-        <section>
-          {this.getStats()}
-        </section>
-
-        <section>
-          {this.getChart()}
-        </section>
-      </article>
-    );
-  },
 }), {
   title: 'Session',
   fetchHandler: 'fetchSession',

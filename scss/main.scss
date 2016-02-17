@@ -34,6 +34,39 @@ body {
   margin-top: 0.5rem;
 }
 
+.table-notebook {
+  margin: 0;
+
+  thead,tbody {
+    th,td {
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      border-top: none;
+      border-bottom: 1px solid #eceeef;
+    }
+  }
+
+  tfoot {
+    td {
+      @extend .font-weight-bold;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
 // Medium devices (tablets, 48em and up)
 @media (min-width: 48em) {
   .col-xs-12 {
@@ -107,6 +140,12 @@ section, .Section {
 
 .SessionCell--stopping {
   background-color: #f2dede;
+}
+
+.Session-heading--details {
+  @extend .h3;
+  margin: 0;
+  padding: 4px 0;
 }
 
 // Waitlist
@@ -342,4 +381,33 @@ section, .Section {
 .faq-section {
   @extend .p-y-3;
   border-bottom: 1px solid #ccc;
+}
+
+.session-chart-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  color: #ccc;
+  @extend .font-weight-bold;
+
+  .session-chart-overlay-date {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .session-chart-overlay-duration {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .session-chart-overlay-rate {
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    left: 0;
+    text-align: center;
+  }
 }

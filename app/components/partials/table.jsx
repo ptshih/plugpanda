@@ -5,6 +5,7 @@ export default React.createClass({
 
   propTypes: {
     headers: React.PropTypes.array,
+    footers: React.PropTypes.array,
     rows: React.PropTypes.array.isRequired,
   },
 
@@ -15,19 +16,51 @@ export default React.createClass({
 
   // Render
 
-  getTableHead(headers) {
-    if (!headers) {
+  getTableHead(rows) {
+    if (!rows) {
       return null;
     }
 
     return (
-      <thead className="thead-default">
-        {headers.map((header, idx) => {
+      <thead>
+        {rows.map((row, rowIdx) => {
           return (
-            <th key={idx}>{header}</th>
+            <tr key={rowIdx}>
+              {row.map((col, colIdx) => {
+                const className = colIdx > 0 ? 'text-xs-right' : '';
+
+                return (
+                  <th key={colIdx} className={className}>{col}</th>
+                );
+              })}
+            </tr>
           );
         })}
       </thead>
+    );
+  },
+
+  getTableFoot(rows) {
+    if (!rows) {
+      return null;
+    }
+
+    return (
+      <tfoot>
+        {rows.map((row, rowIdx) => {
+          return (
+            <tr key={rowIdx}>
+              {row.map((col, colIdx) => {
+                const className = colIdx > 0 ? 'text-xs-right' : '';
+
+                return (
+                  <td key={colIdx} className={className}>{col}</td>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </tfoot>
     );
   },
 
@@ -57,9 +90,10 @@ export default React.createClass({
 
   render() {
     return (
-      <table className="table table-sm">
+      <table className="table table-notebook">
         {this.getTableHead(this.props.headers)}
         {this.getTableBody(this.props.rows)}
+        {this.getTableFoot(this.props.footers)}
       </table>
     );
   },
