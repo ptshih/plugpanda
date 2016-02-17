@@ -145,7 +145,7 @@ export default createContainer(React.createClass({
   },
 
 }), {
-  title: 'Activity',
+  title: 'Dashboard',
   fetchHandler: 'fetchDashboard',
   storeKey: 'dashboard',
 });

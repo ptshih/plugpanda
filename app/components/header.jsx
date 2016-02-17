@@ -87,7 +87,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/dashboard">Activity</Link>
+      <Link className="Navbar-link" to="/dashboard">Dashboard</Link>
     );
   },
 
