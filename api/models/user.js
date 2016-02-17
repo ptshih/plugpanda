@@ -48,6 +48,10 @@ module.exports = BaseModel.extend({
               type: 'boolean',
               default: false,
             },
+            readonly: {
+              type: 'boolean',
+              default: false,
+            },
             waitlisted: {
               type: 'boolean',
               default: true,

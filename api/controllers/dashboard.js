@@ -18,7 +18,7 @@ module.exports = BaseController.extend({
   dashboard(req, res, next) {
     const promises = [];
     promises.push(this._getActiveSession(req.user.id));
-    promises.push(this._getFrequentlyUsedStations(req.user.id));
+    promises.push(this._getFrequentStations(req.user.id));
 
     return Muni.Promise.all(promises).then((results) => {
       res.data = {
@@ -32,17 +32,19 @@ module.exports = BaseController.extend({
   _getActiveSession(userId) {
     const query = {
       user_id: userId,
-      status: {
-        $ne: 'off',
-      },
+      // status: {
+      //   $ne: 'off',
+      // },
     };
 
-    return this.get('db').findOne('sessions', query).then((session) => {
+    return this.get('db').findOne('sessions', query, {
+      sort: [['created_date', 'desc']],
+    }).then((session) => {
       return session || {};
     });
   },
 
-  _getFrequentlyUsedStations(userId) {
+  _getFrequentStations(userId) {
     const query = {
       user_id: userId,
       $and: [{

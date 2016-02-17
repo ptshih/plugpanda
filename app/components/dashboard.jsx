@@ -66,6 +66,17 @@ export default createContainer(React.createClass({
       return null;
     }
 
+    let status;
+    if (activeSession.status === 'on') {
+      status = 'Session is actively charging';
+    } else if (activeSession.status === 'stopping') {
+      status = 'Session is starting';
+    } else if (activeSession.status === 'stopping') {
+      status = 'Session is stopped and not actively charging';
+    } else {
+      status = 'Session is off and not actively charging';
+    }
+
     const displayDate = moment(activeSession.created_date).calendar(null, {
       lastDay: '[Yesterday] [at] HH:MM',
       sameDay: '[Today] [at] HH:MM',
@@ -85,7 +96,7 @@ export default createContainer(React.createClass({
               state: {parentPath: '/dashboard'},
             }}
           >
-            {activeSession.session_id}
+            {status}
           </Link>
         </div>
         <div>{displayDate}</div>

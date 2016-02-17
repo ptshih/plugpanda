@@ -28,6 +28,9 @@ module.exports = BaseController.extend({
   // 2. Fire one-off jobs for each user to update session status
   chargepoint(req, res, next) {
     return this.get('db').find('users', {
+      'features.readonly': {
+        $ne: true,
+      },
       'chargepoint.user_id': {
         $ne: 0,
       },
