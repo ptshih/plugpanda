@@ -69,12 +69,12 @@ export default createContainer(React.createClass({
     let status;
     if (activeSession.status === 'on') {
       status = 'Session is actively charging';
-    } else if (activeSession.status === 'stopping') {
-      status = 'Session is starting';
+    } else if (activeSession.status === 'starting') {
+      status = 'Session is starting but not actively charging';
     } else if (activeSession.status === 'stopping') {
       status = 'Session is stopped and not actively charging';
     } else {
-      status = 'Session is off and not actively charging';
+      status = 'Session is not actively charging';
     }
 
     const displayDate = moment(activeSession.created_date).calendar(null, {

@@ -32,9 +32,9 @@ module.exports = BaseController.extend({
   _getActiveSession(userId) {
     const query = {
       user_id: userId,
-      // status: {
-      //   $ne: 'off',
-      // },
+      status: {
+        $ne: 'off',
+      },
     };
 
     return this.get('db').findOne('sessions', query, {
