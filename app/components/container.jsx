@@ -55,6 +55,7 @@ export default (Component, options) => {
       });
 
       // Fetch from remote
+      this.isFetched = false;
       this.fetch();
     },
 
@@ -75,7 +76,7 @@ export default (Component, options) => {
     // Render
 
     render() {
-      let content;
+      let content = null;
 
       if (this.state.error) {
         // Error
@@ -86,7 +87,7 @@ export default (Component, options) => {
       } else if (this.state.loading) {
         // Fetching
         content = <Loading {...this.props} />;
-      } else {
+      } else if (this.isFetched) {
         // Fetched
         content = (
           <Component
@@ -131,12 +132,15 @@ export default (Component, options) => {
 
       // Fetch data from API
       api[options.fetchHandler].apply(api, args).then((data) => {
+        this.isFetched = true;
+
         // SET or APPEND API response
         const type = [append ? 'APPEND' : 'SET', options.storeKey].join('_').toUpperCase();
         store.dispatch({
           type: type,
           data: data,
         });
+        return null;
       }).catch((err) => {
         // Catch API error
         store.dispatch({

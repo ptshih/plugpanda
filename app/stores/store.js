@@ -26,6 +26,10 @@ class Store extends EventEmitter {
       loading: false,
       collapse: true,
 
+      dashboard: {
+        active_session: {},
+        stations: [],
+      },
       account: {
         // TBD
         stripe: {
@@ -140,6 +144,14 @@ class Store extends EventEmitter {
         break;
       case 'NAV_LOADING':
         this.state.loading = action.data;
+        break;
+
+      // Dashboard
+      case 'RESET_DASHBOARD':
+        this.state.dashboard = this.defaults().dashboard;
+        break;
+      case 'SET_DASHBOARD':
+        this.state.dashboard = _.assign({}, this.state.dashboard, action.data);
         break;
 
       // Account

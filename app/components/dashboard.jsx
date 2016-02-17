@@ -7,6 +7,9 @@ import api from '../lib/api';
 // Container
 import createContainer from './container';
 
+// Components
+import Table from './partials/table';
+
 // Notes
 // If there is an active session, show summary and link to it here
 // Show estimated trickle savings from last charging session
@@ -16,6 +19,10 @@ import createContainer from './container';
 export default createContainer(React.createClass({
   displayName: 'Dashboard',
 
+  propTypes: {
+    dashboard: React.PropTypes.object,
+  },
+
   getInitialState() {
     return {
       position: 0,
@@ -23,12 +30,15 @@ export default createContainer(React.createClass({
   },
 
   componentDidMount() {
-    // Fetch from remote
-    return api.fetchWaitlistPosition().then((data) => {
-      this.setState({
-        position: data.position,
+    if (auth.isWaitlisted()) {
+      // Fetch from remote
+      api.fetchWaitlistPosition().then((data) => {
+        this.setState({
+          position: data.position,
+        });
+        return null;
       });
-    });
+    }
   },
 
   // Render
@@ -48,27 +58,43 @@ export default createContainer(React.createClass({
     );
   },
 
+  getActiveChargingSession() {
+    if (_.isEmpty(this.props.dashboard.active_session)) {
+      return null;
+    }
+
+    return (
+      <section>
+        <h4>Active Charging Sessions</h4>
+      </section>
+    );
+  },
+
+  getFrequentlyUsedStations() {
+    const stations = [];
+    _.each(this.props.dashboard.stations, (station) => {
+      stations.push([
+        `${station.address}, ${station.city}`,
+        station.payment_type,
+        station.count,
+      ]);
+    });
+
+    return (
+      <section>
+        <Table
+          rows={stations}
+          headers={[['Frequently Used Stations', 'Fee', 'Visits']]}
+        />
+      </section>
+    );
+  },
+
   getActivity() {
     return (
       <article>
-        <section>
-          <h4>Active Charging Sessions</h4>
-          <div>1 Market St, San Francisco, CA</div>
-        </section>
-
-        <section>
-          <h4>Savings</h4>
-          <div>You saved $0.87 today.</div>
-          <div>You saved $5.68 this week.</div>
-          <div>You saved $13.37 this month.</div>
-        </section>
-
-        <section>
-          <h4>Frequently Used Stations</h4>
-          <div>1 Market St, San Francisco, CA</div>
-          <div>444 Stockton St, San Francisco, CA</div>
-          <div>329 Miller Ave, South San Francisco, CA</div>
-        </section>
+        {this.getActiveChargingSession()}
+        {this.getFrequentlyUsedStations()}
       </article>
     );
   },
@@ -85,4 +111,6 @@ export default createContainer(React.createClass({
 
 }), {
   title: 'Dashboard',
+  fetchHandler: 'fetchDashboard',
+  storeKey: 'dashboard',
 });

@@ -7,7 +7,7 @@ const outputPath = path.resolve(__dirname, 'assets');
 const entryPath = path.resolve(__dirname, 'app', 'index.jsx');
 
 module.exports = {
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   entry: [
     'webpack-dev-server/client?http://localhost:9002',
     entryPath,

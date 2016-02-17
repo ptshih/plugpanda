@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const chargepoint = require('../lib/chargepoint');
 
 const authenticateUserMiddleware = require('../middleware/authenticate-user');
 
@@ -9,18 +8,13 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
-    this.routes.get['/stations/frequent'] = {
-      action: this.frequent,
-      middleware: [authenticateUserMiddleware],
-    };
-
-    this.routes.get['/stations/:station_id'] = {
-      action: this.station,
+    this.routes.get['/dashboard'] = {
+      action: this.dashboard,
       middleware: [authenticateUserMiddleware],
     };
   },
 
-  frequent(req, res, next) {
+  dashboard(req, res, next) {
     const query = {
       user_id: req.user.id,
       $and: [{
@@ -77,15 +71,12 @@ module.exports = BaseController.extend({
           count: station.count,
         });
       });
-      res.data = stations;
+
+      res.data = {
+        stations: stations,
+      };
       return next();
     }).catch(next);
   },
 
-  station(req, res, next) {
-    return chargepoint.sendStationRequest(req.user.get('chargepoint'), req.params.station_id).then((body) => {
-      res.data = body;
-      next();
-    }).catch(next);
-  },
 });

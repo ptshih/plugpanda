@@ -66,6 +66,13 @@ export default {
     });
   }),
 
+  fetchDashboard: Promise.method(function() {
+    return this._request({
+      url: window.location.origin + '/api/dashboard',
+      headers: auth.buildAuthHeaders(),
+    });
+  }),
+
   fetchCar: Promise.method(function() {
     return this._request({
       url: window.location.origin + '/api/car/status',
