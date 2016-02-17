@@ -92,7 +92,6 @@ export default createContainer(React.createClass({
               <div className="session-chart-overlay">
                 <div className="session-chart-overlay-date">{data.date}</div>
                 <div className="session-chart-overlay-duration">{`${data.hours}h ${data.minutes}m`}</div>
-                <div className="session-chart-overlay-rate">{`${data.totalEnergy} @ ${data.averagePower}`}</div>
               </div>
             </div>
           </div>
