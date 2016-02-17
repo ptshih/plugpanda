@@ -1,0 +1,14 @@
+// Medium devices (tablets, 48em and up)
+@media (min-width: 48em) {
+  .col-xs-12 {
+    margin-bottom: 0;
+  }
+
+  .section-full {
+    padding: 0.9375rem;
+  }
+}
+
+@media (max-width: 47.9em) {
+
+}

@@ -84,7 +84,7 @@ export default createContainer(React.createClass({
     const powerConfig = this._getChartConfig('Power (kW)', chartData.power);
 
     return (
-      <section>
+      <section className="section-full">
         <div className="row">
           <div className="col-xs-12">
             <div style={{position: 'relative'}}>
@@ -116,7 +116,7 @@ export default createContainer(React.createClass({
 
   getMap() {
     return (
-      <section>
+      <section className="section-full">
         <GoogleMap
           lat={this.props.session.lat}
           lon={this.props.session.lon}

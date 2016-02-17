@@ -34,6 +34,36 @@ body {
   margin-top: 0.5rem;
 }
 
+.form-group {
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+// Sections
+
+section, .Section {
+  @extend .container;
+  padding: 0.9375rem;
+  // margin-bottom: 2rem;
+  //
+  // &:last-of-type {
+  //   margin-bottom: 0;
+  // }
+}
+
+.Section-heading {
+  @extend h4;
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+.section-full {
+  padding: 0;
+}
+
+// Table
+
 .table-notebook {
   margin: 0;
 
@@ -65,44 +95,6 @@ body {
       }
     }
   }
-}
-
-// Medium devices (tablets, 48em and up)
-@media (min-width: 48em) {
-  .col-xs-12 {
-    margin-bottom: 0;
-  }
-}
-
-.form-group {
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-}
-
-// Elements
-
-section, .Section {
-  @extend .container;
-  padding: 0.9375rem;
-  // margin-bottom: 2rem;
-  //
-  // &:last-of-type {
-  //   margin-bottom: 0;
-  // }
-}
-
-.Section-heading {
-  @extend h4;
-  margin-bottom: 0;
-  line-height: 1.6;
-}
-
-// Classes
-
-.BanksyPanda {
-  width: 100%;
-  // max-width: 400px;
 }
 
 // Session
@@ -148,32 +140,43 @@ section, .Section {
   padding: 4px 0;
 }
 
-// Waitlist
 
-.WaitlistList {
-  list-style: none;
-  padding-left: 0;
+.session-chart {
+  height: 240px;
+}
 
-  &:last-of-type {
-    margin-bottom: 0;
+.session-chart-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  color: #ccc;
+  @extend .font-weight-bold;
+
+  .session-chart-overlay-date {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .session-chart-overlay-duration {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .session-chart-overlay-rate {
+    position: absolute;
+    top: 1rem;
+    right: 0;
+    left: 0;
+    text-align: center;
   }
 }
 
-.WaitlistCell {
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
-
-  cursor: pointer;
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
+.session-chart {
+  .highcharts-container {
+    margin: 0 auto;
   }
 }
 
@@ -272,8 +275,6 @@ section, .Section {
     text-decoration: none;
   }
 }
-
-
 
 // Navigation Hamburger Button
 
@@ -377,41 +378,10 @@ section, .Section {
   }
 }
 
-
 .faq-section {
   @extend .p-y-3;
   border-bottom: 1px solid #ccc;
 }
 
-.session-chart {
-  height: 240px;
-}
-
-.session-chart-overlay {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  color: #ccc;
-  @extend .font-weight-bold;
-
-  .session-chart-overlay-date {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-  }
-
-  .session-chart-overlay-duration {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
-
-  .session-chart-overlay-rate {
-    position: absolute;
-    top: 1rem;
-    right: 0;
-    left: 0;
-    text-align: center;
-  }
-}
+// Responsive media queries
+@import 'responsive';
