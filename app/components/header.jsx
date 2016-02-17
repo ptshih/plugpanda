@@ -9,7 +9,7 @@ import store from '../stores/store';
 import auth from '../lib/auth';
 
 export default React.createClass({
-  displayName: 'Nav',
+  displayName: 'Header',
 
   propTypes: {
     location: React.PropTypes.object,
@@ -87,7 +87,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/dashboard">Dashboard</Link>
+      <Link className="Navbar-link" to="/dashboard">Activity</Link>
     );
   },
 

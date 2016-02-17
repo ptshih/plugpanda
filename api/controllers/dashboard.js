@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Muni = require('muni');
 
 const authenticateUserMiddleware = require('../middleware/authenticate-user');
 
@@ -15,8 +16,35 @@ module.exports = BaseController.extend({
   },
 
   dashboard(req, res, next) {
+    const promises = [];
+    promises.push(this._getActiveSession(req.user.id));
+    promises.push(this._getFrequentlyUsedStations(req.user.id));
+
+    return Muni.Promise.all(promises).then((results) => {
+      res.data = {
+        active_session: results[0],
+        frequent_stations: results[1],
+      };
+      return next();
+    }).catch(next);
+  },
+
+  _getActiveSession(userId) {
     const query = {
-      user_id: req.user.id,
+      user_id: userId,
+      status: {
+        $ne: 'off',
+      },
+    };
+
+    return this.get('db').findOne('sessions', query).then((session) => {
+      return session || {};
+    });
+  },
+
+  _getFrequentlyUsedStations(userId) {
+    const query = {
+      user_id: userId,
       $and: [{
         address1: {
           $ne: null,
@@ -55,7 +83,7 @@ module.exports = BaseController.extend({
       },
     }];
 
-    this.get('db').aggregate('sessions', pipeline, {
+    return this.get('db').aggregate('sessions', pipeline, {
       readPreference: 'secondaryPreferred',
     }).then((results) => {
       const stations = [];
@@ -72,11 +100,7 @@ module.exports = BaseController.extend({
         });
       });
 
-      res.data = {
-        stations: stations,
-      };
-      return next();
-    }).catch(next);
+      return stations;
+    });
   },
-
 });

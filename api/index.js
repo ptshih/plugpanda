@@ -63,8 +63,6 @@ _.each(requiredEnvs, (requiredEnv) => {
   console.log(`├── ${requiredEnv}=${requiredEnvValue}`);
 });
 
-console.log('\nLaunching...\n');
-
 // Database
 global.db = require('./config/db');
 
@@ -84,9 +82,16 @@ app.set('props', {
   webpackPort: _.parseInt(nconf.get('PORT')) + 1,
 });
 
+// App props
+const props = app.get('props');
+console.log('\nLaunching...\n');
+_.each(props, (val, key) => {
+  console.log(`├── ${key}=${val}`);
+});
+
 // Configure Environment Locals
 app.use((req, res, next) => {
-  _.assign(res.locals, app.get('props'));
+  _.assign(res.locals, props);
   next();
 });
 
@@ -121,7 +126,7 @@ app.use(compress());
 app.use(favicon(path.join(__dirname, '../public/favicon.ico')));
 
 // Browser Caching
-const maxAge = !app.get('props').debug ? oneYear : 0;
+const maxAge = !props.debug ? oneYear : 0;
 
 // Set `/public` as the static content directory
 app.use('/fonts', express.static(path.join(__dirname, '../public/fonts'), {
@@ -134,42 +139,39 @@ app.use('/', express.static(path.join(__dirname, '../public'), {
   maxAge: 0,
 }));
 
-// Routes
-if (app.get('props').debug) {
-  // Serve from webpack-dev-server
-  require('./webpack')(app);
-} else {
-  // Serve from compiled assets
-  app.use('/assets', express.static(path.join(__dirname, '../assets'), {
-    maxAge: maxAge,
-  }));
-  app.use('/cache.manifest', express.static(path.join(__dirname, '../assets/cache.manifest'), {
-    maxAge: 0,
-  }));
-
-  // Enable Logging
-  // Don't log anything above this line
-  app.use(morgan('dev'));
-
-  // API Routes
-  app.use('/api', require('./routes'));
-
-  // Serve `index.html` for all other routes
-  app.all('*', (req, res) => {
-    res.set('Content-Type', 'text/html');
-    res.sendFile(path.join(__dirname, '../assets/index.html'));
-  });
-}
-
 // Connect to the database
 db.connect().then(() => {
-  const props = app.get('props');
-
   // Start the HTTP server
   app.listen(props.port, () => {
-    console.log(`├── Express [PORT: ${props.port}] [PID: ${props.pid}] [ENV: ${props.env}]`);
-    console.log('\n');
+    console.log(`\n├── Express [PORT: ${props.port}] [PID: ${props.pid}] [ENV: ${props.env}]`);
   });
+}).then(() => {
+  // Routes
+  if (props.debug) {
+    // Serve from webpack-dev-server
+    require('./webpack')(app);
+  } else {
+    // Serve from compiled assets
+    app.use('/assets', express.static(path.join(__dirname, '../assets'), {
+      maxAge: maxAge,
+    }));
+    app.use('/cache.manifest', express.static(path.join(__dirname, '../assets/cache.manifest'), {
+      maxAge: 0,
+    }));
+
+    // Enable Logging
+    // Don't log anything above this line
+    app.use(morgan('dev'));
+
+    // API Routes
+    app.use('/api', require('./routes'));
+
+    // Serve `index.html` for all other routes
+    app.all('*', (req, res) => {
+      res.set('Content-Type', 'text/html');
+      res.sendFile(path.join(__dirname, '../assets/index.html'));
+    });
+  }
 }).catch((err) => {
   console.error('Express failed to start with error: %s', err.message);
   process.exit(1);

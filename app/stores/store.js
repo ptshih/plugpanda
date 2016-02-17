@@ -28,7 +28,7 @@ class Store extends EventEmitter {
 
       dashboard: {
         active_session: {},
-        stations: [],
+        frequent_stations: [],
       },
       account: {
         // TBD

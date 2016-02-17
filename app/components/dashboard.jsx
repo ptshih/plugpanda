@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+import {Link} from 'react-router';
 
 // Utils
 import auth from '../lib/auth';
@@ -59,22 +61,44 @@ export default createContainer(React.createClass({
   },
 
   getActiveChargingSession() {
-    if (_.isEmpty(this.props.dashboard.active_session)) {
+    const activeSession = _.get(this.props, 'dashboard.active_session');
+    if (_.isEmpty(activeSession)) {
       return null;
     }
 
+    const displayDate = moment(activeSession.created_date).calendar(null, {
+      lastDay: '[Yesterday] [at] HH:MM',
+      sameDay: '[Today] [at] HH:MM',
+      nextDay: '[Tomorrow] [at] HH:MM',
+      lastWeek: 'MM/DD [at] HH:MM',
+      nextWeek: 'MM/DD [at] HH:MM',
+      sameElse: 'MM/DD [at] HH:MM',
+    });
+
     return (
       <section>
-        <h4>Active Charging Sessions</h4>
+        <div><strong>Active Charging Sessions</strong></div>
+        <div>
+          <Link
+            to={{
+              pathname: `/sessions/${activeSession.session_id}`,
+              state: {parentPath: '/dashboard'},
+            }}
+          >
+            {activeSession.session_id}
+          </Link>
+        </div>
+        <div>{displayDate}</div>
+        <div>{`${activeSession.address1} in ${activeSession.city}`}</div>
       </section>
     );
   },
 
   getFrequentlyUsedStations() {
     const stations = [];
-    _.each(this.props.dashboard.stations, (station) => {
+    _.each(this.props.dashboard.frequent_stations, (station) => {
       stations.push([
-        `${station.address}, ${station.city}`,
+        `${station.address} in ${station.city}`,
         station.payment_type,
         station.count,
       ]);
@@ -110,7 +134,7 @@ export default createContainer(React.createClass({
   },
 
 }), {
-  title: 'Dashboard',
+  title: 'Activity',
   fetchHandler: 'fetchDashboard',
   storeKey: 'dashboard',
 });

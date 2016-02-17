@@ -21,7 +21,7 @@ module.exports = function(app) {
 
   // Start webpack-dev-server
   webpackDevServer.listen(app.get('props').webpackPort, 'localhost', () => {
-    console.log(`├── Webpack [PORT: ${app.get('props').webpackPort}]`);
+    console.log(`\n├── Webpack [PORT: ${app.get('props').webpackPort}]`);
   });
 
   // Proxy routes to webpack-dev-server
