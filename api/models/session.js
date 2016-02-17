@@ -212,6 +212,12 @@ module.exports = BaseUserModel.extend({
   saveFromChargepoint(chargingStatus) {
     return Muni.Promise.bind(this).tap(() => {
       this.set(this._convertFromChargepoint(chargingStatus));
+    }).tap(() => {
+      // Calculate `max_power` and `average_power`
+      this.set({
+        max_power: this._calculateMaxPower(this.get('update_data')),
+        average_power: this._calculateAveragePower(this.get('update_data')),
+      });
     }).then(() => {
       // Session Status
       const sessionId = this.get('session_id');
@@ -350,10 +356,6 @@ module.exports = BaseUserModel.extend({
     // Only when charging is active
     if (obj.update_data) {
       attrs.update_data = obj.update_data;
-
-      // Calculate `max_power` and `average_power`
-      attrs.max_power = this._calculateMaxPower(attrs.update_data);
-      attrs.average_power = this._calculateAveragePower(attrs.update_data);
     }
 
     // Only when charging is active
