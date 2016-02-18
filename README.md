@@ -54,6 +54,10 @@ SCSS BEM Style:
 
 - [Muni](https://github.com/airbrite/muni)
 
+## Google Maps
+
+- [Static Maps](https://developers.google.com/maps/documentation/static-maps/intro)
+
 ## Todo
 
 [Todo](TODO.md)
