@@ -30,7 +30,7 @@ export default React.createClass({
         <section className="faq-section">
           <div className="text-xs-center">
             <h3 className="m-b-1">Charging without the anxiety</h3>
-            <p className="lead">PlugPanda monitors your ChargePoint charging sessions 24/7 and automatically stops them for you.</p>
+            <p className="lead">PlugPanda monitors your charging sessions 24/7 and can stop them for you.</p>
             <div><img className="faq-screenshot" src="/img/sessions.jpg"></img></div>
           </div>
         </section>
@@ -38,7 +38,7 @@ export default React.createClass({
         <section className="faq-section">
           <div className="text-xs-center">
             <h3 className="m-b-1">You're in control</h3>
-            <p className="lead">You decide when to stop charging your vehicle.</p>
+            <p className="lead">PlugPanda will notify you when it's time to stop charging your vehicle.</p>
             <div><img className="faq-screenshot" src="/img/session.jpg"></img></div>
           </div>
         </section>
