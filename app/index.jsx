@@ -16,7 +16,7 @@ import Header from './components/header';
 import Root from './components/root';
 import Faq from './components/faq';
 import Dashboard from './components/dashboard';
-import Car from './components/car';
+import Bmw from './components/bmw';
 import Session from './components/session';
 import Sessions from './components/sessions';
 import Account from './components/account';
@@ -88,7 +88,7 @@ ReactDOM.render((
       {/* Routes */}
       <Route path="faq" component={Faq} onEnter={onEnter} />
       <Route path="dashboard" component={Dashboard} onEnter={onEnter} requireAuth />
-      <Route path="car" component={Car} onEnter={onEnter} requireAuth />
+      <Route path="bmw" component={Bmw} onEnter={onEnter} requireAuth />
       <Route path="sessions/:session_id" component={Session} onEnter={onEnter} requireAuth />
       <Route path="sessions" component={Sessions} onEnter={onEnter} requireAuth />
       <Route path="account" component={Account} onEnter={onEnter} requireAuth />

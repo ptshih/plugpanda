@@ -1,6 +1,6 @@
 const BaseCollection = require('./base');
-const CarModel = require('../models/car');
+const BmwModel = require('../models/bmw');
 
 module.exports = BaseCollection.extend({
-  model: CarModel,
+  model: BmwModel,
 });

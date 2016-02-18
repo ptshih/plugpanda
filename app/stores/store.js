@@ -37,7 +37,7 @@ class Store extends EventEmitter {
           subscription: null,
         },
       },
-      car: {
+      bmw: {
         position: {
           lat: 0,
           lon: 0,
@@ -208,12 +208,12 @@ class Store extends EventEmitter {
         this.state.waitlist = _.assign({}, this.state.waitlist, action.data);
         break;
 
-      // Car
-      case 'RESET_CAR':
-        this.state.car = this.defaults().car;
+      // Bmw
+      case 'RESET_BMW':
+        this.state.bmw = this.defaults().bmw;
         break;
-      case 'SET_CAR':
-        this.state.car = _.assign({}, this.state.car, action.data);
+      case 'SET_BMW':
+        this.state.bmw = _.assign({}, this.state.bmw, action.data);
         break;
 
       // Session

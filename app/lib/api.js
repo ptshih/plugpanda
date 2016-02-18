@@ -73,9 +73,9 @@ export default {
     });
   }),
 
-  fetchCar: Promise.method(function() {
+  fetchBmw: Promise.method(function() {
     return this._request({
-      url: window.location.origin + '/api/car/status',
+      url: window.location.origin + '/api/bmw/status',
       headers: auth.buildAuthHeaders(),
     });
   }),

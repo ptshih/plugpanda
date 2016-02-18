@@ -56,7 +56,7 @@ module.exports = BaseModel.extend({
               type: 'boolean',
               default: true,
             },
-            car: {
+            bmw: {
               type: 'boolean',
               default: false,
             },
@@ -125,7 +125,7 @@ module.exports = BaseModel.extend({
           },
         },
 
-        // BMW
+        // Bmw
         bmw: {
           type: 'object',
           fields: {

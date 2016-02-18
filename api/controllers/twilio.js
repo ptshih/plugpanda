@@ -4,7 +4,7 @@ const bmwapi = require('../lib/bmw');
 // Twilio
 const twilio = require('twilio');
 
-const CarModel = require('../models/car');
+const BmwModel = require('../models/bmw');
 const SessionModel = require('../models/session');
 const BaseController = require('./base');
 
@@ -24,7 +24,7 @@ module.exports = BaseController.extend({
     const text = (req.body.Body || '').toLowerCase().trim();
     const parts = text.split(' ');
 
-    // Command format: `/car soc` or `/car`
+    // Command format: `/bmw soc` or `/bmw`
     if (!parts.length || parts.length > 2) {
       return res.sendStatus(204);
     }
@@ -32,9 +32,9 @@ module.exports = BaseController.extend({
     req.mode = parts[0];
     req.cmd = parts[1];
 
-    // BMW
-    if (req.mode === '/car') {
-      return this._car(req, res, next);
+    // Bmw
+    if (req.mode === '/bmw') {
+      return this._bmw(req, res, next);
     }
 
     // Chargepoint
@@ -45,15 +45,15 @@ module.exports = BaseController.extend({
     return res.sendStatus(204);
   },
 
-  _car(req, res, next) {
+  _bmw(req, res, next) {
     const cmd = req.cmd;
 
-    const car = new CarModel();
-    car.db = this.get('db');
+    const bmw = new BmwModel();
+    bmw.db = this.get('db');
 
-    return bmwapi.auth().then((bmw) => {
+    return bmwapi.auth().then(() => {
       req.bmw = bmw;
-      return car.fetch({
+      return bmw.fetch({
         query: {
           vin: req.bmw.vin,
         },
@@ -63,35 +63,35 @@ module.exports = BaseController.extend({
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
-        car.setFromBMW(data.vehicleStatus);
+        bmw.setFromBmw(data.vehicleStatus);
       });
     }).tap(() => {
-      return car.save();
+      return bmw.save();
     }).then(() => {
       switch (cmd) {
         case 'status':
-          return `Status: ${car.get('updateReason')}`;
+          return `Status: ${bmw.get('updateReason')}`;
         case 'charge':
         case 'soc':
         case 'batt':
-          return `SOC: ${car.get('chargingLevelHv')}%`;
+          return `SOC: ${bmw.get('chargingLevelHv')}%`;
         case 'fuel':
         case 'gas':
-          const fuelPercent = ((car.get('remainingFuel') / car.get('maxFuel')) * 100).toFixed(0);
+          const fuelPercent = ((bmw.get('remainingFuel') / bmw.get('maxFuel')) * 100).toFixed(0);
           return `Fuel: ${fuelPercent}%`;
         case 'door':
         case 'alarm':
-          return `Door: ${car.get('doorLockState')}`;
+          return `Door: ${bmw.get('doorLockState')}`;
         case 'plug':
-          return `Plug: ${car.get('connectionStatus')} / ${car.get('chargingStatus')}`;
+          return `Plug: ${bmw.get('connectionStatus')} / ${bmw.get('chargingStatus')}`;
         case 'miles':
         case 'mileage':
         case 'mi':
-          return `Miles: ${car.get('miles')}`;
+          return `Miles: ${bmw.get('miles')}`;
         case 'map':
         case 'gps':
           // https://developers.google.com/maps/documentation/ios/urlscheme?hl=en
-          return `comgooglemapsurl://maps.google.com/?q=${car.get('position.lat')},${car.get('position.lon')}`;
+          return `comgooglemapsurl://maps.google.com/?q=${bmw.get('position.lat')},${bmw.get('position.lon')}`;
           // return `comgooglemaps://?center=${data.position.lat},${data.position.lon}`;
           // return `https://maps.google.com/maps?q=${data.position.lat},${data.position.lon}`;
         default:

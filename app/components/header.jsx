@@ -91,12 +91,12 @@ export default React.createClass({
     );
   },
 
-  getCar() {
+  getBmw() {
     if (!auth.isLoggedIn()) {
       return null;
     }
 
-    if (!auth.getFeatures('car')) {
+    if (!auth.getFeatures('bmw')) {
       return null;
     }
 
@@ -105,7 +105,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/car">Car</Link>
+      <Link className="Navbar-link" to="/bmw">BMW</Link>
     );
   },
 
@@ -190,7 +190,7 @@ export default React.createClass({
           {this.getRoot()}
           {this.getFAQ()}
           {this.getDashboard()}
-          {this.getCar()}
+          {this.getBmw()}
           {this.getSessions()}
           {this.getWaitlist()}
           {this.getAccount()}

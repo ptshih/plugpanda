@@ -1,9 +1,8 @@
 // const _ = require('lodash');
-const bmwapi = require('../lib/bmw');
+const bmwApi = require('../lib/bmw');
 
 const BaseController = require('./base');
-const CarModel = require('../models/car');
-// const CarCollection = require('../collections/car');
+const BmwModel = require('../models/bmw');
 
 const authenticateUserMiddleware = require('../middleware/authenticate-user');
 const authenticateBmwMiddleware = require('../middleware/authenticate-bmw');
@@ -12,43 +11,43 @@ module.exports = BaseController.extend({
   setupRoutes() {
     BaseController.prototype.setupRoutes.call(this);
 
-    this.routes.get['/car'] = {
+    this.routes.get['/bmw'] = {
       action: this.vehicle,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
-    this.routes.get['/car/status'] = {
+    this.routes.get['/bmw/status'] = {
       action: this.status,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
-    this.routes.get['/car/statistics'] = {
+    this.routes.get['/bmw/statistics'] = {
       action: this.statistics,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
-    this.routes.get['/car/destinations'] = {
+    this.routes.get['/bmw/destinations'] = {
       action: this.destinations,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
-    this.routes.get['/car/chargingprofile'] = {
+    this.routes.get['/bmw/chargingprofile'] = {
       action: this.chargingprofile,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
-    this.routes.get['/car/rangemap'] = {
+    this.routes.get['/bmw/rangemap'] = {
       action: this.rangemap,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
     };
 
-    this.routes.post['/car/poi'] = {
+    this.routes.post['/bmw/poi'] = {
       action: this.poi,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
       requiredParams: ['street', 'city', 'country'],
     };
 
-    this.routes.post['/car/service'] = {
+    this.routes.post['/bmw/service'] = {
       action: this.service,
       middleware: [authenticateUserMiddleware, authenticateBmwMiddleware],
       requiredParams: ['type'],
@@ -57,7 +56,7 @@ module.exports = BaseController.extend({
 
 
   vehicle(req, res, next) {
-    return bmwapi.sendVehicleRequest(
+    return bmwApi.sendVehicleRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -67,31 +66,31 @@ module.exports = BaseController.extend({
   },
 
   status(req, res, next) {
-    const car = new CarModel();
-    car.db = this.get('db');
+    const bmw = new BmwModel();
+    bmw.db = this.get('db');
 
-    return car.fetch({
+    return bmw.fetch({
       query: {
         vin: req.bmw.vin,
       },
     }).tap(() => {
-      return bmwapi.sendStatusRequest(
+      return bmwApi.sendStatusRequest(
         req.bmw.access_token,
         req.bmw.vin
       ).tap((data) => {
-        car.setFromBMW(data.vehicleStatus);
+        bmw.setFromBmw(data.vehicleStatus);
       });
     }).tap(() => {
-      return car.save();
+      return bmw.save();
     }).then(() => {
-      res.data = car.render();
+      res.data = bmw.render();
       next();
     }).catch(next);
   },
 
   statistics(req, res, next) {
     const filter = req.query.filter || 'allTrips';
-    return bmwapi.sendStatisticsRequest(
+    return bmwApi.sendStatisticsRequest(
       req.bmw.access_token,
       req.bmw.vin,
       filter
@@ -102,7 +101,7 @@ module.exports = BaseController.extend({
   },
 
   destinations(req, res, next) {
-    return bmwapi.sendDestinationsRequest(
+    return bmwApi.sendDestinationsRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -112,7 +111,7 @@ module.exports = BaseController.extend({
   },
 
   chargingprofile(req, res, next) {
-    return bmwapi.sendChargingProfileRequest(
+    return bmwApi.sendChargingProfileRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -122,7 +121,7 @@ module.exports = BaseController.extend({
   },
 
   rangemap(req, res, next) {
-    return bmwapi.sendRangeMapRequest(
+    return bmwApi.sendRangeMapRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -132,11 +131,7 @@ module.exports = BaseController.extend({
   },
 
   poi(req, res, next) {
-    const car = new CarModel();
-    car.db = this.get('db');
-    car.bmw = req.bmw;
-
-    return bmwapi.sendPOIRequest(
+    return bmwApi.sendPOIRequest(
       req.bmw.access_token,
       req.bmw.vin,
       {
@@ -150,11 +145,7 @@ module.exports = BaseController.extend({
   },
 
   service(req, res, next) {
-    const car = new CarModel();
-    car.db = this.get('db');
-    car.bmw = req.bmw;
-
-    return bmwapi.sendExecuteServiceRequest(
+    return bmwApi.sendExecuteServiceRequest(
       req.bmw.access_token,
       req.bmw.vin,
       req.body.type

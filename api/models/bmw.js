@@ -4,12 +4,12 @@ const math = require('../../lib/math');
 const BaseUserModel = require('./base-user');
 
 module.exports = BaseUserModel.extend({
-  urlRoot: 'cars',
+  urlRoot: 'bmws',
 
   definition: function() {
     return _.assign({},
       _.result(BaseUserModel.prototype, 'definition'), {
-        // BMW
+        // Bmw
         vin: {
           type: 'string',
         },
@@ -121,39 +121,39 @@ module.exports = BaseUserModel.extend({
     return json;
   },
 
-  setFromBMW(vehicleStatus) {
-    this.set(this._convertFromBMW(vehicleStatus));
+  setFromBmw(vehicleStatus) {
+    this.set(this._convertFromBmw(vehicleStatus));
   },
 
-  _convertFromBMW(car) {
+  _convertFromBmw(data) {
     const attrs = {
-      vin: car.vin,
-      miles: car.mileage * 0.621371,
-      chargingLevelHv: car.chargingLevelHv,
-      remainingFuel: car.remainingFuel,
-      connectionStatus: car.connectionStatus,
-      chargingStatus: car.chargingStatus,
-      chargingTimeRemaining: car.chargingTimeRemaining,
-      remainingRangeElectricMls: car.remainingRangeElectricMls,
-      remainingRangeFuelMls: car.remainingRangeFuelMls,
-      updateReason: car.updateReason,
-      updateTime: new Date(car.updateTime),
+      vin: data.vin,
+      miles: data.mileage * 0.621371,
+      chargingLevelHv: data.chargingLevelHv,
+      remainingFuel: data.remainingFuel,
+      connectionStatus: data.connectionStatus,
+      chargingStatus: data.chargingStatus,
+      chargingTimeRemaining: data.chargingTimeRemaining,
+      remainingRangeElectricMls: data.remainingRangeElectricMls,
+      remainingRangeFuelMls: data.remainingRangeFuelMls,
+      updateReason: data.updateReason,
+      updateTime: new Date(data.updateTime),
 
-      doorLockState: car.doorLockState,
-      doorDriverFront: car.doorDriverFront,
-      doorDriverRear: car.doorDriverRear,
-      doorPassengerFront: car.doorPassengerFront,
-      doorPassengerRear: car.doorPassengerRear,
-      windowDriverFront: car.windowDriverFront,
-      windowDriverRear: car.windowDriverRear,
-      windowPassengerFront: car.windowPassengerFront,
-      windowPassengerRear: car.windowPassengerRear,
-      trunk: car.trunk,
-      hood: car.hood,
-      parkingLight: car.parkingLight,
-      positionLight: car.positionLight,
+      doorLockState: data.doorLockState,
+      doorDriverFront: data.doorDriverFront,
+      doorDriverRear: data.doorDriverRear,
+      doorPassengerFront: data.doorPassengerFront,
+      doorPassengerRear: data.doorPassengerRear,
+      windowDriverFront: data.windowDriverFront,
+      windowDriverRear: data.windowDriverRear,
+      windowPassengerFront: data.windowPassengerFront,
+      windowPassengerRear: data.windowPassengerRear,
+      trunk: data.trunk,
+      hood: data.hood,
+      parkingLight: data.parkingLight,
+      positionLight: data.positionLight,
 
-      position: car.position,
+      position: data.position,
     };
 
     return attrs;

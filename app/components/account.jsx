@@ -255,7 +255,7 @@ export default createContainer(React.createClass({
     );
   },
 
-  getBMW() {
+  getBmw() {
     const vin = _.get(this.props.account, 'bmw.vin');
     const accessToken = _.get(this.props.account, 'bmw.access_token');
 
@@ -405,7 +405,7 @@ export default createContainer(React.createClass({
         <div><a href="#" onClick={this.onSave}>Save Changes</a></div>
         <div><a href="#" onClick={this.onUnimplemented}>Change Password</a></div>
       </section>
-    )
+    );
   },
 
   render() {
@@ -415,7 +415,7 @@ export default createContainer(React.createClass({
         {this.getSettings()}
         {this.getNotifications()}
         {this.getChargepoint()}
-        {this.getBMW()}
+        {this.getBmw()}
         {this.getGetaround()}
         {this.getSubscription()}
         {this.getAdmin()}
