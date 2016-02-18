@@ -60,6 +60,13 @@ export default React.createClass({
 
         <section>
           <div className="text-xs-center">
+            <h4 className="m-b-1">Plug Panda plays well with...</h4>
+            <div><img className="root-playswell" src="/img/playswell.png"/></div>
+          </div>
+        </section>
+
+        <section>
+          <div className="text-xs-center">
             <div><small className="text-muted">Plug Panda is made by <a href="https://twitter.com/ptshih">Peter Shih</a> & <a href="https://twitter.com/brunoportnoy">Bruno Marinho</a>.</small></div>
             <div><img className="root-dancing-panda" src="/img/dancing-panda.gif"/></div>
           </div>
