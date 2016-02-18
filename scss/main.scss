@@ -140,9 +140,18 @@ section, .Section {
   padding: 4px 0;
 }
 
+.session-chart-container {
+  position: relative;
+  background-color: rgb(64, 64, 64);
+  height: 240px;
+}
 
 .session-chart {
-  height: 240px;
+  position: absolute;
+  height: 180px;
+  top: 60px;
+  left: 0;
+  right: 0;
 }
 
 .session-chart-overlay {

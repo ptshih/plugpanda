@@ -85,7 +85,7 @@ export default createContainer(React.createClass({
 
     return (
       <section className="section-full">
-        <div style={{position: 'relative'}}>
+        <div className="session-chart-container">
           <Highcharts className="session-chart" config={powerConfig} />
           <div className="session-chart-overlay">
             <div className="session-chart-overlay-date">{data.date}</div>
