@@ -63,7 +63,7 @@ export default React.createClass({
         <section>
           <div className="text-xs-center">
             <h3 className="m-b-1">Why a waitlist?</h3>
-            <p className="lead">Due to the complicated nature of monitoring charging sessions remotely, we want to make sure everything is working perfectly before we start making our sevice more widely available.</p>
+            <p className="lead">Due to the complicated nature of monitoring charging sessions remotely, we want to make sure everything is working perfectly before we start making the service more widely available.</p>
           </div>
         </section>
 
