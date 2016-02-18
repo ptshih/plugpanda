@@ -60,13 +60,8 @@ export default React.createClass({
 
         <section>
           <div className="text-xs-center">
-            <small className="text-muted">Plug Panda is made by <a href="https://twitter.com/ptshih">Peter Shih</a> & <a href="https://twitter.com/brunoportnoy">Bruno Marinho</a>.</small>
-          </div>
-        </section>
-
-        <section>
-          <div className="text-xs-center">
-            <img className="root-dancing-panda" src="/img/dancing-panda.gif"/>
+            <div><small className="text-muted">Plug Panda is made by <a href="https://twitter.com/ptshih">Peter Shih</a> & <a href="https://twitter.com/brunoportnoy">Bruno Marinho</a>.</small></div>
+            <div><img className="root-dancing-panda" src="/img/dancing-panda.gif"/></div>
           </div>
         </section>
       </article>
