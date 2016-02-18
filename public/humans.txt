@@ -3,3 +3,7 @@
   Name: Peter Shih
   Site: https://github.com/ptshih
   Location: San Francisco, New York
+
+  Name: Bruno Marinho
+  Site: https://github.com/brunomarinho
+  Location: Rio de Janeiro, Brazil
