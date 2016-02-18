@@ -116,6 +116,7 @@ export default createContainer(React.createClass({
         <GoogleMap
           lat={this.props.session.lat}
           lon={this.props.session.lon}
+          height={280}
         />
       </section>
     );
