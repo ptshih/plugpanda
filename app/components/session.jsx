@@ -85,15 +85,11 @@ export default createContainer(React.createClass({
 
     return (
       <section className="section-full">
-        <div className="row">
-          <div className="col-xs-12">
-            <div style={{position: 'relative'}}>
-              <Highcharts className="session-chart" config={powerConfig} />
-              <div className="session-chart-overlay">
-                <div className="session-chart-overlay-date">{data.date}</div>
-                <div className="session-chart-overlay-duration">{`${data.hours}h ${data.minutes}m`}</div>
-              </div>
-            </div>
+        <div style={{position: 'relative'}}>
+          <Highcharts className="session-chart" config={powerConfig} />
+          <div className="session-chart-overlay">
+            <div className="session-chart-overlay-date">{data.date}</div>
+            <div className="session-chart-overlay-duration">{`${data.hours}h ${data.minutes}m`}</div>
           </div>
         </div>
       </section>
