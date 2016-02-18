@@ -62,8 +62,15 @@ export default React.createClass({
 
         <section className="faq-section">
           <div className="text-xs-center">
+            <h3 className="m-b-1">Why a waitlist?</h3>
+            <p className="lead">Due to the complicated nature of monitoring charging sessions remotely, we want to make sure everything is working perfectly before we start making our sevice more widely available.</p>
+          </div>
+        </section>
+
+        <section className="faq-section">
+          <div className="text-xs-center">
             <h3 className="m-b-1">Short on cash?</h3>
-            <p className="lead">Plug Panda is completely free to use! <Link to="/register">Join the waitlist today!</Link></p>
+            <p className="lead">Plug Panda is completely free to use.<br/><Link to="/register">Sign up today to reserve your place in line!</Link></p>
           </div>
         </section>
       </article>
