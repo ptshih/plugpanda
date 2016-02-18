@@ -68,6 +68,7 @@ export default React.createClass({
         <section>
           <div className="text-xs-center">
             <div><small className="text-muted">Plug Panda is made by <a href="https://twitter.com/ptshih">Peter Shih</a> & <a href="https://twitter.com/brunoportnoy">Bruno Marinho</a>.</small></div>
+            <div><small className="text-muted">We are not affiliated with ChargePoint, Inc.</small></div>
             <div><img className="root-dancing-panda" src="/img/dancing-panda.gif"/></div>
           </div>
         </section>
