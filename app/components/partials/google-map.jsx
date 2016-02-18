@@ -7,30 +7,35 @@ export default React.createClass({
     lat: React.PropTypes.number.isRequired,
     lon: React.PropTypes.number.isRequired,
     zoom: React.PropTypes.number,
-    width: React.PropTypes.number,
-    height: React.PropTypes.number,
   },
 
   getDefaultProps() {
     return {
       zoom: 16,
-      width: 640,
-      height: 280,
     };
   },
 
   // Render
 
   render() {
+    const style = {
+      backgroundImage: `url('${this._buildStaticMap()}')`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      height: '100%',
+      width: '100%',
+    };
+
     return (
-      <img className="GoogleMap" src={this._buildStaticMap()} />
+      <div style={style}></div>
     );
   },
 
   // Private
 
   _buildStaticMap() {
-    return `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.lat},${this.props.lon}&zoom=${this.props.zoom}&size=${this.props.width}x${this.props.height}&markers=${this.props.lat},${this.props.lon}`;
+    return `https://maps.googleapis.com/maps/api/staticmap?center=${this.props.lat},${this.props.lon}&zoom=${this.props.zoom}&size=640x320&scale=2&markers=${this.props.lat},${this.props.lon}`;
   },
 
   _buildLink() {

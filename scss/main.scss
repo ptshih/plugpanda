@@ -9,7 +9,6 @@ $font-family-sans-serif: 'Open Sans', sans-serif !default;
 @import 'inputs';
 @import 'error';
 @import 'float-label';
-@import 'google-map';
 @import 'nprogress';
 @import 'spinner';
 
@@ -183,10 +182,14 @@ section, .Section {
   }
 }
 
-.session-chart {
-  .highcharts-container {
-    margin: 0 auto;
-  }
+.session-map {
+  height: 240px;
+}
+
+// Bmw
+
+.bmw-map {
+  height: 240px;
 }
 
 // Login

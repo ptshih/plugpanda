@@ -23,11 +23,12 @@ export default createContainer(React.createClass({
   getMap() {
     return (
       <section className="section-full">
-        <GoogleMap
-          lat={this.props.bmw.position.lat}
-          lon={this.props.bmw.position.lon}
-          height={280}
-        />
+        <div className="bmw-map">
+          <GoogleMap
+            lat={this.props.bmw.position.lat}
+            lon={this.props.bmw.position.lon}
+          />
+        </div>
       </section>
     );
   },

@@ -113,11 +113,12 @@ export default createContainer(React.createClass({
   getMap() {
     return (
       <section className="section-full">
-        <GoogleMap
-          lat={this.props.session.lat}
-          lon={this.props.session.lon}
-          height={280}
-        />
+        <div className="session-map">
+          <GoogleMap
+            lat={this.props.session.lat}
+            lon={this.props.session.lon}
+          />
+        </div>
       </section>
     );
   },
