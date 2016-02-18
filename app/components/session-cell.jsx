@@ -75,11 +75,11 @@ export default React.createClass({
     // Status
     let statusClass = '';
     if (session.status === 'on') {
-      statusClass = 'SessionCell--active';
+      statusClass = 'session-list__cell--active';
     } else if (session.status === 'stopping') {
-      statusClass = 'SessionCell--stopping';
+      statusClass = 'session-list__cell--stopping';
     }
-    const className = ['SessionCell', statusClass].join(' ');
+    const className = ['session-list__cell', statusClass].join(' ');
 
     return (
       <li className={className}>

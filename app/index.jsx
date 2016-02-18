@@ -71,7 +71,7 @@ const App = React.createClass({
         <Header
           location={this.props.location}
         />
-        <main role="main" className="Content">{this.props.children}</main>
+        <main role="main" className="main">{this.props.children}</main>
       </div>
     );
   },

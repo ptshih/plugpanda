@@ -1,0 +1,15 @@
+.u-link {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.u-alert {
+  @extend .alert;
+  
+  &--loading {
+    @extend .alert-info;
+  }
+  &--error {
+    @extend .alert-danger;
+  }
+}

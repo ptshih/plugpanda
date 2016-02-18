@@ -49,7 +49,7 @@ export default React.createClass({
   },
 
   render() {
-    const className = ['Select', 'form-control', this.props.className].join(' ').trim();
+    const className = ['select', 'form-control', this.props.className].join(' ').trim();
     const props = _.omit(this.props, ['className', 'children']);
 
     return (

@@ -75,20 +75,20 @@ export default React.createClass({
   // Render
 
   render() {
-    const className = ['FloatLabel', this.props.className].join(' ').trim();
+    const className = ['float-label', this.props.className].join(' ').trim();
     const props = _.omit(this.props, ['placeholder', 'className']);
 
     // Label Class
-    const labelClasses = ['FloatLabel-label'];
+    const labelClasses = ['float-label__label'];
     if (this.state.on) {
-      labelClasses.push('FloatLabel-label--on');
+      labelClasses.push('float-label__label--on');
     }
     const labelClassName = labelClasses.join(' ').trim();
 
     // Border Class
-    const borderClasses = ['FloatLabel-border'];
+    const borderClasses = ['float-label__border'];
     if (this.state.on) {
-      borderClasses.push('FloatLabel-border--on');
+      borderClasses.push('float-label__border--on');
     }
     const borderClassName = borderClasses.join(' ').trim();
 

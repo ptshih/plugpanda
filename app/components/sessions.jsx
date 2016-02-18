@@ -27,7 +27,7 @@ export default createContainer(React.createClass({
     const sessions = this.props.sessions;
 
     return (
-      <ul className="SessionList">
+      <ul className="session-list">
         {sessions.map(this.getSessionCells)}
       </ul>
     );

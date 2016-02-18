@@ -42,7 +42,7 @@ export default React.createClass({
           <div className="text-xs-center">
             <h4 className="m-b-1">If you forget to unplug your car when it is fully charged, you will continue to be billed.</h4>
             <p className="lead">This is particularly bad for overnight charging in apartment complexes.</p>
-            <div><img className="root-img" src="/img/facepalm.jpg"/></div>
+            <div><img className="img img--root" src="/img/facepalm.jpg"/></div>
           </div>
         </section>
 
@@ -50,7 +50,7 @@ export default React.createClass({
           <div className="text-xs-center">
             <h4 className="m-b-1">Like smartphones, the charge rate of EVs trickle down as the battery approaches 100%.</h4>
             <p className="lead">Charging the last 5-10% can account for as much as 1/3 of the total charge time.</p>
-            <div><img className="root-img" src="/img/battery.png"/></div>
+            <div><img className="img img--root" src="/img/battery.png"/></div>
           </div>
         </section>
 
@@ -61,7 +61,7 @@ export default React.createClass({
         <section>
           <div className="text-xs-center">
             <h4 className="m-b-1">Plug Panda plays well with...</h4>
-            <div><img className="root-playswell" src="/img/playswell.png"/></div>
+            <div><img className="img img--playswell" src="/img/playswell.png"/></div>
           </div>
         </section>
 
@@ -69,7 +69,7 @@ export default React.createClass({
           <div className="text-xs-center">
             <div><small className="text-muted">Plug Panda is made by <a href="https://twitter.com/ptshih">Peter Shih</a> & <a href="https://twitter.com/brunoportnoy">Bruno Marinho</a>.</small></div>
             <div><small className="text-muted">We are not affiliated with ChargePoint, Inc.</small></div>
-            <div><img className="root-dancing-panda" src="/img/dancing-panda.gif"/></div>
+            <div><img className="img img--dancing-panda" src="/img/dancing-panda.gif"/></div>
           </div>
         </section>
       </article>

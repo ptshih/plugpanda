@@ -1,14 +1,24 @@
 // Medium devices (tablets, 48em and up)
 @media (min-width: 48em) {
+  // Bootstrap
   .col-xs-12 {
     margin-bottom: 0;
   }
-  .section-full {
-    padding: 0.9375rem;
+
+  // Section
+  section,
+  .section {
+    &--fluid {
+      padding: 0.9375rem;
+    }
   }
+
+  // Session
   .session-map {
     height: 280px;
   }
+
+  // Bmw
   .bmw-map {
     height: 280px;
   }
@@ -16,6 +26,7 @@
 
 // Small devices
 @media (max-width: 47.9em) {
+  // Bootstrap
   h1 {
     font-size: $font-size-h1 * 0.8;
   }

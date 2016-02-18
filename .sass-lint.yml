@@ -7,7 +7,6 @@ options:
   formatter: stylish
   merge-default-rules: false
 rules:
-  bem-depth: 1
   border-zero:
     - 1
     - convention: none

@@ -1,0 +1,33 @@
+.img {
+  &--root {
+    width: 100%;
+    max-width: 480px;
+  }
+  &--faq {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #999;
+  }
+  &--playswell {
+    width: 100%;
+    max-width: 480px;
+    margin-top: 0.5rem;
+  }
+  &--dancing-panda {
+    width: 40px;
+    max-width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+.macbook {
+  position: relative;
+  margin: 0 auto;
+  width: 535px;
+
+  &__screen {
+    position: absolute;
+    left: 68px;
+    top: 25px;
+  }
+}

@@ -84,12 +84,13 @@ export default createContainer(React.createClass({
     const powerConfig = this._getChartConfig('Power (kW)', chartData.power);
 
     return (
-      <section className="section-full">
-        <div className="session-chart-container">
-          <Highcharts className="session-chart" config={powerConfig} />
-          <div className="session-chart-overlay">
-            <div className="session-chart-overlay-date">{data.date}</div>
-            <div className="session-chart-overlay-duration">{`${data.hours}h ${data.minutes}m`}</div>
+      <section className="section--fluid">
+        <div className="session-chart">
+          <Highcharts className="session-chart__highcharts" config={powerConfig} />
+          <div className="session-chart__overlay">
+            <div className="session-chart__overlay__date">{data.date}</div>
+            <div className="session-chart__overlay__rate">{data.totalEnergy} @ {data.averagePower}</div>
+            <div className="session-chart__overlay__duration">{`${data.hours}h ${data.minutes}m`}</div>
           </div>
         </div>
       </section>
@@ -112,7 +113,7 @@ export default createContainer(React.createClass({
 
   getMap() {
     return (
-      <section className="section-full">
+      <section className="section--fluid">
         <div className="session-map">
           <GoogleMap
             lat={this.props.session.lat}

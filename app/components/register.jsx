@@ -99,7 +99,7 @@ export default React.createClass({
       return null;
     }
 
-    return <div className="Login-message Login-message--error">{this.state.message}</div>;
+    return <div className="u-alert u-alert--error">{this.state.message}</div>;
   },
 
   render() {
@@ -136,7 +136,7 @@ export default React.createClass({
             </div>
           </div>
 
-          <div className="Login--submit row">
+          <div className="row m-t-1">
             <div className="col-xs-12">
               {this.getMessage()}
               <button
@@ -146,7 +146,7 @@ export default React.createClass({
                 disabled={this.state.disabled}
               >Sign Up</button>
               &nbsp;&nbsp;or&nbsp;&nbsp;
-              <span className="Login-register" onClick={this.onLogin}>Sign in with an existing account</span>
+              <span className="u-link" onClick={this.onLogin}>Sign in with an existing account</span>
             </div>
           </div>
         </section>

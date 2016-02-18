@@ -90,7 +90,7 @@ export default React.createClass({
 
   render() {
     return (
-      <table className="table table-notebook">
+      <table className="table table--notebook">
         {this.getTableHead(this.props.headers)}
         {this.getTableBody(this.props.rows)}
         {this.getTableFoot(this.props.footers)}

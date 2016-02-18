@@ -22,7 +22,7 @@ export default createContainer(React.createClass({
 
   getMap() {
     return (
-      <section className="section-full">
+      <section className="section--fluid">
         <div className="bmw-map">
           <GoogleMap
             lat={this.props.bmw.position.lat}

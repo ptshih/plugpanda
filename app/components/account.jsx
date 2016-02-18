@@ -246,7 +246,7 @@ export default createContainer(React.createClass({
 
             <div className="row">
               <div className="col-xs-12">
-                <button className="btn btn-primary margin-top">Authenticate</button>
+                <button className="btn btn-primary m-t-1">Authenticate</button>
               </div>
             </div>
           </div>

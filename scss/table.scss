@@ -1,0 +1,32 @@
+.table--notebook {
+  margin: 0;
+
+  thead,tbody {
+    th,td {
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      border-top: none;
+      border-bottom: 1px solid #eceeef;
+    }
+  }
+
+  tfoot {
+    td {
+      @extend .font-weight-bold;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}

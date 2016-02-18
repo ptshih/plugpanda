@@ -1,57 +1,57 @@
-.FloatLabel {
+.float-label {
   position: relative;
   margin-top: 9px;
-}
 
-.FloatLabel-border {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  background-color: #fff;
-  opacity: 0;
-  transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
-}
+  &__label {
+    position: absolute;
+    margin: 0;
+    top: 7px;
+    left: 13px;
+    color: #999;
+    transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+    pointer-events: none;
+    z-index: 2;
+  }
 
-.FloatLabel-border--on {
-  top: 9px;
-  right: 0;
-  bottom: 7px;
-  left: 0;
-  opacity: 1;
-  height: 1px;
-}
+  &__label--on {
+    position: absolute;
+    padding:0 2px;
+    top: -9px;
+    left: 11px;
+    font-size: 12px;
+  }
 
-.FloatLabel-label {
-  position: absolute;
-  margin: 0;
-  top: 7px;
-  left: 13px;
-  color: #999;
-  transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
-  pointer-events: none;
-  z-index: 2;
-}
+  &__border {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-color: #fff;
+    opacity: 0;
+    transition: 0.15s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+  }
 
-.FloatLabel-label--on {
-  position: absolute;
-  padding:0 2px;
-  top: -9px;
-  left: 11px;
-  font-size: 12px;
-}
+  &__border--on {
+    top: 9px;
+    right: 0;
+    bottom: 7px;
+    left: 0;
+    opacity: 1;
+    height: 1px;
+  }
 
-// Unused
-.FloatLabel-error {
-  position: absolute;
-  margin: 0;
-  padding:0 2px;
-  top: 25px;
-  left: 11px;
-  color: #f0461d;
-  background-color: #fff;
-  pointer-events: none;
-  z-index: 3;
+  // Unused
+  &__error {
+    position: absolute;
+    margin: 0;
+    padding:0 2px;
+    top: 25px;
+    left: 11px;
+    color: #f0461d;
+    background-color: #fff;
+    pointer-events: none;
+    z-index: 3;
+  }
 }

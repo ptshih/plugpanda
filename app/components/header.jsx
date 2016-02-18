@@ -67,7 +67,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/">Plug Panda</Link>
+      <Link className="navbar__link" to="/">Plug Panda</Link>
     );
   },
 
@@ -77,7 +77,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/faq">How It Works</Link>
+      <Link className="navbar__link" to="/faq">How It Works</Link>
     );
   },
 
@@ -87,7 +87,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/dashboard">Dashboard</Link>
+      <Link className="navbar__link" to="/dashboard">Dashboard</Link>
     );
   },
 
@@ -105,7 +105,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/bmw">BMW</Link>
+      <Link className="navbar__link" to="/bmw">BMW</Link>
     );
   },
 
@@ -123,7 +123,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/sessions">Sessions</Link>
+      <Link className="navbar__link" to="/sessions">Sessions</Link>
     );
   },
 
@@ -133,7 +133,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/account">Account</Link>
+      <Link className="navbar__link" to="/account">Account</Link>
     );
   },
 
@@ -147,7 +147,7 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/waitlist">Waitlist</Link>
+      <Link className="navbar__link" to="/waitlist">Waitlist</Link>
     );
   },
 
@@ -157,36 +157,36 @@ export default React.createClass({
     }
 
     return (
-      <Link className="Navbar-link" to="/login">Sign In</Link>
+      <Link className="navbar__link" to="/login">Sign In</Link>
     );
   },
 
   getHamburger() {
     if (this.state.loading) {
-      return <div className="Hamburger-spinner" />;
+      return <div className="hamburger__button hamburger__button--spinner" />;
     }
 
     if (_.get(this.props, 'location.state.parentPath')) {
-      return <div className="Hamburger-back" onClick={this.onBack} />;
+      return <div className="hamburger__button hamburger__button--back" onClick={this.onBack} />;
     }
 
-    return <div className="Hamburger-menu" onClick={this.onClickCollapse} />;
+    return <div className="hamburger__button hamburger__button--menu" onClick={this.onClickCollapse} />;
   },
 
   render() {
-    const headerClassName = ['Header', !this.state.collapse ? 'Header-expand' : ''].join(' ');
+    const headerClassName = ['header', !this.state.collapse ? 'header--expand' : ''].join(' ');
 
     return (
       <header className={headerClassName}>
-        <nav className="Nav">
-          <figure className="Hamburger navbar-toggler pull-left">
+        <nav className="nav">
+          <figure className="hamburger navbar-toggler pull-left">
             {this.getHamburger()}
           </figure>
 
-          <div className="Nav-title">{this.state.title}</div>
+          <div className="nav__title">{this.state.title}</div>
         </nav>
 
-        <div className="Navbar" onClick={this.onClickCollapse}>
+        <div className="navbar" onClick={this.onClickCollapse}>
           {this.getRoot()}
           {this.getFAQ()}
           {this.getDashboard()}

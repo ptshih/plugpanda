@@ -90,7 +90,7 @@ export default React.createClass({
       return null;
     }
 
-    return <div className="alert alert-info">{this.state.message}</div>;
+    return <div className="u-alert u-alert-info">{this.state.message}</div>;
   },
 
   render() {
@@ -112,7 +112,7 @@ export default React.createClass({
             </div>
           </div>
 
-          <div className="Login--submit row">
+          <div className="row m-t-1">
             <div className="col-xs-12">
               {this.getMessage()}
               <button

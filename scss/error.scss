@@ -1,21 +1,24 @@
-.Error-lead {
-  @extend .lead;
-}
-
-.Error-heading {
-  @extend h5;
-}
-
-.Error-reason {
-  @extend p;
-  margin-bottom: 2rem;
-}
-
-.Error-list {
-  list-style: none;
-  padding-left: 0;
-
-  li {
-    // font-weight: 300;
+.error {
+  &__lead {
+    @extend .lead;
   }
+
+  &__heading {
+    @extend h5;
+  }
+
+  &__reason {
+    @extend p;
+    margin-bottom: 2rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 0;
+
+    li {
+      // font-weight: 300;
+    }
+  }
+
 }

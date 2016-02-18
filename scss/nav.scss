@@ -1,0 +1,111 @@
+.nav {
+  position: relative;
+  @extend .clearfix;
+  @extend .container;
+  margin: 0 auto;
+  padding: 0.9375rem;
+
+  &__title {
+    @extend .text-xs-center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+
+    font-size: 1.5rem;
+    line-height: 34px;
+    font-weight: 300;
+
+    padding: 0.9375rem 3.75rem;
+  }
+}
+
+.navbar {
+  @extend .container;
+  position: relative;
+  margin: 0 auto;
+  padding: 0.9375rem;
+  overflow: hidden;
+
+  &__link {
+    @extend .lead;
+    display: block;
+    padding: 0.5rem 0;
+    color: $body-color;
+    border-bottom: 1px solid #ddd;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+// Navigation Hamburger Button
+
+.hamburger {
+  display: block;
+  position: relative;
+  margin: 0;
+  width: 34px;
+  height: 34px;
+  // text-indent: -9999px;
+  border-radius: 100%;
+  background-color: $body-color;
+  z-index: 101;
+  border: 2px solid transparent;
+  outline: none;
+  padding: 0;
+
+  &__button {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    text-align: center;
+
+    font-size: 22px;
+    line-height: 22px;
+    width: 44px;
+    height: 44px;
+    padding-top: 10px;
+
+    color: #fff;
+
+    &--menu {
+      top: -7px;
+      right: 0;
+      bottom: 0;
+      left: -7px;
+
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAVCAYAAADID4fUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5NjQ1NjhiMS01MTU3LTRhNGMtYjVjNS1mNTM4M2ZmYjIwMTciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QjE5RDdBNzQwMDU3MTFFNDhCOTVDQTM2NTY4QTQ5RDYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QjE5RDdBNzMwMDU3MTFFNDhCOTVDQTM2NTY4QTQ5RDYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1YmJmMWEyZC0yMTk1LTQwN2MtODFjYS1jZTMzYjAwNThmYmMiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDplMmU2NTc0MC00ODcwLTExNzctOWQwZi1lYTRlZTViZTc1NDMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz57tFh6AAAAQklEQVR42mL8DwQMAwyYGAYBGBSOYAFioYF2BOMgSBKjaWLUEVhzx2hhNVpYjRZWo44glDAFB0PCHC2sBo0jAAIMAMLXD1V9r1XiAAAAAElFTkSuQmCC);
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 14px 14px;
+    }
+
+    &--back {
+      top: -7px;
+      right: 0;
+      bottom: 0;
+      left: -7px;
+
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAhFBMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9hWbqAAAAAK3RSTlMAAQMGCAkKCwwPEBQVhIWMjZGZmp6fpKWqq6+wtba6u7/AxMXJzc7R0tXW9eyd8gAAAH9JREFUKM/F0MUBw0AMRcG1HWbmOIzTf39pQPY17zoXfaX0xxolHIvIigOUzdB2cGlFlm/g1gltBfduZNkCnr3QZvDuhyOm8B2ENlZZGqrBUR2mSR1mU/jEB6VsDq9+hS7h0Y01X1e/L6V8C9d2rMUezq0KPULZiLV5gkOR/twPum8hEb8EydQAAAAASUVORK5CYII=);
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 14px 14px;
+    }
+
+    // http://lea.verou.me/2013/11/cleanest-css-spinner-ever/
+    &--spinner {
+      @extend .spinner;
+      top: -2px;
+      right: 0;
+      bottom: 0;
+      left: -2px;
+
+      height: 34px;
+      width: 34px;
+    }
+  }
+}
