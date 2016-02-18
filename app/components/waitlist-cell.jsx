@@ -31,15 +31,12 @@ export default React.createClass({
     return (
       <tr>
         <td>
-          {this.props.waitlistUser.name}
-        </td>
-        <td>
           {this.props.waitlistUser.email}
         </td>
-        <td>
+        <td className="text-xs-center">
           {waitlistedDate}
         </td>
-        <td>
+        <td className="text-xs-center">
           {waitlistedPosition}
         </td>
       </tr>

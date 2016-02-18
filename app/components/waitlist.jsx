@@ -27,10 +27,9 @@ export default createContainer(React.createClass({
       <table className="table">
         <thead>
           <tr>
-            <td>Name</td>
-            <td>Email</td>
-            <td>Date</td>
-            <td>Position</td>
+            <th>Email</th>
+            <th className="text-xs-center">Date</th>
+            <th className="text-xs-center">Position</th>
           </tr>
         </thead>
         <tbody>
