@@ -388,5 +388,10 @@ section, .Section {
   // border-bottom: 1px solid #ccc;
 }
 
+.root-img-battery {
+  width: 100%;
+  max-width: 480px;
+}
+
 // Responsive media queries
 @import 'responsive';

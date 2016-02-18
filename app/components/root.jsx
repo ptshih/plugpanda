@@ -12,34 +12,50 @@ export default React.createClass({
     return (
       <article>
         <section>
-          <h4>What’s wrong with public EV charging today?</h4>
+          <div className="text-xs-center">
+            <h3>What’s wrong with public EV charging today?</h3>
+            <div><a href="http://www.chargepoint.com/">ChargePoint</a> is the largest provider of public (paid and free) EV charging stations. It's also the most commonly installed EV charging station in apartment and condominium complexes.</div>
+          </div>
+        </section>
 
-          <p>
-            <a href="http://www.chargepoint.com/">ChargePoint</a> is the largest provider of public (paid and free) EV charging stations.
-            <br/>
-            It's also the most commonly installed EV charging station in apartment and condominium complexes.
-          </p>
+        <section>
+          <div className="text-xs-center">
+            <div><strong>However, many ChargePoint stations charge by the hour.</strong></div>
+          </div>
+        </section>
 
-          <p className="lead">Many ChargePoint stations charge by the hour:</p>
+        <section>
+          <div className="text-xs-center">
+            <div>The rates (often $1-2/hr) are billed as long as the car is connected to the charger.</div>
+            <div>Even if the car is fully charged, billing will continue until the session is ended.</div>
+            <div>Sessions can currently be ended by physically unplugging the car or by using their mobile app.</div>
+          </div>
+        </section>
 
-          <ul>
-            <li>The rates (often $1-2/hr) are billed as long as the car is connected to the charger.</li>
-            <li>Even if the car is fully charged, billing will continue until the session is ended.</li>
-            <li>Sessions can currently be ended by physically unplugging the car or by using their mobile app.</li>
-          </ul>
+        <section>
+          <div className="text-xs-center">
+            <div><strong>So, what seems to be the problem officer?</strong></div>
+          </div>
+        </section>
 
-          <p className="lead">There are 2 problems with this:</p>
-          <div><strong>1. If you forget to unplug your car when it is fully charged, you will continue to be billed.</strong></div>
-          <div>This is particularly bad for overnight charging in apartment complexes.</div>
+        <section>
+          <div className="text-xs-center">
+            <h4 className="m-b-1">If you forget to unplug your car when it is fully charged, you will continue to be billed.</h4>
+            <p className="lead">This is particularly bad for overnight charging in apartment complexes.</p>
+            <div><img className="root-img-battery" src="/img/facepalm.jpg"/></div>
+          </div>
+        </section>
 
-          <br/>
+        <section>
+          <div className="text-xs-center">
+            <h4 className="m-b-1">Like smartphones, the charge rate of EVs trickle down as the battery approaches 100%.</h4>
+            <p className="lead">Charging the last 5-10% can account for as much as 1/3 of the total charge time.</p>
+            <div><img className="root-img-battery" src="/img/battery.png"/></div>
+          </div>
+        </section>
 
-          <div><strong>2. Like smartphones, the charge rate of EVs trickle down as the battery approaches 100%.</strong></div>
-          <div>The reduced rate of charging can be as much as 80% slower during the last 5-10%.</div>
-
-          <br/>
-
-          <p>If this sounds like your situation today, <Link to="/faq">read more about how Plug Panda can help!</Link></p>
+        <section>
+          <div>If this sounds like your situation today, <Link to="/faq">read more about how Plug Panda can help!</Link></div>
         </section>
       </article>
     );
