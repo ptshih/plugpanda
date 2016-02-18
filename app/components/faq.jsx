@@ -28,43 +28,34 @@ export default React.createClass({
     return (
       <article>
         <section className="faq-section">
-          <div>
-            <div className="macbook pull-lg-right">
-              <img src="/img/macbook.png"></img>
-              <img className="screen" src="/img/screen-1.png"></img>
-            </div>
-            <div className="text-xs-center text-lg-left">
-              <h2 className="m-b-1">Charging Without the Anxiety</h2>
-              <p className="lead">PlugPanda monitors your ChargePoint charging sessions 24/7 and automatically stops them for you.</p>
-              <p className="lead">Having range anxiety is bad enough, don't let charging make it worse.</p>
-            </div>
+          <div className="text-xs-center">
+            <h3 className="m-b-1">Charging without the anxiety</h3>
+            <p className="lead">PlugPanda monitors your ChargePoint charging sessions 24/7 and automatically stops them for you.</p>
+            <div><img className="faq-screenshot" src="/img/sessions.jpg"></img></div>
           </div>
         </section>
 
         <section className="faq-section">
-          <div>
-            <div className="macbook pull-lg-left">
-              <img src="/img/macbook.png"></img>
-              <img className="screen" src="/img/screen-2.png"></img>
-            </div>
-            <div className="text-xs-center text-lg-left">
-              <h2 className="m-b-1">You're In Control</h2>
-              <p className="lead">You decide when to stop charging your vehicle.</p>
-              <p className="lead">If a charging session is free, Plug Panda does not attempt to stop the session prematurely.</p>
-            </div>
+          <div className="text-xs-center">
+            <h3 className="m-b-1">You're in control</h3>
+            <p className="lead">You decide when to stop charging your vehicle.</p>
+            <div><img className="faq-screenshot" src="/img/session.jpg"></img></div>
           </div>
         </section>
 
         <section className="faq-section">
-          <div>
-            <div className="macbook pull-lg-right">
-              <img src="/img/macbook.png"></img>
-              <img className="screen" src="/img/screen-3.png"></img>
-            </div>
-            <div className="text-xs-center text-lg-left">
-              <h2 className="m-b-1">Save Money</h2>
-              <p className="lead">Keep track of how much money you've saved by preventing trickle charging.</p>
-            </div>
+          <div className="text-xs-center">
+            <h3 className="m-b-1">Stay up to date</h3>
+            <p className="lead">Keep track of your charging activity – past and present.</p>
+            <div><img className="faq-screenshot" src="/img/dashboard.jpg"></img></div>
+          </div>
+        </section>
+
+        <section className="faq-section">
+          <div className="text-xs-center">
+            <h3 className="m-b-1">BMW i3/i8 driver?</h3>
+            <p className="lead">Experience the app BMW should have built.</p>
+            <div><img className="faq-screenshot" src="/img/bmw.jpg"></img></div>
           </div>
         </section>
 

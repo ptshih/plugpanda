@@ -366,6 +366,12 @@ section, .Section {
   // position: fixed;
 }
 
+.faq-screenshot {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #999;
+}
+
 .macbook {
   position: relative;
   margin: 0 auto;
@@ -379,8 +385,7 @@ section, .Section {
 }
 
 .faq-section {
-  @extend .p-y-3;
-  border-bottom: 1px solid #ccc;
+  // border-bottom: 1px solid #ccc;
 }
 
 // Responsive media queries

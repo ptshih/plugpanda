@@ -3,12 +3,53 @@
   .col-xs-12 {
     margin-bottom: 0;
   }
-
   .section-full {
     padding: 0.9375rem;
   }
 }
 
+// Small devices
 @media (max-width: 47.9em) {
-
+  h1 {
+    font-size: $font-size-h1 * 0.8;
+  }
+  h2 {
+    font-size: $font-size-h2 * 0.8;
+  }
+  h3 {
+    font-size: $font-size-h3 * 0.8;
+  }
+  h4 {
+    font-size: $font-size-h4 * 0.8;
+  }
+  h5 {
+    font-size: $font-size-h5 * 0.8;
+  }
+  h6 {
+    font-size: $font-size-h6 * 0.8;
+  }
+  // These declarations are kept separate from and placed after
+  // the previous tag-based declarations so that the classes beat the tags in
+  // the CSS cascade, and thus <h1 class="h2"> will be styled like an h2.
+  .h1 {
+    font-size: $font-size-h1 * 0.8;
+  }
+  .h2 {
+    font-size: $font-size-h2 * 0.8;
+  }
+  .h3 {
+    font-size: $font-size-h3 * 0.8;
+  }
+  .h4 {
+    font-size: $font-size-h4 * 0.8;
+  }
+  .h5 {
+    font-size: $font-size-h5 * 0.8;
+  }
+  .h6 {
+    font-size: $font-size-h6 * 0.8;
+  }
+}
+.lead {
+  font-size: $lead-font-size * 0.8;
 }
