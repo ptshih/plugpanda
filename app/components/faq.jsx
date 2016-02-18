@@ -39,6 +39,7 @@ export default React.createClass({
           <div className="text-xs-center">
             <h3 className="m-b-1">You're in control</h3>
             <p className="lead">PlugPanda will notify you when it's time to stop charging your vehicle.</p>
+            <p><em>Don't forget to move your vehicle so others can use the charging station!</em></p>
             <div><img className="faq-screenshot" src="/img/session.jpg"/></div>
           </div>
         </section>
