@@ -89,7 +89,6 @@ export default createContainer(React.createClass({
           <Highcharts className="session-chart__highcharts" config={powerConfig} />
           <div className="session-chart__overlay">
             <div className="session-chart__overlay__date">{data.date}</div>
-            <div className="session-chart__overlay__rate">{data.totalEnergy} @ {data.averagePower}</div>
             <div className="session-chart__overlay__duration">{`${data.hours}h ${data.minutes}m`}</div>
           </div>
         </div>
