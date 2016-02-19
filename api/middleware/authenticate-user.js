@@ -1,3 +1,4 @@
+const db = require('../config/db');
 const UserModel = require('../models/user');
 
 // Get `access_token` from `req`
@@ -46,7 +47,7 @@ module.exports = function(req, res, next) {
   }
 
   const user = new UserModel();
-  user.db = db; // global
+  user.db = db;
   return user.fetch({
     query: {
       access_token: accessToken,

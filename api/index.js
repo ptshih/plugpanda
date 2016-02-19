@@ -3,6 +3,7 @@ const _ = require('lodash');
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
+require('muni'); // TODO: weirdly removing this causes promise warnings
 
 // Middleware
 const cors = require('cors');
@@ -61,9 +62,6 @@ _.each(requiredEnvs, (requiredEnv) => {
 
   console.log(`├── ${requiredEnv}=${requiredEnvValue}`);
 });
-
-// Database
-global.db = require('./config/db');
 
 // Time units in ms
 const oneDay = 86400000;
@@ -139,6 +137,7 @@ app.use('/', express.static(path.join(__dirname, '../public'), {
 }));
 
 // Connect to the database
+const db = require('./config/db');
 db.connect().then(() => {
   // Start the HTTP server
   app.listen(props.port, () => {
