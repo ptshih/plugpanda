@@ -41,7 +41,7 @@ const router = new Muni.Router({
 // Alias all PATCH to PUT
 router.patch('*', (req, res, next) => {
   req.method = 'PUT';
-  return next();
+  next();
 });
 
 // Add controller routes
