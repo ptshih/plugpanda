@@ -405,17 +405,15 @@ module.exports = BaseUserModel.extend({
 
   /**
    * Logic to determine when to STOP a session
-   * Must have `max_power > 0` so it's not warming up
    * Must have at least charged for `CHARGING_TIME_MIN` milliseconds (5min)
-   * Must maintain at least half of mox power level since last update
+   * Must maintain at least half of max power level since last update
    */
   _shouldStopSession() {
-    // Cutoff power is half of `max_power`
-    const cutoffPower = this.get('max_power') / 2;
+    if (this.get('charging_time') < CHARGING_TIME_MIN) {
+      return false;
+    }
 
-    // Make sure other conditions are met
-    return this.get('max_power') > 0 &&
-      this.get('power_kw') < cutoffPower &&
-      this.get('charging_time') > CHARGING_TIME_MIN;
+    // Cutoff power is half of `max_power`
+    return this.get('power_kw') < (this.get('max_power') / 2);
   },
 });
