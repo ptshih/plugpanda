@@ -1,11 +1,9 @@
 module.exports = function(req, res, next) {
   if (!req.user) {
-    return next(new Error(`User not authenticated.`));
+    next(new Error(`User not authenticated.`));
+  } else if (!req.user.get('features.admin')) {
+    next(new Error(`User is not admin.`));
+  } else {
+    next();
   }
-
-  if (!req.user.get('features.admin')) {
-    return next(new Error(`User is not admin.`));
-  }
-
-  return next();
 };

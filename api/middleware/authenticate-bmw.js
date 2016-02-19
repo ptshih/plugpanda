@@ -2,12 +2,14 @@ const bmwapi = require('../lib/bmw');
 
 module.exports = function(req, res, next) {
   if (!req.user) {
-    return next(new Error(`User not authenticated.`));
+    next(new Error(`User not authenticated.`));
+    return;
   }
-  return bmwapi.auth(req.user).then((bmw) => {
+
+  bmwapi.auth(req.user).tap((bmw) => {
     req.bmw = bmw;
-    return next();
+    next();
   }).catch((err) => {
-    return next(new Error(`Error authenticating BMW: ${err.message}`));
+    next(new Error(`Error authenticating BMW: ${err.message}`));
   });
 };

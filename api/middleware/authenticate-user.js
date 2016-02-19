@@ -1,4 +1,3 @@
-const db = require('../config/db');
 const UserModel = require('../models/user');
 
 // Get `access_token` from `req`
@@ -43,22 +42,23 @@ module.exports = function(req, res, next) {
   const accessToken = accessTokenFromRequest(req);
 
   if (!accessToken) {
-    return next(new Error(`Invalid Access Token.`));
+    next(new Error(`Invalid Access Token.`));
+    return;
   }
 
   const user = new UserModel();
-  user.db = db;
-  return user.fetch({
+  user.db = require('../config/db');
+  user.fetch({
     query: {
       access_token: accessToken,
     },
     require: true,
-  }).then(function() {
+  }).tap(function() {
     // Authenticated
     req.user = user;
 
-    return next();
+    next();
   }).catch((err) => {
-    return next(new Error(`Error authenticating User: ${err.message}`));
+    next(new Error(`Error authenticating User: ${err.message}`));
   });
 };

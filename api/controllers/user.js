@@ -83,41 +83,41 @@ module.exports = BaseController.extend({
         users: _.head(result),
         count: _.last(result),
       };
-      return next();
+      next();
     }).catch(next);
   },
 
   waitlistPosition(req, res, next) {
-    return req.user.getWaitlistPosition().then((position) => {
+    req.user.getWaitlistPosition().then((position) => {
       res.data = {
         position: position,
       };
-      return next();
+      next();
     }).catch(next);
   },
 
   account(req, res, next) {
     res.data = req.user.render();
-    return next();
+    next();
   },
 
   updateAccount(req, res, next) {
-    return req.user.setFromRequest(req.body).then(() => {
+    req.user.setFromRequest(req.body).then(() => {
       return req.user.save();
     }).then(() => {
       res.data = req.user.render();
-      return next();
+      next();
     }).catch(next);
   },
 
   chargepoint(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
     const password = (req.body.password || req.query.password).trim();
-    return req.user.authenticateChargepoint(email, password).then(() => {
+    req.user.authenticateChargepoint(email, password).then(() => {
       return req.user.save();
     }).then(() => {
       res.data = req.user.render();
-      return next();
+      next();
     }).catch(next);
   },
 
@@ -128,7 +128,7 @@ module.exports = BaseController.extend({
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
     const password = (req.body.password || req.query.password || '').trim();
 
-    return Muni.Promise.bind(this).then(function() {
+    Muni.Promise.bind(this).then(function() {
       const user = new UserModel();
       user.db = this.get('db');
       return user.fetch({
@@ -153,7 +153,7 @@ module.exports = BaseController.extend({
     let password = (req.body.password || req.query.password || '').trim();
     const name = req.body.name || null;
 
-    return Muni.Promise.bind(this).then(() => {
+    Muni.Promise.bind(this).then(() => {
       const user = new UserModel();
       user.db = this.get('db');
       return user;
@@ -177,7 +177,7 @@ module.exports = BaseController.extend({
   forgotPassword(req, res, next) {
     const email = Muni.sanitizeEmail(req.body.email || req.query.email);
 
-    return Muni.Promise.bind(this).then(function() {
+    Muni.Promise.bind(this).then(function() {
       const user = new UserModel();
       user.db = this.get('db');
       return user.fetch({
@@ -196,7 +196,7 @@ module.exports = BaseController.extend({
     const token = req.body.token || req.query.token;
     const password = (req.body.password || req.query.password || '').trim();
 
-    return Muni.Promise.bind(this).then(function() {
+    Muni.Promise.bind(this).then(function() {
       const user = new UserModel();
       user.db = this.get('db');
 

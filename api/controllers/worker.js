@@ -27,7 +27,7 @@ module.exports = BaseController.extend({
   // 1. Fetch a list of all users who have `chargepoint` configured
   // 2. Fire one-off jobs for each user to update session status
   chargepoint(req, res, next) {
-    return this.get('db').find('users', {
+    this.get('db').find('users', {
       'features.readonly': {
         $ne: true,
       },
@@ -71,7 +71,7 @@ module.exports = BaseController.extend({
       return Muni.Promise.all(promises).return(userIds);
     }).then((userIds) => {
       res.data = userIds;
-      return next();
+      next();
     }).catch(next);
   },
 });

@@ -3,7 +3,6 @@ const _ = require('lodash');
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
-require('muni'); // TODO: weirdly removing this causes promise warnings
 
 // Middleware
 const cors = require('cors');

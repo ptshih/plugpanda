@@ -49,7 +49,7 @@ module.exports = BaseController.extend({
     const session = new SessionModel();
     session.db = this.get('db');
 
-    return chargepoint.sendStatusRequest(req.user.get('chargepoint')).tap((chargingStatus) => {
+    chargepoint.sendStatusRequest(req.user.get('chargepoint')).tap((chargingStatus) => {
       // Fetch from DB
       return session.fetch({
         query: {
@@ -79,7 +79,7 @@ module.exports = BaseController.extend({
       query.session_id = _.parseInt(req.params.session_id);
     }
 
-    return session.fetch({
+    session.fetch({
       query: query,
       require: true,
       sort: [['created_date', 'desc']],
@@ -145,7 +145,7 @@ module.exports = BaseController.extend({
     const sessions = new SessionCollection();
     sessions.db = this.get('db');
 
-    return sessions.fetch(qo).tap(() => {
+    sessions.fetch(qo).tap(() => {
       res.data = sessions.render();
       next();
     }).catch(next);
@@ -155,7 +155,7 @@ module.exports = BaseController.extend({
     const sessions = new SessionCollection();
     sessions.db = this.get('db');
 
-    return sessions.fetch({
+    sessions.fetch({
       query: {
         status: 'on',
         updated_date: {
@@ -165,7 +165,8 @@ module.exports = BaseController.extend({
     }).tap(() => {
       if (!sessions.length) {
         res.data = [];
-        return next();
+        next();
+        return null;
       }
 
       const promises = [];
@@ -178,7 +179,9 @@ module.exports = BaseController.extend({
       return Muni.Promise.all(promises).then(() => {
         const sessionIds = sessions.pluck('session_id');
         res.data = sessionIds;
-        return next();
+
+        next();
+        return;
       });
     }).catch(next);
   },
@@ -187,7 +190,7 @@ module.exports = BaseController.extend({
     const session = new SessionModel();
     session.db = this.get('db');
 
-    return session.fetch({
+    session.fetch({
       query: {
         session_id: _.parseInt(req.params.session_id),
       },
@@ -203,7 +206,7 @@ module.exports = BaseController.extend({
     const session = new SessionModel();
     session.db = this.get('db');
 
-    return session.fetch({
+    session.fetch({
       query: {
         session_id: _.parseInt(req.params.session_id),
       },

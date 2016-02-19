@@ -56,7 +56,7 @@ module.exports = BaseController.extend({
 
 
   vehicle(req, res, next) {
-    return bmwApi.sendVehicleRequest(
+    bmwApi.sendVehicleRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -69,7 +69,7 @@ module.exports = BaseController.extend({
     const bmw = new BmwModel();
     bmw.db = this.get('db');
 
-    return bmw.fetch({
+    bmw.fetch({
       query: {
         vin: req.bmw.vin,
       },
@@ -90,7 +90,7 @@ module.exports = BaseController.extend({
 
   statistics(req, res, next) {
     const filter = req.query.filter || 'allTrips';
-    return bmwApi.sendStatisticsRequest(
+    bmwApi.sendStatisticsRequest(
       req.bmw.access_token,
       req.bmw.vin,
       filter
@@ -101,7 +101,7 @@ module.exports = BaseController.extend({
   },
 
   destinations(req, res, next) {
-    return bmwApi.sendDestinationsRequest(
+    bmwApi.sendDestinationsRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -111,7 +111,7 @@ module.exports = BaseController.extend({
   },
 
   chargingprofile(req, res, next) {
-    return bmwApi.sendChargingProfileRequest(
+    bmwApi.sendChargingProfileRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -121,7 +121,7 @@ module.exports = BaseController.extend({
   },
 
   rangemap(req, res, next) {
-    return bmwApi.sendRangeMapRequest(
+    bmwApi.sendRangeMapRequest(
       req.bmw.access_token,
       req.bmw.vin
     ).then((data) => {
@@ -131,7 +131,7 @@ module.exports = BaseController.extend({
   },
 
   poi(req, res, next) {
-    return bmwApi.sendPOIRequest(
+    bmwApi.sendPOIRequest(
       req.bmw.access_token,
       req.bmw.vin,
       {
@@ -145,7 +145,7 @@ module.exports = BaseController.extend({
   },
 
   service(req, res, next) {
-    return bmwApi.sendExecuteServiceRequest(
+    bmwApi.sendExecuteServiceRequest(
       req.bmw.access_token,
       req.bmw.vin,
       req.body.type

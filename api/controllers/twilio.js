@@ -26,7 +26,8 @@ module.exports = BaseController.extend({
 
     // Command format: `/bmw soc` or `/bmw`
     if (!parts.length || parts.length > 2) {
-      return res.sendStatus(204);
+      res.sendStatus(204);
+      return;
     }
 
     req.mode = parts[0];
@@ -34,15 +35,18 @@ module.exports = BaseController.extend({
 
     // Bmw
     if (req.mode === '/bmw') {
-      return this._bmw(req, res, next);
+      this._bmw(req, res, next);
+      return;
     }
 
     // Chargepoint
     if (req.mode === '/charge') {
-      return this._charge(req, res, next);
+      this._charge(req, res, next);
+      return;
     }
 
-    return res.sendStatus(204);
+    res.sendStatus(204);
+    return;
   },
 
   _bmw(req, res, next) {
@@ -51,7 +55,7 @@ module.exports = BaseController.extend({
     const bmw = new BmwModel();
     bmw.db = this.get('db');
 
-    return bmwapi.auth().then(() => {
+    bmwapi.auth().then(() => {
       req.bmw = bmw;
       return bmw.fetch({
         query: {

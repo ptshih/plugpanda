@@ -20,12 +20,12 @@ module.exports = BaseController.extend({
     promises.push(this._getActiveSession(req.user.id));
     promises.push(this._getFrequentStations(req.user.id));
 
-    return Muni.Promise.all(promises).then((results) => {
+    Muni.Promise.all(promises).tap((results) => {
       res.data = {
         active_session: results[0],
         frequent_stations: results[1],
       };
-      return next();
+      next();
     }).catch(next);
   },
 
