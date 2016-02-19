@@ -3,7 +3,6 @@ const _ = require('lodash');
 const express = require('express');
 const helmet = require('helmet');
 const path = require('path');
-const Muni = require('muni');
 
 // Middleware
 const cors = require('cors');
@@ -12,9 +11,6 @@ const compress = require('compression');
 const responseTime = require('response-time');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
-
-// Errors
-global.APIError = Muni.Error;
 
 // Environment
 require('dotenv').config({silent: true});
@@ -25,6 +21,9 @@ nconf.env().defaults({
   HOST: 'http://localhost',
   PORT: 9001,
 });
+
+// Debug Logging
+global.debug = require('./lib/debug');
 
 // Required Envs
 const requiredEnvs = [

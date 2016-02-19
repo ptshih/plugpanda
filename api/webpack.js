@@ -55,7 +55,7 @@ module.exports = function(app) {
 
   // Proxy catch error
   proxy.on('error', (err) => {
-    console.log('Could not connect to Webpack with error: %s', err.message);
+    console.error('Could not connect to Webpack with error: %s', err.message);
   });
 
   // console.log(webpackDevServer.middleware.fileSystem);
