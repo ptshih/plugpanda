@@ -61,46 +61,56 @@ export default createContainer(React.createClass({
   },
 
   getActiveChargingSession() {
+    let activeSessionContent;
     const activeSession = _.get(this.props, 'dashboard.active_session');
+
     if (_.isEmpty(activeSession)) {
-      return null;
-    }
-
-    let status;
-    if (activeSession.status === 'on') {
-      status = 'Session is actively charging';
-    } else if (activeSession.status === 'starting') {
-      status = 'Session is starting but not actively charging';
-    } else if (activeSession.status === 'stopping') {
-      status = 'Session is stopped and not actively charging';
+      activeSessionContent = (
+        <div>No active sessions at the moment.</div>
+      );
     } else {
-      status = 'Session is not actively charging';
-    }
+      let status;
+      if (activeSession.status === 'on') {
+        status = 'Session is actively charging';
+      } else if (activeSession.status === 'starting') {
+        status = 'Session is starting but not actively charging';
+      } else if (activeSession.status === 'stopping') {
+        status = 'Session is stopped and not actively charging';
+      } else {
+        status = 'Session is not actively charging';
+      }
 
-    const displayDate = moment(activeSession.created_date).calendar(null, {
-      lastDay: '[Yesterday] [at] HH:MM',
-      sameDay: '[Today] [at] HH:MM',
-      nextDay: '[Tomorrow] [at] HH:MM',
-      lastWeek: 'MM/DD [at] HH:MM',
-      nextWeek: 'MM/DD [at] HH:MM',
-      sameElse: 'MM/DD [at] HH:MM',
-    });
+      const displayDate = moment(activeSession.created_date).calendar(null, {
+        lastDay: '[Yesterday] [at] HH:MM',
+        sameDay: '[Today] [at] HH:MM',
+        nextDay: '[Tomorrow] [at] HH:MM',
+        lastWeek: 'MM/DD [at] HH:MM',
+        nextWeek: 'MM/DD [at] HH:MM',
+        sameElse: 'MM/DD [at] HH:MM',
+      });
+
+      activeSessionContent = (
+        <div>
+          <div>
+            <Link
+              to={{
+                pathname: `/sessions/${activeSession.session_id}`,
+                state: {parentPath: '/dashboard'},
+              }}
+            >
+              {status}
+            </Link>
+          </div>
+          <div>{displayDate}</div>
+          <div>{`${activeSession.address1} in ${activeSession.city}`}</div>
+        </div>
+      );
+    }
 
     return (
       <section>
         <div><strong>Active Charging Sessions</strong></div>
-        <div>
-          <Link
-            to={{
-              pathname: `/sessions/${activeSession.session_id}`,
-              state: {parentPath: '/dashboard'},
-            }}
-          >
-            {status}
-          </Link>
-        </div>
-        <div>{displayDate}</div>
-        <div>{`${activeSession.address1} in ${activeSession.city}`}</div>
+        {activeSessionContent}
       </section>
     );
   },
