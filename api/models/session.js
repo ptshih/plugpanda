@@ -133,15 +133,13 @@ module.exports = BaseUserModel.extend({
   },
 
   startSession() {
-    console.log(`-----> Starting Session: ${this.get('session_id')}.`);
+    debug.info(`-----> Starting Session: ${this.get('session_id')}.`);
     this.set('status', 'on');
-    return this;
   },
 
   endSession() {
-    console.log(`-----> Ending Session: ${this.get('session_id')}.`);
+    debug.info(`-----> Ending Session: ${this.get('session_id')}.`);
     this.set('status', 'off');
-    return this;
   },
 
   /**
@@ -335,16 +333,16 @@ module.exports = BaseUserModel.extend({
       port_level: obj.port_level,
       payment_type: obj.payment_type,
       current_charging: obj.current_charging,
-      charging_time: obj.charging_time,
-      session_time: obj.session_time,
-      start_time: obj.start_time,
-      end_time: obj.end_time,
-      energy_kwh: obj.energy_kwh,
-      power_kw: obj.power_kw,
-      miles_added: obj.miles_added,
-      total_amount: obj.total_amount,
-      lat: obj.lat,
-      lon: obj.lon,
+      charging_time: obj.charging_time || 0,
+      session_time: obj.session_time || 0,
+      start_time: obj.start_time || 0,
+      end_time: obj.end_time || 0,
+      energy_kwh: obj.energy_kwh || 0,
+      power_kw: obj.power_kw || 0,
+      miles_added: obj.miles_added || 0,
+      total_amount: obj.total_amount || 0,
+      lat: obj.lat || 0,
+      lon: obj.lon || 0,
       company_name: obj.company_name,
       address1: obj.address1,
       state_name: obj.state_name,
@@ -409,6 +407,14 @@ module.exports = BaseUserModel.extend({
    * Must maintain at least half of max power level since last update
    */
   _shouldStopSession() {
+    if (this.get('status') !== 'on') {
+      return false;
+    }
+
+    if (this.get('current_charging') !== 'in_use') {
+      return false;
+    }
+
     if (this.get('charging_time') < CHARGING_TIME_MIN) {
       return false;
     }

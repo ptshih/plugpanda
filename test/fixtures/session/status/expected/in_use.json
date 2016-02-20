@@ -1,0 +1,63 @@
+{
+  "company_id": 5943,
+  "session_id": 30272777,
+  "device_id": 107533,
+  "outlet_number": 1,
+  "port_level": 2,
+  "payment_type": "paid",
+  "current_charging": "in_use",
+  "charging_time": 289000,
+  "session_time": 313000,
+  "start_time": 1440130680000,
+  "end_time": 0,
+  "energy_kwh": 0.453138,
+  "power_kw": 5.720143,
+  "miles_added": 1.6683717272727272,
+  "total_amount": 0,
+  "lat": 37.772132873535156,
+  "lon": -122.39157104492188,
+  "company_name": "Essex Property Trust",
+  "address1": "701 China Basin St",
+  "state_name": "California",
+  "city": "San Francisco",
+  "currency_iso_code": "USD",
+  "vehicle_info": {
+    "model": "i3 with Range",
+    "year": 2015,
+    "is_primary_vehicle": true,
+    "vehicle_id": 311515,
+    "make": "BMW",
+    "battery_capacity": 22,
+    "ev_range": 81
+  },
+  "update_data": [{
+    "timestamp": 1440130693000,
+    "power_kw": 0,
+    "energy_kwh": 0
+  }, {
+    "timestamp": 1440130696000,
+    "power_kw": 0,
+    "energy_kwh": 0
+  }, {
+    "timestamp": 1440130702000,
+    "power_kw": 0,
+    "energy_kwh": 0
+  }, {
+    "timestamp": 1440130714000,
+    "power_kw": 5.480482,
+    "energy_kwh": 0.014941
+  }, {
+    "timestamp": 1440130738000,
+    "power_kw": 5.747995,
+    "energy_kwh": 0.046832
+  }, {
+    "timestamp": 1440130786000,
+    "power_kw": 5.735441,
+    "energy_kwh": 0.126665
+  }, {
+    "timestamp": 1440130993000,
+    "power_kw": 5.720143,
+    "energy_kwh": 0.453138
+  }],
+  "enable_stop_charging": true
+}

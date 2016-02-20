@@ -3,9 +3,6 @@ const debounce = require('../lib/debounce');
 const Promise = require('bluebird');
 
 describe('Debounce', function() {
-  // Set max timeout allowed
-  this.timeout(10000);
-
   let obj;
 
   beforeEach(function() {

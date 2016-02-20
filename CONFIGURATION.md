@@ -30,6 +30,7 @@ If on Heroku, include in the app's config variables
 	- Example: `localhost:12345/dbname`
 - MONGO_SSL_CA
 	- Single line version of `certificate.pem`
+	- Easiest way is to replace all newlines with `\n`
 - CLIENT_TOKEN
 	- Used to generate User access tokens
 	- This can be any randomized string

@@ -1,0 +1,29 @@
+[{
+  "timestamp": 1440130693000,
+  "power_kw": 0.0,
+  "energy_kwh": 0.0
+}, {
+  "timestamp": 1440130696000,
+  "power_kw": 0.0,
+  "energy_kwh": 0.0
+}, {
+  "timestamp": 1440130702000,
+  "power_kw": 0.0,
+  "energy_kwh": 0.0
+}, {
+  "timestamp": 1440130714000,
+  "power_kw": 5.480482,
+  "energy_kwh": 0.014941
+}, {
+  "timestamp": 1440130738000,
+  "power_kw": 5.747995,
+  "energy_kwh": 0.046832
+}, {
+  "timestamp": 1440130786000,
+  "power_kw": 5.735441,
+  "energy_kwh": 0.126665
+}, {
+  "timestamp": 1440130993000,
+  "power_kw": 5.720143,
+  "energy_kwh": 0.453138
+}]
