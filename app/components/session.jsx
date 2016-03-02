@@ -12,12 +12,12 @@ import createContainer from './container';
 // Components
 import Table from './partials/table';
 import GoogleMap from './partials/google-map';
-import Highcharts from 'react-highcharts/bundle/highcharts';
+import ReactHighcharts from 'react-highcharts';
 import themeGray from '../highcharts/theme-gray';
 
 // Gray theme
-Highcharts.Highcharts.setOptions(themeGray);
-Highcharts.Highcharts.setOptions({
+ReactHighcharts.Highcharts.setOptions(themeGray);
+ReactHighcharts.Highcharts.setOptions({
   global: {
     useUTC: false,
   },
@@ -86,7 +86,7 @@ export default createContainer(React.createClass({
     return (
       <section className="section--fluid">
         <div className="session-chart">
-          <Highcharts className="session-chart__highcharts" config={powerConfig} />
+          <ReactHighcharts className="session-chart__highcharts" config={powerConfig} />
           <div className="session-chart__overlay">
             <div className="session-chart__overlay__date">{data.date}</div>
             <div className="session-chart__overlay__duration">{`${data.hours}h ${data.minutes}m`}</div>
