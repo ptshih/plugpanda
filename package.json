@@ -1,8 +1,8 @@
 {
-  "name": "panda",
+  "name": "plugpanda",
   "author": "Peter Shih <ptshih@gmail.com>",
   "version": "2.18.0",
-  "description": "Panda",
+  "description": "Plug Panda",
   "private": true,
   "dependencies": {
     "accounting": "0.4.1",
@@ -92,11 +92,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ptshih/panda.git"
+    "url": "git://github.com/ptshih/plugpanda.git"
   },
   "bugs": {
-    "url": "https://github.com/ptshih/panda/issues"
+    "url": "https://github.com/ptshih/plugpanda/issues"
   },
-  "homepage": "https://github.com/ptshih/panda",
+  "homepage": "https://github.com/ptshih/plugpanda",
   "license": "MIT"
 }
