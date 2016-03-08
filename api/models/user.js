@@ -188,6 +188,8 @@ module.exports = BaseModel.extend({
     if (!this.get('email')) {
       return new Muni.Error('User requires an email.', 400);
     }
+
+    return null;
   },
 
   setFromRequest: Muni.Promise.method(function(body) {

@@ -317,6 +317,8 @@ module.exports = BaseUserModel.extend({
       if (shouldSave) {
         return this.save();
       }
+
+      return false;
     }).return(this);
   },
 

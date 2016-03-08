@@ -99,7 +99,7 @@ module.exports = BaseController.extend({
           // return `comgooglemaps://?center=${data.position.lat},${data.position.lon}`;
           // return `https://maps.google.com/maps?q=${data.position.lat},${data.position.lon}`;
         default:
-          return `Commands: status, soc, fuel, door, plug, miles, map`;
+          return 'Commands: status, soc, fuel, door, plug, miles, map';
       }
     }).then((message) => {
       res.message = message;
@@ -141,7 +141,7 @@ module.exports = BaseController.extend({
           }
           return `Charging Time: ${displayTime}`;
         default:
-          return `Commands: status, power, energy, miles, time`;
+          return 'Commands: status, power, energy, miles, time';
       }
     }).then((message) => {
       res.message = message;

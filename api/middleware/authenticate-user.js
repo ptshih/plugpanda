@@ -42,7 +42,7 @@ module.exports = function(req, res, next) {
   const accessToken = accessTokenFromRequest(req);
 
   if (!accessToken) {
-    next(new Error(`Invalid Access Token.`));
+    next(new Error('Invalid Access Token.'));
     return;
   }
 

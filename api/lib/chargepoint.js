@@ -9,7 +9,7 @@ module.exports = {
    */
   sendHistoryRequest: Muni.Promise.method(function(chargepoint) {
     return request({
-      url: `https://mc.chargepoint.com/map-prod/v2`,
+      url: 'https://mc.chargepoint.com/map-prod/v2',
       querystring: `{"charging_activity":{"page_size":100},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.auth_token}`,
@@ -36,7 +36,7 @@ module.exports = {
     }
 
     return request({
-      url: `https://mc.chargepoint.com/map-prod/v2`,
+      url: 'https://mc.chargepoint.com/map-prod/v2',
       querystring: `{"charging_status":{${sessionQuery}},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.auth_token}`,
@@ -48,7 +48,7 @@ module.exports = {
 
   sendStationRequest: Muni.Promise.method(function(chargepoint, deviceId) {
     return request({
-      url: `https://mc.chargepoint.com/map-prod/v2`,
+      url: 'https://mc.chargepoint.com/map-prod/v2',
       querystring: `{"station_info":{"device_id":${deviceId},"include_port_status":true},"user_id":${chargepoint.user_id}}`,
       headers: {
         Cookie: `coulomb_sess=${chargepoint.auth_token}`,
