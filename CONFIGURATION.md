@@ -31,6 +31,7 @@ If on Heroku, include in the app's config variables
 - MONGO_SSL_CA
 	- Single line version of `certificate.pem`
 	- Easiest way is to replace all newlines with `\n`
+	- The driver will convert `\n` into OS-specific newlines when connecting
 - CLIENT_TOKEN
 	- Used to generate User access tokens
 	- This can be any randomized string
