@@ -87,8 +87,8 @@
     "test": "mocha"
   },
   "engines": {
-    "node": "4.3.2",
-    "npm": "2.14.12"
+    "node": "4.4.0",
+    "npm": "2.14.20"
   },
   "repository": {
     "type": "git",
