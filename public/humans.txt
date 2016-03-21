@@ -1,8 +1,12 @@
 /* TEAM */
 
-  Name: Peter Shih
-  Site: https://github.com/ptshih
-  Location: San Francisco, New York
+  Name: Peter Stone
+  Site: https://github.com/impeterstone
+  Location: San Francisco & New York City
+
+  Name: Edward Junprung
+  Site: https://github.com/ejunprung
+  Location: San Francisco
 
   Name: Bruno Marinho
   Site: https://github.com/brunomarinho

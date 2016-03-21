@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "chargepoint worker",
   "main": "chargepoint-worker.js",
-  "author": "Peter Shih <ptshih@gmail.com>",
+  "author": "Peter Stone <impeterstone@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "lodash": "3.10.1",
