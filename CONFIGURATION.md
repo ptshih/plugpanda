@@ -54,3 +54,10 @@ If on Heroku, include in the app's config variables
 	- Used to authenticate Iron.io
 - MAILGUN_KEY
 	- Used to authenticate with Mailgun and send emails
+
+
+## Iron Workers
+
+How to upload a new revision of a worker:
+
+	iron_worker upload [WORKER_NAME] --project-id [IRON_PROJECT_ID] --token [IRON_TOKEN]
