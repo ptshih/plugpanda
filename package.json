@@ -1,7 +1,7 @@
 {
   "name": "plugpanda",
   "author": "Peter Stone <impeterstone@gmail.com>",
-  "version": "2.18.0",
+  "version": "2.18.1",
   "description": "Plug Panda",
   "private": true,
   "dependencies": {
