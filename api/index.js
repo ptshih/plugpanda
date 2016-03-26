@@ -34,7 +34,7 @@ const requiredEnvs = [
   'MONGODB_USER',
   'MONGODB_PASSWORD',
   'MONGODB_URL',
-  'MONGO_SSL_CA',
+  // 'MONGO_SSL_CA',
   'CLIENT_TOKEN',
   'WORKER_TOKEN',
   'COULOMB_SESS',
