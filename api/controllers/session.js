@@ -57,9 +57,10 @@ module.exports = BaseController.extend({
         },
       });
     }).tap((chargingStatus) => {
-      // Set `user_id` if new session
+      // Set `user` and `user_id` if new session
       if (!session.get('user_id')) {
         session.set('user_id', req.user.id);
+        session.user = req.user;
       }
 
       // Update from Chargepoint
