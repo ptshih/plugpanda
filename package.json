@@ -87,16 +87,16 @@
     "test": "mocha"
   },
   "engines": {
-    "node": "4.4.0",
-    "npm": "2.14.20"
+    "node": "4.4.2",
+    "npm": "2.15.0"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ptshih/plugpanda.git"
+    "url": "git://github.com/impeterstone/plugpanda.git"
   },
   "bugs": {
-    "url": "https://github.com/ptshih/plugpanda/issues"
+    "url": "https://github.com/impeterstone/plugpanda/issues"
   },
-  "homepage": "https://github.com/ptshih/plugpanda",
+  "homepage": "https://github.com/impeterstone/plugpanda",
   "license": "MIT"
 }
