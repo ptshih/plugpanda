@@ -74,9 +74,10 @@ export default createContainer(React.createClass({
 
   onChangePhone(event) {
     event.preventDefault();
+    const phone = this._formatPhone(event.target.value);
     store.dispatch({
       type: 'ACCOUNT_CHANGE_PHONE',
-      data: event.target.value,
+      data: phone,
     });
 
     // Save after changing

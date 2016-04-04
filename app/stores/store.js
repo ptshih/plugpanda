@@ -192,7 +192,7 @@ class Store extends EventEmitter {
         });
         break;
       case 'ACCOUNT_CHANGE_PHONE':
-        const phone = (action.data || '').replace(/-/g, '');
+        const phone = (action.data || '').replace(/-/g, '').substr(0, 10);
         if (_.isEmpty(phone) || _.isFinite(_.parseInt(phone))) {
           this.state.account = _.assign({}, this.state.account, {
             phone: phone,
