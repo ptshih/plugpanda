@@ -231,12 +231,12 @@ export default createContainer(React.createClass({
 
     // Date
     data.date = moment(_.get(this.props, 'session.created_date')).calendar(null, {
-      lastDay: '[Yesterday] [at] HH:MM',
-      sameDay: '[Today] [at] HH:MM',
-      nextDay: '[Tomorrow] [at] HH:MM',
-      lastWeek: 'MM/DD [at] HH:MM',
-      nextWeek: 'MM/DD [at] HH:MM',
-      sameElse: 'MM/DD [at] HH:MM',
+      lastDay: '[Yesterday] [at] HH:mm',
+      sameDay: '[Today] [at] HH:mm',
+      nextDay: '[Tomorrow] [at] HH:mm',
+      lastWeek: 'MM/DD [at] HH:mm',
+      nextWeek: 'MM/DD [at] HH:mm',
+      sameElse: 'MM/DD [at] HH:mm',
     });
 
     // Hours and Minutes
